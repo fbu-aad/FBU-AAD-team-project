@@ -21,8 +21,8 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
  * Subscription to automated regular donations (daily, weekly, monthly)
      * automatic donation to charity of the day
      * streaks, incentivize and gamify
-         * challenges (i.e how many days going without coffee to donate to that)
-         * matching campaigns (hosted either by yourself, organizations themselves, or companies)
+      * challenges (i.e how many days going without coffee to donate to that)
+      * matching campaigns (hosted either by yourself, organizations themselves, or companies)
 
 
 
@@ -45,7 +45,7 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
 
  * homepage
    * login/register button: login as a donor/charity
-       * optional: company
+    * optional: company
    * recommended charities to "get started"
  * Survey: which topic areas are you interested in? -> follow up with subcategories
  * Recommended/featured Charities w search bar at the top
@@ -75,9 +75,9 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
 
  * login/register page - w default charities for motivation
      * (not registered) takes user to survey page of interests
-         * survey for first time user
-         * recommended charities screen with local/national/other charities etc...
-         * possibly "match" donor to a charity based on interests
+      * survey for first time user
+      * recommended charities screen with local/national/other charities etc...
+      * possibly "match" donor to a charity based on interests
      * (already registered) takes user straight to home page
  * homepage screen 
      * your charity
