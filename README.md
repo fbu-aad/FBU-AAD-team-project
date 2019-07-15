@@ -1,6 +1,8 @@
 
 # README Template
 
+[POP Animation of App Flow] (https://marvelapp.com/77a8daj/screen/59150323)
+
 Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that link) will look like the following in your README:
 
 ## 1. User Stories (Required and Optional)
