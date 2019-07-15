@@ -39,7 +39,10 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
  * notifications to remind you to donate/save money for donation
  * user can message other charities and donators 
  * charities to post/reach out to users
- * daily challenge: i.e. can you go without a cup of coffe
+ * daily challenge: i.e. can you go without a cup of coffee
+ * impact number increases on map icon
+ * animate maps line from user to charity & shows pin drop
+ 
 
 ## 2. Screen Archetypes
 
