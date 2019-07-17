@@ -1,4 +1,4 @@
-package com.example.una;
+package com.example.una.fragments;
 
 import android.os.Bundle;
 
@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.una.R;
 
-public class ImpactFragment extends Fragment {
+public class MapsViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_impact, container, false);
+        return inflater.inflate(R.layout.fragment_map_view, container, false);
     }
 
     @Override
