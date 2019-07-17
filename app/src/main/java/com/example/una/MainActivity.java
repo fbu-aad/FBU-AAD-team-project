@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = impactFragment;
                         break;
                     default:
-                            fragment = homePageFragment;
+                        fragment = homePageFragment;
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flMainFragments, fragment).commit();
