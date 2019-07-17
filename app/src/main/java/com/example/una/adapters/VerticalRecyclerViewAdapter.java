@@ -18,10 +18,8 @@ import java.util.ArrayList;
 import static android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
 
 public class VerticalRecyclerViewAdapter extends RecyclerView.Adapter<VerticalRecyclerViewAdapter.VerticalRVViewHolder> {
-
     Context context;
     ArrayList<VerticalModel> arrayList;
-
     public VerticalRecyclerViewAdapter(Context context, ArrayList<VerticalModel> arrayList) {
         this.arrayList = arrayList;
         this.context = context;
@@ -39,11 +37,8 @@ public class VerticalRecyclerViewAdapter extends RecyclerView.Adapter<VerticalRe
         VerticalModel charity = arrayList.get(index);
         String charityName = charity.getTitle();
         ArrayList<HorizontalModel> currentItem = charity.getArrayList();
-
         HorizontalRecyclerViewAdapter horizontalRecyclerViewAdapter = new HorizontalRecyclerViewAdapter(context, currentItem);
-
         holder.rvCharitiesVertical.setLayoutManager(new LinearLayoutManager(context, HORIZONTAL, false));
-
         holder.rvCharitiesVertical.setAdapter(horizontalRecyclerViewAdapter);
     }
 

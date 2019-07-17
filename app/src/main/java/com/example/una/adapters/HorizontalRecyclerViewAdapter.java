@@ -25,14 +25,14 @@ public class HorizontalRecyclerViewAdapter extends RecyclerView.Adapter<Horizont
     }
     @NonNull
     @Override
-    public HorizontalRecyclerViewAdapter.HorizontalRVViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public HorizontalRecyclerViewAdapter.HorizontalRVViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.charity_item_horizontal, viewGroup, false);
         return new HorizontalRVViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HorizontalRecyclerViewAdapter.HorizontalRVViewHolder holder, int i) {
-        final HorizontalModel horizontalModel = arrayList.get(i);
+    public void onBindViewHolder(@NonNull HorizontalRecyclerViewAdapter.HorizontalRVViewHolder holder, int currentPosition) {
+        final HorizontalModel horizontalModel = arrayList.get(currentPosition);
         holder.tvCharityName.setText(horizontalModel.getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

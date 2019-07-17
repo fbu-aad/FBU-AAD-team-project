@@ -32,20 +32,13 @@ public class HomePageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         verticalRecyclerView = view.findViewById(R.id.rvCharitiesVertical);
-
         // makes verticalRecyclerView's height and width immutable no matter what is inserted or removed inside the recyclerView
         verticalRecyclerView.setHasFixedSize(true);
         verticalRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-
         arrayListVertical = new ArrayList<>();
-
         adapter = new VerticalRecyclerViewAdapter(getContext(), arrayListVertical);
-
         verticalRecyclerView.setAdapter(adapter);
-
         setData();
-
-
     }
 
     private void setData() {
