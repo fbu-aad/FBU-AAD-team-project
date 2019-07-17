@@ -6,5 +6,5 @@
     <string name="text_impact">Streaks</string>
 
     <string name="facebook_app_id">427225991200454</string>
-    <string name="fb_login_protocol_scheme">427225991200454</string>
+    <string name="fb_login_protocol_scheme">fb427225991200454</string>
 </resources>
