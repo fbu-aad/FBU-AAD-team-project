@@ -45,10 +45,6 @@ public class VerticalRecyclerViewAdapter extends RecyclerView.Adapter<VerticalRe
         holder.rvCharitiesVertical.setLayoutManager(new LinearLayoutManager(context, HORIZONTAL, false));
 
         holder.rvCharitiesVertical.setAdapter(horizontalRecyclerViewAdapter);
-
-
-
-
     }
 
     @Override
@@ -61,9 +57,8 @@ public class VerticalRecyclerViewAdapter extends RecyclerView.Adapter<VerticalRe
         TextView tvCharityFeatured;
         public VerticalRVViewHolder(@NonNull View itemView) {
             super(itemView);
-            rvCharitiesVertical.findViewById(R.id.rvCharitiesVertical);
-            tvCharityFeatured.findViewById(R.id.tvFeatured);
-
+            rvCharitiesVertical = itemView.findViewById(R.id.rvCharitiesVertical);
+            tvCharityFeatured = itemView.findViewById(R.id.tvFeatured);
         }
     }
 }

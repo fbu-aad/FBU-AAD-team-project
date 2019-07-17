@@ -1,6 +1,5 @@
 package com.example.una;
 
-
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -8,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.una.fragments.HomePageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         // TODO change 1st fragment to Denize's HomePageFragment
-        final Fragment homePageFragment = new QuickDonateFragment();
+        final Fragment homePageFragment = new HomePageFragment();
         final Fragment quickDonateFragment = new QuickDonateFragment();
         final Fragment mapsViewFragment = new MapsViewFragment();
         final Fragment impactFragment = new ImpactFragment();
