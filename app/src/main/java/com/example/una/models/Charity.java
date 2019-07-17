@@ -34,13 +34,16 @@ public class Charity {
         charity.isFeatured = false;
 
         // set charity location
-        charity.donationAddress = new Address(Locale.ENGLISH);
-        charity.donationAddress.setAddressLine(0, jsonObject.getString("streetAddress1"));
-        charity.donationAddress.setAddressLine(1, jsonObject.getString("streetAddress2"));
-        charity.donationAddress.setLocality(jsonObject.getString("city"));
-        charity.donationAddress.setAdminArea(jsonObject.getString("stateOrProvince"));
-        charity.donationAddress.setPostalCode(jsonObject.getString("postalCode"));
-        charity.donationAddress.setCountryName("country");
+        if (jsonObject.has("donationAddress")) {
+            JSONObject address = jsonObject.getJSONObject("donationAddress");
+            charity.donationAddress = new Address(Locale.ENGLISH);
+            charity.donationAddress.setAddressLine(0, address.getString("streetAddress1"));
+            charity.donationAddress.setAddressLine(1, address.getString("streetAddress2"));
+            charity.donationAddress.setLocality(address.getString("city"));
+            charity.donationAddress.setAdminArea(address.getString("stateOrProvince"));
+            charity.donationAddress.setPostalCode(address.getString("postalCode"));
+            charity.donationAddress.setCountryName(address.getString("country"));
+        }
 
         return charity;
     }
