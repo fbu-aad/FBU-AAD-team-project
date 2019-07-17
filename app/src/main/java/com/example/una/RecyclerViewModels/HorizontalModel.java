@@ -1,8 +1,8 @@
 package com.example.una.RecyclerViewModels;
 
 public class HorizontalModel {
-    String name,
-           description;
+    String name;
+    String description;
 
     public String getName() {
         return name;
