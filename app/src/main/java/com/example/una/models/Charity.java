@@ -29,8 +29,8 @@ public class Charity {
         charity.name = jsonObject.getString("charityName");
         charity.description = jsonObject.getString("tagLine");
         charity.mission = jsonObject.getString("mission");
-        charity.category = jsonObject.getString("categoryName");
-        charity.cause = jsonObject.getString("causeName");
+        charity.category = jsonObject.getJSONObject("category").getString("categoryName");
+        charity.cause = jsonObject.getJSONObject("cause").getString("causeName");
         charity.isFeatured = false;
 
         // set charity location
