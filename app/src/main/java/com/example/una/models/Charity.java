@@ -5,6 +5,8 @@ import android.location.Address;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 public class Charity {
 
     // attributes
@@ -29,8 +31,16 @@ public class Charity {
         charity.mission = jsonObject.getString("mission");
         charity.category = jsonObject.getString("categoryName");
         charity.cause = jsonObject.getString("causeName");
-        charity.donationAddress = (Address) jsonObject.get("donationAddress");
         charity.isFeatured = false;
+
+        // set charity location
+        charity.donationAddress = new Address(Locale.ENGLISH);
+        charity.donationAddress.setAddressLine(0, jsonObject.getString("streetAddress1"));
+        charity.donationAddress.setAddressLine(1, jsonObject.getString("streetAddress2"));
+        charity.donationAddress.setLocality(jsonObject.getString("city"));
+        charity.donationAddress.setAdminArea(jsonObject.getString("stateOrProvince"));
+        charity.donationAddress.setPostalCode(jsonObject.getString("postalCode"));
+        charity.donationAddress.setCountryName("country");
 
         return charity;
     }
