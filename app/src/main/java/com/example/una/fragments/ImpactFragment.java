@@ -1,4 +1,4 @@
-package com.example.una;
+package com.example.una.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,13 +12,14 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.facebook.login.Login;
+import com.example.una.LoginActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.example.una.R;
 
 
 public class ImpactFragment extends Fragment {
