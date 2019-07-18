@@ -12,6 +12,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.facebook.login.Login;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,8 +41,9 @@ public class ImpactFragment extends Fragment {
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Intent signOutIntent = new Intent(getContext(), MainActivity.class);
+                                Intent signOutIntent = new Intent(getContext(), LoginActivity.class);
                                 startActivity(signOutIntent);
+                                // getActivity().finish();
                             }
                         });
             }
