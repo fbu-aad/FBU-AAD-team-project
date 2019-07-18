@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/tvCharityName"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/small_textView_width"
+        android:layout_height="@dimen/extra_small_textView_height"
         android:layout_marginTop="@dimen/small_padding"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,8 +19,8 @@
 
     <TextView
         android:id="@+id/tvCharityDescription"
-        android:layout_width="@dimen/large_width"
-        android:layout_height="@dimen/extra_small_height"
+        android:layout_width="@dimen/large_textView_width"
+        android:layout_height="@dimen/extra_small_textView_height"
         android:layout_marginTop="@dimen/small_padding"
         android:layout_marginBottom="@dimen/small_padding"
         android:gravity="center"
@@ -33,9 +33,9 @@
 
     <ImageButton
         android:id="@+id/ibQuickDonate"
-        android:layout_width="@dimen/medium_width"
-        android:layout_height="@dimen/small_height"
-        android:layout_marginTop="@dimen/medium_width"
+        android:layout_width="@dimen/medium_button_width"
+        android:layout_height="@dimen/small_button_height"
+        android:layout_marginTop="@dimen/medium_button_width"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_height"
+        android:layout_marginTop="@dimen/small_textView_height"
         android:gravity="center"
         android:text="@string/text_donate_quickly"
         android:textSize="40sp"
