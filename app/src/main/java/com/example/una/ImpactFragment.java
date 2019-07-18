@@ -43,7 +43,7 @@ public class ImpactFragment extends Fragment {
                             public void onComplete(@NonNull Task<Void> task) {
                                 Intent signOutIntent = new Intent(getContext(), LoginActivity.class);
                                 startActivity(signOutIntent);
-                                // getActivity().finish();
+                                getActivity().finish();
                             }
                         });
             }

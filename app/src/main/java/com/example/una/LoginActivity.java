@@ -1,6 +1,5 @@
 package com.example.una;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,12 +20,11 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity {
 
     protected static final int RC_SIGN_IN = 123;
-
-    Context context;
-    private FirebaseAuth auth;
     private final String TAG = this.getClass().getSimpleName();
 
-    final List<AuthUI.IdpConfig> providers = Arrays.asList(
+    private FirebaseAuth auth;
+
+    final List<AuthUI.IdpConfig> PROVIDERS = Arrays.asList(
             new AuthUI.IdpConfig.EmailBuilder().build(),
             new AuthUI.IdpConfig.GoogleBuilder().build(),
             new AuthUI.IdpConfig.FacebookBuilder().build());
@@ -36,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        context = this;
 
         auth = FirebaseAuth.getInstance();
     }
@@ -47,17 +44,11 @@ public class LoginActivity extends AppCompatActivity {
             Log.i(TAG, user.getEmail() + " is already signed in -- updatingUI");
             startHomeActivity(user);
         } else {
-            // Choose authentication providers
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build(),
-                    new AuthUI.IdpConfig.GoogleBuilder().build(),
-                    new AuthUI.IdpConfig.FacebookBuilder().build());
-
             // Create and launch sign-in intent
             startActivityForResult(
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
-                            .setAvailableProviders(providers)
+                            .setAvailableProviders(PROVIDERS)
                             .setLogo(R.drawable.ic_cuppa_24dp)
                             .setTosAndPrivacyPolicyUrls(
                                     "https://una.co/terms.html",
