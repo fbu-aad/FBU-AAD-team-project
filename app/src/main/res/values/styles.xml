@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- START STYLE EG FOR FIREBASE UI ->
+    <style name="AuthenticationTheme" parent="FirebaseUI">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/someGreen</item>
+        <item name="colorPrimaryDark">@color/anotherGreen</item>
+        <item name="colorAccent">@color/purple</item>
+        <item name="colorControlNormal">@color/someGreen</item>
+        <item name="colorControlActivated">@color/anotherGreen</item>
+        <item name="colorControlHighlight">@color/purple</item>
+    </style>
+    <!- END STYLE EG -->
 </resources>
