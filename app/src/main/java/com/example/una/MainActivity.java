@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
-        // TODO change 1st fragment to Denize's HomePageFragment
         final Fragment homePageFragment = new HomePageFragment();
         final Fragment quickDonateFragment = new QuickDonateFragment();
         final Fragment mapsViewFragment = new MapsViewFragment();
