@@ -12,22 +12,23 @@ import androidx.fragment.app.Fragment;
 
 import com.example.una.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class QuickDonateFragment extends Fragment {
-    ImageButton ibQuickDonate;
-    TextView tvCharityName;
-    TextView tvCharityDescription;
+    @BindView(R.id.ibQuickDonate) ImageButton ibQuickDonate;
+    @BindView(R.id.tvCharityDescription) TextView tvCharityDescription;
+    @BindView(R.id.tvCharityName) TextView tvCharityName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_quick_donate, container, false);
+        View view = inflater.inflate(R.layout.fragment_quick_donate, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ibQuickDonate = view.findViewById(R.id.ibQuickDonate);
-        tvCharityName = view.findViewById(R.id.tvCharityName);
-        tvCharityDescription = view.findViewById(R.id.tvCharityDescription);
         ibQuickDonate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
