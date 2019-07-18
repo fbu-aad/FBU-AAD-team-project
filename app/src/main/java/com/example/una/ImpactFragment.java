@@ -17,21 +17,24 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class ImpactFragment extends Fragment {
 
-    Button signOutButton;
+    @BindView(R.id.signOutButton) Button signOutButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_impact, container, false);
+        View view = inflater.inflate(R.layout.fragment_impact, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        signOutButton = view.findViewById(R.id.signOutButton);
 
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override

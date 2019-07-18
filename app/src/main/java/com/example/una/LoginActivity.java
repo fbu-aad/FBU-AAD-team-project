@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent homeIntent = new Intent(this, MainActivity.class);
         homeIntent.putExtra("user", user);
         startActivity(homeIntent);
+        finish();
     }
 
     @Override
