@@ -11,9 +11,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.una.fragments.HomePageFragment;
+
 import com.example.una.fragments.ImpactFragment;
 import com.example.una.fragments.MapsViewFragment;
 import com.example.una.fragments.QuickDonateFragment;
+
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

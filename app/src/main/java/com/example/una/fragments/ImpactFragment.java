@@ -1,6 +1,5 @@
 package com.example.una.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,7 +19,6 @@ import com.google.android.gms.tasks.Task;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.example.una.R;
-
 
 public class ImpactFragment extends Fragment {
 
