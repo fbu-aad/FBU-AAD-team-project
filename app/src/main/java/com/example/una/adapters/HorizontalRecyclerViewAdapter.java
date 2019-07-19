@@ -56,7 +56,6 @@ public class HorizontalRecyclerViewAdapter extends RecyclerView.Adapter<Horizont
         public HorizontalRVViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCharityName = itemView.findViewById(R.id.tvCharityName);
-            ivCharityImage = itemView.findViewById(R.id.ivCharityImage);
 
         }
     }

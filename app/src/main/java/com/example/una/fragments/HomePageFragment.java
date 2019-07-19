@@ -1,6 +1,5 @@
 package com.example.una.fragments;
 
-import android.app.DownloadManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.una.CategoryAdapter;
 import com.example.una.R;
 import com.example.una.RecyclerViewModels.HomeFragmentSection;
 import com.example.una.RecyclerViewModels.HorizontalModel;
@@ -39,6 +37,7 @@ public class HomePageFragment extends Fragment {
     public RecyclerView verticalRecyclerView;
     public VerticalRecyclerViewAdapter adapter;
     ArrayList<HomeFragmentSection> arrayListVertical;
+
     protected ArrayList<Object> categories = new ArrayList<>();
     protected ArrayList<Object> featured = new ArrayList<>();
 
@@ -81,6 +80,7 @@ public class HomePageFragment extends Fragment {
 
         arrayListVertical.add(featuredModel);
 
+        /*
         // recommended charities
         HomeFragmentSection recommendedModel = new HomeFragmentSection();
         recommendedModel.setTitle(getString(R.string.text_home_recommended));
@@ -95,7 +95,7 @@ public class HomePageFragment extends Fragment {
         recommendedModel.setViewType(HomeFragmentSection.CHARITY_LIST_TYPE);
 
         arrayListVertical.add(recommendedModel);
-
+        */
         // categories
         HomeFragmentSection categoriesModel = new HomeFragmentSection();
         categoriesModel.setTitle(getString(R.string.text_home_explore));
@@ -127,7 +127,6 @@ public class HomePageFragment extends Fragment {
                     }
                     Log.i(TAG, String.format("Found %s featured charities", featured.size()));
                     adapter.notifyDataSetChanged();
-
                 } catch (JSONException e) {
                     logError("Failed to parse featured list", e);
                 }
