@@ -24,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         final Fragment homePageFragment = new HomePageFragment();
-        // TODO change DummyFragment name
-        final Fragment searchPageFragment = new DummyFragment();
         final Fragment quickDonateFragment = new QuickDonateFragment();
         final Fragment mapsViewFragment = new MapsViewFragment();
         final Fragment impactFragment = new ImpactFragment();
@@ -47,9 +45,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.action_impact:
                         fragment = impactFragment;
-                        break;
-                    case R.id.action_search:
-                        fragment = searchPageFragment;
                         break;
                     default:
                         fragment = homePageFragment;

@@ -26,11 +26,5 @@
         android:icon="@drawable/ic_streak_black_24dp"
         android:title="@string/text_impact"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_search"
-        android:enabled="true"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/text_search_view"
-        app:showAsAction="ifRoom" />
 
 </menu>
