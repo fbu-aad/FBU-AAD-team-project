@@ -18,9 +18,9 @@ import java.util.ArrayList;
 
 public class HorizontalRecyclerViewAdapter extends RecyclerView.Adapter<HorizontalRecyclerViewAdapter.HorizontalRVViewHolder> {
 
-    private final ArrayList<HorizontalModel> arrayList;
+    private final ArrayList<Object> arrayList;
     Context context;
-    public HorizontalRecyclerViewAdapter(Context context, ArrayList<HorizontalModel> arrayList) {
+    public HorizontalRecyclerViewAdapter(Context context, ArrayList<Object> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
     }
@@ -33,7 +33,7 @@ public class HorizontalRecyclerViewAdapter extends RecyclerView.Adapter<Horizont
 
     @Override
     public void onBindViewHolder(@NonNull HorizontalRecyclerViewAdapter.HorizontalRVViewHolder holder, int currentPosition) {
-        final HorizontalModel horizontalModel = arrayList.get(currentPosition);
+        final HorizontalModel horizontalModel = (HorizontalModel) arrayList.get(currentPosition);
         holder.tvCharityName.setText(horizontalModel.getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

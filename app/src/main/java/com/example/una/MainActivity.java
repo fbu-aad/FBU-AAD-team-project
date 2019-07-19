@@ -3,6 +3,7 @@ package com.example.una;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
-        // TODO change 1st fragment to Denize's HomePageFragment
         final Fragment homePageFragment = new HomePageFragment();
         final Fragment quickDonateFragment = new QuickDonateFragment();
         final Fragment mapsViewFragment = new MapsViewFragment();
