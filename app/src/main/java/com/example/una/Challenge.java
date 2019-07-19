@@ -13,15 +13,7 @@ public class Challenge {
         return challengeTitle;
     }
 
-    public void setChallengeTitle(String challengeTitle) {
-        this.challengeTitle = challengeTitle;
-    }
-
     public String getChallengeDescription() {
         return challengeDescription;
-    }
-
-    public void setChallengeDescription(String challengeDescription) {
-        this.challengeDescription = challengeDescription;
     }
 }

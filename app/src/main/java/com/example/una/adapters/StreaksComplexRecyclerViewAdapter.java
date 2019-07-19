@@ -40,26 +40,20 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        switch (viewType) {
-            case CHALLENGE:
-                View itemViewChallenge = inflater.inflate(R.layout.challenge_viewholder_layout, viewGroup, false);
-                viewHolder = new ChallengeViewHolder(itemViewChallenge);
-                break;
-            case IMAGE:
-                View itemViewStreaks = inflater.inflate(R.layout.streaks_viewholder_layout, viewGroup, false);
-                viewHolder = new StreaksViewHolder(itemViewStreaks);
-                break;
-            default:
-                View v = inflater.inflate(android.R.layout.simple_list_item_1, viewGroup, false);
-                viewHolder = new StreaksViewHolder(v);
-                break;
+        if (viewType == CHALLENGE) {
+            View itemViewChallenge = inflater.inflate(R.layout.challenge_item_layout, viewGroup, false);
+            viewHolder = new ChallengeViewHolder(itemViewChallenge);
+        }
+        else {
+            View itemViewStreaks = inflater.inflate(R.layout.user_current_streaks_layout, viewGroup, false);
+            viewHolder = new StreaksViewHolder(itemViewStreaks);
         }
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        if (position == 0) {
+        if (getItemViewType(position) == IMAGE) {
             StreaksViewHolder streaksViewHolder = (StreaksViewHolder) viewHolder;
             configureStreakViewHolder(streaksViewHolder);
         } else {

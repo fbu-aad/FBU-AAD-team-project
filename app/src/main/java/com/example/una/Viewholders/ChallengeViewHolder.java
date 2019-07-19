@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.una.R;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ChallengeViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvChallengeTitle) TextView tvChallengeTitle;
     @BindView(R.id.tvChallengeDescription) TextView tvChallengeDescription;
     public ChallengeViewHolder(@NonNull View itemView) {
         super(itemView);
-        tvChallengeTitle = itemView.findViewById(R.id.tvChallengeTitle);
-        tvChallengeDescription = itemView.findViewById(R.id.tvChallengeDescription);
+        ButterKnife.bind(this, itemView);
         itemView.setOnClickListener(new ChallengeClickListener());
     }
     public TextView getTvChallengeTitle() {

@@ -27,10 +27,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ImpactFragment extends Fragment {
+    private String curURL;
     @BindView(R.id.signOutButton) Button signOutButton;
     @BindView(R.id.rvChallenges) RecyclerView rvChallenges;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        curURL = getContext().getResources().getString(R.string.challenge_description_dummy_text);
         View view = inflater.inflate(R.layout.fragment_impact, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -63,18 +65,18 @@ public class ImpactFragment extends Fragment {
 
     // place challenges for user here
     private ArrayList<Object> getSampleArrayList() {
-        ArrayList<Object> items = new ArrayList<>();
-        items.add("image");
-        items.add(new Challenge("Challenge 1", "Valyria"));
-        items.add(new Challenge("Challenge 2", "Winterfell"));
-        items.add(new Challenge("Challenge 3", "Castle Black"));
-        items.add(new Challenge("Challenge 4", "King's Landing"));
-        items.add(new Challenge("Challenge 5", "King's Landing"));
-        items.add(new Challenge("Challenge 6", "King's Landing"));
-        items.add(new Challenge("Challenge 7", "King's Landing"));
-        items.add(new Challenge("Challenge 8", "King's Landing"));
-        items.add(new Challenge("Challenge 9", "King's Landing"));
-        return items;
+        ArrayList<Object> challenge = new ArrayList<>();
+        challenge.add("image");
+        challenge.add(new Challenge("1", curURL));
+        challenge.add(new Challenge("2", curURL));
+        challenge.add(new Challenge("3", curURL));
+        challenge.add(new Challenge("4", curURL));
+        challenge.add(new Challenge("5", curURL));
+        challenge.add(new Challenge("6", curURL));
+        challenge.add(new Challenge("7", curURL));
+        challenge.add(new Challenge("8", curURL));
+        challenge.add(new Challenge("9", curURL));
+        return challenge;
     }
 
     private void bindDataToAdapter() {

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/standard_padding"
         android:layout_marginLeft="@dimen/standard_padding"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/standard_padding"
         android:layout_marginEnd="@dimen/standard_padding"
         android:layout_marginRight="@dimen/standard_padding"
         android:layout_marginBottom="@dimen/standard_padding"
