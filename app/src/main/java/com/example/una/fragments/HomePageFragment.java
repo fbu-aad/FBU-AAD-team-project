@@ -35,7 +35,7 @@ public class HomePageFragment extends Fragment {
     public VerticalRecyclerViewAdapter adapter;
     public CategoryAdapter categoryAdapter;
     ArrayList<HomeFragmentSection> arrayListVertical;
-    protected ArrayList<Object> categories;
+    protected ArrayList<Object> categories = new ArrayList<>();
 
     // the base URL for the API
     public final static String API_BASE_URL = "https://api.data.charitynavigator.org/v2";
@@ -62,8 +62,6 @@ public class HomePageFragment extends Fragment {
         arrayListVertical = new ArrayList<>();
         adapter = new VerticalRecyclerViewAdapter(getContext(), arrayListVertical);
         verticalRecyclerView.setAdapter(adapter);
-        categories = new ArrayList<>();
-
         client = new AsyncHttpClient();
         setData();
     }
@@ -71,7 +69,7 @@ public class HomePageFragment extends Fragment {
     private void setData() {
         // featured charities
         HomeFragmentSection featuredModel = new HomeFragmentSection();
-        featuredModel.setTitle("Featured");
+        featuredModel.setTitle(getString(R.string.text_home_featured));
         ArrayList<Object> featured = new ArrayList<>();
         for (int j = 0; j < 5; j++) {
             HorizontalModel horizontalModel = new HorizontalModel();
@@ -86,7 +84,7 @@ public class HomePageFragment extends Fragment {
 
         // recommended charities
         HomeFragmentSection recommendedModel = new HomeFragmentSection();
-        recommendedModel.setTitle("Recommended for You");
+        recommendedModel.setTitle(getString(R.string.text_home_recommended));
         ArrayList<Object> recommended = new ArrayList<>();
         for (int j = 0; j < 5; j++) {
             HorizontalModel horizontalModel = new HorizontalModel();
@@ -101,7 +99,7 @@ public class HomePageFragment extends Fragment {
 
         // categories
         HomeFragmentSection categoriesModel = new HomeFragmentSection();
-        categoriesModel.setTitle("Explore");
+        categoriesModel.setTitle(getString(R.string.text_home_explore));
         getCategories();
         categoriesModel.setArrayList(categories);
         categoriesModel.setViewType(HomeFragmentSection.CATEGORIES_LIST_TYPE);
@@ -139,7 +137,6 @@ public class HomePageFragment extends Fragment {
                 logError("Failed to get data from categories endpoint", throwable);
             }
         });
-//        return categories;
     }
 
     // handle errors, log and alert user
