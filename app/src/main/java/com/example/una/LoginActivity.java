@@ -22,8 +22,6 @@ public class LoginActivity extends AppCompatActivity {
     protected static final int RC_SIGN_IN = 123;
     private final String TAG = this.getClass().getSimpleName();
 
-    private FirebaseAuth auth;
-
     final List<AuthUI.IdpConfig> PROVIDERS = Arrays.asList(
             new AuthUI.IdpConfig.EmailBuilder().build(),
             new AuthUI.IdpConfig.GoogleBuilder().build(),
@@ -34,8 +32,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        auth = FirebaseAuth.getInstance();
     }
 
     // start the login process
@@ -95,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         Log.i(TAG, "updating UI from onStart");
-        FirebaseUser currentUser = auth.getCurrentUser();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         updateUI(currentUser);
     }
 }
