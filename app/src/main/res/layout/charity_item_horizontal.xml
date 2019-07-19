@@ -11,19 +11,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/standard_padding"
         android:layout_marginLeft="@dimen/standard_padding"
-        android:layout_marginTop="@dimen/standard_padding"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="@dimen/standard_padding"
         android:layout_marginRight="@dimen/standard_padding"
         android:layout_marginBottom="@dimen/standard_padding"
         android:ellipsize="end"
-        android:fontFamily="@font/heebo_medium"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars[1]" />
 
     <ImageView
         android:id="@+id/imageView"
