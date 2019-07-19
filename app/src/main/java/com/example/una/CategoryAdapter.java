@@ -18,12 +18,12 @@ import java.util.ArrayList;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
     // list of categories
-    ArrayList<Category> categories;
+    ArrayList<Object> categories;
     // context for rendering
     Context context;
 
     // initialize with list
-    public CategoryAdapter(ArrayList<Category> categories) { this.categories = categories; }
+    public CategoryAdapter(ArrayList<Object> categories) { this.categories = categories; }
 
     @NonNull
     @Override
@@ -41,7 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         // get the category data at the specified position
-        Category category = categories.get(i);
+        Category category = (Category) categories.get(i);
         // populate the view with the category data
         viewHolder.tvCategoryName.setText(category.categoryName);
 

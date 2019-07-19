@@ -20,6 +20,8 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -37,7 +39,7 @@ public class DummyFragment extends Fragment {
 
     protected RecyclerView rvCategories;
     protected CategoryAdapter adapter;
-    protected ArrayList<Category> categories;
+    protected ArrayList<Object> categories;
     AsyncHttpClient client;
 
 
@@ -83,25 +85,23 @@ public class DummyFragment extends Fragment {
 
                     }
                 } catch (JSONException e) {
-                    logError("Failed to parse categories", e, true);
+                    logError("Failed to parse categories", e);
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                logError("Failed to get data from categories endpoint", throwable, true);
+                logError("Failed to get data from categories endpoint", throwable);
             }
         });
     }
 
     // handle errors, log and alert user
-    private void logError(String message, Throwable error, boolean alertUser) {
+    private void logError(String message, Throwable error) {
         // always log the error
         Log.e(TAG, message, error);
         // alert the user to avoid silent errors
-        if (alertUser) {
-            // show a long toast with the error message
-            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
-        }
+        // show a long toast with the error message
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 }
