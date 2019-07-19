@@ -12,4 +12,6 @@
     <string name="text_home_recommended">Recommended for You</string>
     <string name="text_home_explore">Explore</string>
 
+    <string name="featured_list_id">15</string>
+
 </resources>
