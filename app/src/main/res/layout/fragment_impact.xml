@@ -1,39 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChallenges"
-        android:layout_width="413dp"
-        android:layout_height="736dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="@dimen/impact_fragment_recycler_view_width"
+        android:layout_height="@dimen/impact_fragment_recycler_view_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-<<<<<<< HEAD
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/signOutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="162dp"
-        android:layout_marginLeft="162dp"
-        android:layout_marginTop="268dp"
-        android:layout_marginEnd="162dp"
-        android:layout_marginRight="162dp"
-        android:layout_marginBottom="40dp"
         android:text="Sign Out"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-=======
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"></androidx.recyclerview.widget.RecyclerView>
->>>>>>> Added streaks fragment recyclerView
+        app:layout_constraintTop_toBottomOf="@id/rvChallenges"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

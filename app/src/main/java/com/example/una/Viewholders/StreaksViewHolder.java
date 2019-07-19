@@ -16,12 +16,7 @@ public class StreaksViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         ivStreak = itemView.findViewById(R.id.ivStreak);
     }
-
     public ImageView getIvCharityImage() {
         return ivStreak;
-    }
-
-    public void setImageView(ImageView ivStreak) {
-        this.ivStreak = ivStreak;
     }
 }

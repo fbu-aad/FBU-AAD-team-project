@@ -2,6 +2,7 @@ package com.example.una.Viewholders;
 
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,21 +18,18 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         tvChallengeTitle = itemView.findViewById(R.id.tvChallengeTitle);
         tvChallengeDescription = itemView.findViewById(R.id.tvChallengeDescription);
+        itemView.setOnClickListener(new ChallengeClickListener());
     }
-
     public TextView getTvChallengeTitle() {
         return tvChallengeTitle;
     }
-
-    public void setTvChallengeTitle(TextView tvChallengeTitle) {
-        this.tvChallengeTitle = tvChallengeTitle;
-    }
-
     public TextView getTvChallengeDescription() {
         return tvChallengeDescription;
     }
-
-    public void setTvChallengeDescription(TextView tvChallengeDescription) {
-        this.tvChallengeDescription = tvChallengeDescription;
+    static class ChallengeClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(v.getContext(), "I am working", Toast.LENGTH_LONG).show();
+        }
     }
 }
