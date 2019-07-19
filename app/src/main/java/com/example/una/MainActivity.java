@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.una.fragments.HomePageFragment;
+
 import com.example.una.fragments.ImpactFragment;
 import com.example.una.fragments.MapsViewFragment;
 import com.example.una.fragments.QuickDonateFragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,4 +58,5 @@ public class MainActivity extends AppCompatActivity {
         });
         bottomNavigationView.setSelectedItemId(R.id.action_home_page);
     }
+
 }

@@ -4,9 +4,12 @@
     <string name="text_quick_donate">Frequent</string>
     <string name="text_maps_view">Maps</string>
     <string name="text_impact">Streaks</string>
+
     <string name="text_donate_quickly">Donate Quickly!</string>
+
     <string name="text_search_view">Search</string>
     <string name="text_home_featured">Featured</string>
     <string name="text_home_recommended">Recommended for You</string>
     <string name="text_home_explore">Explore</string>
+
 </resources>
