@@ -27,12 +27,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ImpactFragment extends Fragment {
-    private String curURL;
+    private String challengeDescription;
     @BindView(R.id.signOutButton) Button signOutButton;
     @BindView(R.id.rvChallenges) RecyclerView rvChallenges;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        curURL = getContext().getResources().getString(R.string.challenge_description_dummy_text);
+        challengeDescription = getContext().getResources().getString(R.string.challenge_description_dummy_text);
         View view = inflater.inflate(R.layout.fragment_impact, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -67,15 +67,15 @@ public class ImpactFragment extends Fragment {
     private ArrayList<Object> getSampleArrayList() {
         ArrayList<Object> challenge = new ArrayList<>();
         challenge.add("image");
-        challenge.add(new Challenge("1", curURL));
-        challenge.add(new Challenge("2", curURL));
-        challenge.add(new Challenge("3", curURL));
-        challenge.add(new Challenge("4", curURL));
-        challenge.add(new Challenge("5", curURL));
-        challenge.add(new Challenge("6", curURL));
-        challenge.add(new Challenge("7", curURL));
-        challenge.add(new Challenge("8", curURL));
-        challenge.add(new Challenge("9", curURL));
+        challenge.add(new Challenge("1", challengeDescription));
+        challenge.add(new Challenge("2", challengeDescription));
+        challenge.add(new Challenge("3", challengeDescription));
+        challenge.add(new Challenge("4", challengeDescription));
+        challenge.add(new Challenge("5", challengeDescription));
+        challenge.add(new Challenge("6", challengeDescription));
+        challenge.add(new Challenge("7", challengeDescription));
+        challenge.add(new Challenge("8", challengeDescription));
+        challenge.add(new Challenge("9", challengeDescription));
         return challenge;
     }
 
