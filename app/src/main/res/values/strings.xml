@@ -11,6 +11,7 @@
     <string name="text_home_featured">Featured</string>
     <string name="text_home_recommended">Recommended for You</string>
     <string name="text_home_explore">Explore</string>
+    <string name="challenge_description_dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In molestie, tellus sollicitudin eleifend mollis, sapien mi gravida arcu, nec dapibus.</string>
 
     <string name="featured_list_id">15</string>
 
