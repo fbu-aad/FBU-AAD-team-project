@@ -21,43 +21,67 @@ public class Charity {
     // TODO - add donorList, photoUrl, verified
 
     // deserialize the JSON
-    public static Charity fromJSON(JSONObject jsonObject) throws JSONException {
-        Charity charity = new Charity();
-
+    public Charity(JSONObject jsonObject) throws JSONException {
         // extract the values from JSON
-        charity.ein = jsonObject.getString("ein");
-        charity.name = jsonObject.getString("charityName");
-
+        ein = jsonObject.getString("ein");
+        name = jsonObject.getString("charityName");
+        ein = jsonObject.getString("ein");
+        name = jsonObject.getString("charityName");
         if (jsonObject.has("tagLine")) {
-            charity.description = jsonObject.getString("tagLine");
+            description = jsonObject.getString("tagLine");
         }
-
         if (jsonObject.has("mission")) {
-            charity.mission = jsonObject.getString("mission");
+            mission = jsonObject.getString("mission");
         }
-
         if (jsonObject.has("category")) {
-            charity.category = jsonObject.getJSONObject("category").getString("categoryName");
+            category = jsonObject.getJSONObject("category").getString("categoryName");
         }
-
         if (jsonObject.has("cause")) {
-            charity.cause = jsonObject.getJSONObject("cause").getString("causeName");
+            cause = jsonObject.getJSONObject("cause").getString("causeName");
         }
-
-        charity.isFeatured = false;
+        isFeatured = false;
 
         // set charity location
         if (jsonObject.has("donationAddress")) {
             JSONObject address = jsonObject.getJSONObject("donationAddress");
-            charity.donationAddress = new Address(Locale.ENGLISH);
-            charity.donationAddress.setAddressLine(0, address.getString("streetAddress1"));
-            charity.donationAddress.setAddressLine(1, address.getString("streetAddress2"));
-            charity.donationAddress.setLocality(address.getString("city"));
-            charity.donationAddress.setAdminArea(address.getString("stateOrProvince"));
-            charity.donationAddress.setPostalCode(address.getString("postalCode"));
-            charity.donationAddress.setCountryName(address.getString("country"));
+            donationAddress = new Address(Locale.ENGLISH);
+            donationAddress.setAddressLine(0, address.getString("streetAddress1"));donationAddress.setAddressLine(1, address.getString("streetAddress2"));
+            donationAddress.setLocality(address.getString("city"));
+            donationAddress.setAdminArea(address.getString("stateOrProvince"));
+            donationAddress.setPostalCode(address.getString("postalCode"));
+            donationAddress.setCountryName(address.getString("country"));
         }
+    }
 
-        return charity;
+    public String getEin() {
+        return ein;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getMission() {
+        return mission;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getCause() {
+        return cause;
+    }
+
+    public Address getDonationAddress() {
+        return donationAddress;
+    }
+
+    public boolean isFeatured() {
+        return isFeatured;
     }
 }

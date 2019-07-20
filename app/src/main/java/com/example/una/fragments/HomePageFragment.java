@@ -1,24 +1,30 @@
 package com.example.una.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.una.CharityNavigatorClient;
+import com.example.una.CharitySearchListActivity;
 import com.example.una.R;
 import com.example.una.RecyclerViewModels.HomeFragmentSection;
 import com.example.una.adapters.VerticalRecyclerViewAdapter;
 import com.example.una.models.Category;
 import com.example.una.models.Charity;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -30,8 +36,6 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-import static com.example.una.models.Charity.fromJSON;
-
 public class HomePageFragment extends Fragment {
     public RecyclerView verticalRecyclerView;
     public VerticalRecyclerViewAdapter adapter;
@@ -39,15 +43,8 @@ public class HomePageFragment extends Fragment {
 
     protected ArrayList<Object> categories = new ArrayList<>();
     protected ArrayList<Object> featured = new ArrayList<>();
-
-    // the base URL for the API
-    public final static String API_BASE_URL = "https://api.data.charitynavigator.org/v2";
-    // the parameter name for the API key
-    public final static String API_KEY_PARAM = "app_key";
-    // the parameter name for the API application ID
-    public final static String API_ID_PARAM = "app_id";
     public final static String TAG = "HomePageFragment";
-    AsyncHttpClient client;
+    CharityNavigatorClient client;
 
     @Nullable
     @Override
@@ -65,8 +62,50 @@ public class HomePageFragment extends Fragment {
         arrayListVertical = new ArrayList<>();
         adapter = new VerticalRecyclerViewAdapter(getContext(), arrayListVertical);
         verticalRecyclerView.setAdapter(adapter);
-        client = new AsyncHttpClient();
+        client = new CharityNavigatorClient(getContext());
+        // allows addition of items to the action bar
+        setHasOptionsMenu(true);
         setData();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // inflate the menu; this adds items to the action bar
+        inflater.inflate(R.menu.menu_charity_search, menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent searchListActivity = new Intent(getActivity(), CharitySearchListActivity.class);
+                searchListActivity.putExtra("query", query);
+                startActivity(searchListActivity);
+
+                // reset SearchView
+                searchView.clearFocus();
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                searchItem.collapseActionView();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                // handle this selection
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setData() {
@@ -87,16 +126,11 @@ public class HomePageFragment extends Fragment {
         categoriesModel.setViewType(HomeFragmentSection.CATEGORIES_LIST_TYPE);
 
         arrayListVertical.add(categoriesModel);
-
-        adapter.notifyDataSetChanged();
     }
 
     private void getFeatured() {
-        // create the URL
-        String url = API_BASE_URL + "/Lists/" + getString(R.string.featured_list_id);
-        RequestParams params = buildParams();
-
-        client.get(url, params, new JsonHttpResponseHandler() {
+        RequestParams params = new RequestParams();
+        client.getFeatured(params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
@@ -105,7 +139,7 @@ public class HomePageFragment extends Fragment {
                     JSONArray organizations = groupsObj.getJSONArray("organizations");
                     for (int i = 0; i < organizations.length(); i++) {
                         JSONObject rankedCharity = organizations.getJSONObject(i);
-                        Charity charity = fromJSON(rankedCharity.getJSONObject("organization"));
+                        Charity charity = new Charity(rankedCharity.getJSONObject("organization"));
                         featured.add(charity);
                     }
                     Log.i(TAG, String.format("Found %s featured charities", featured.size()));
@@ -136,12 +170,9 @@ public class HomePageFragment extends Fragment {
 
 
     private void getCategories() {
-        // create the url
-        String url = API_BASE_URL + "/Categories";
-
-        RequestParams params = buildParams();
-
-        client.get(url, params, new JsonHttpResponseHandler() {
+        categories = new ArrayList<>();
+        RequestParams params = new RequestParams();
+        client.getCategories(params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 try {
@@ -162,14 +193,6 @@ public class HomePageFragment extends Fragment {
             }
         });
     }
-
-    private RequestParams buildParams() {
-        RequestParams params = new RequestParams();
-        params.put(API_KEY_PARAM, getString(R.string.cn_api_key));
-        params.put(API_ID_PARAM, getString(R.string.cn_app_id));
-        return params;
-    }
-
 
     // handle errors, log and alert user
     private void logError(String message, Throwable error) {
