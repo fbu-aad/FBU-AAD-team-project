@@ -27,10 +27,23 @@ public class Charity {
         // extract the values from JSON
         charity.ein = jsonObject.getString("ein");
         charity.name = jsonObject.getString("charityName");
-        charity.description = jsonObject.getString("tagLine");
-        charity.mission = jsonObject.getString("mission");
-        charity.category = jsonObject.getJSONObject("category").getString("categoryName");
-        charity.cause = jsonObject.getJSONObject("cause").getString("causeName");
+
+        if (jsonObject.has("tagLine")) {
+            charity.description = jsonObject.getString("tagLine");
+        }
+
+        if (jsonObject.has("mission")) {
+            charity.mission = jsonObject.getString("mission");
+        }
+
+        if (jsonObject.has("category")) {
+            charity.category = jsonObject.getJSONObject("category").getString("categoryName");
+        }
+
+        if (jsonObject.has("cause")) {
+            charity.cause = jsonObject.getJSONObject("cause").getString("causeName");
+        }
+
         charity.isFeatured = false;
 
         // set charity location

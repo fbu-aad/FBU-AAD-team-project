@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.una.CategoryAdapter;
 import com.example.una.R;
 import com.example.una.RecyclerViewModels.HomeFragmentSection;
 
@@ -40,8 +39,9 @@ public class VerticalRecyclerViewAdapter extends RecyclerView.Adapter<VerticalRe
         holder.sectionTitle.setText(section.getTitle());
         ArrayList<Object> currentItem = section.getArrayList();
         RecyclerView.Adapter recyclerViewAdapter = null;
+
         if (holder.getItemViewType() == HomeFragmentSection.CHARITY_LIST_TYPE) {
-            recyclerViewAdapter = new HorizontalRecyclerViewAdapter(context, currentItem);
+            recyclerViewAdapter = new CharityAdapter(currentItem);
         } else if (holder.getItemViewType() == HomeFragmentSection.CATEGORIES_LIST_TYPE) {
             recyclerViewAdapter = new CategoryAdapter(currentItem);
         }
