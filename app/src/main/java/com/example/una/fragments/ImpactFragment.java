@@ -23,11 +23,12 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ImpactFragment extends Fragment {
-    private String challengeDescription;
+    @BindString(R.string.challenge_description_dummy_text) String challengeDescription;
     @BindView(R.id.signOutButton) Button signOutButton;
     @BindView(R.id.rvChallenges) RecyclerView rvChallenges;
     @Override
@@ -56,7 +57,6 @@ public class ImpactFragment extends Fragment {
                             }
                         });
             }
-
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvChallenges.setLayoutManager(layoutManager);
