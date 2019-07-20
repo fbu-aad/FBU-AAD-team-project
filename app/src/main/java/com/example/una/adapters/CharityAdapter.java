@@ -1,4 +1,4 @@
-package com.example.una;
+package com.example.una.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.una.R;
 import com.example.una.models.Charity;
 
 import java.util.ArrayList;

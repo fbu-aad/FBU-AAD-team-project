@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.una.CategoryAdapter;
-import com.example.una.CharityAdapter;
 import com.example.una.R;
 import com.example.una.RecyclerViewModels.HomeFragmentSection;
 
