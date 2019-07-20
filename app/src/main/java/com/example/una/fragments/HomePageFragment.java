@@ -43,13 +43,6 @@ public class HomePageFragment extends Fragment {
 
     protected ArrayList<Object> categories = new ArrayList<>();
     protected ArrayList<Object> featured = new ArrayList<>();
-
-    // the base URL for the API
-    public final static String API_BASE_URL = "https://api.data.charitynavigator.org/v2";
-    // the parameter name for the API key
-    public final static String API_KEY_PARAM = "app_key";
-    // the parameter name for the API application ID
-    public final static String API_ID_PARAM = "app_id";
     public final static String TAG = "HomePageFragment";
     CharityNavigatorClient client;
 
