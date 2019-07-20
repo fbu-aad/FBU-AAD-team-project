@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.una.R;
 import com.example.una.RecyclerViewModels.HomeFragmentSection;
-import com.example.una.RecyclerViewModels.HorizontalModel;
 import com.example.una.adapters.VerticalRecyclerViewAdapter;
 import com.example.una.models.Category;
 import com.example.una.models.Charity;
@@ -80,22 +79,6 @@ public class HomePageFragment extends Fragment {
 
         arrayListVertical.add(featuredModel);
 
-        /*
-        // recommended charities
-        HomeFragmentSection recommendedModel = new HomeFragmentSection();
-        recommendedModel.setTitle(getString(R.string.text_home_recommended));
-        ArrayList<Object> recommended = new ArrayList<>();
-        for (int j = 0; j < 5; j++) {
-            HorizontalModel horizontalModel = new HorizontalModel();
-            horizontalModel.setDescription("Description" + j);
-            horizontalModel.setName("Name: " + j);
-            recommended.add(horizontalModel);
-        }
-        recommendedModel.setArrayList(recommended);
-        recommendedModel.setViewType(HomeFragmentSection.CHARITY_LIST_TYPE);
-
-        arrayListVertical.add(recommendedModel);
-        */
         // categories
         HomeFragmentSection categoriesModel = new HomeFragmentSection();
         categoriesModel.setTitle(getString(R.string.text_home_explore));

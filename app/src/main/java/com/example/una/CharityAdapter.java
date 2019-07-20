@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.una.RecyclerViewModels.HorizontalModel;
 import com.example.una.models.Charity;
 
 import java.util.ArrayList;
