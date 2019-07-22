@@ -24,7 +24,8 @@ public class CharitySearchListActivity extends AppCompatActivity {
     private RecyclerView rvCharities;
     private CharitySearchAdapter charitySearchAdapter;
     private CharityNavigatorClient client;
-    private ArrayList<Charity> charities = new ArrayList<Charity>();;
+    private ArrayList<Charity> charities = new ArrayList<Charity>();
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     // the parameter name for the page size
     public final static String API_PAGE_SIZE_PARAM = "pageSize";
@@ -42,17 +43,32 @@ public class CharitySearchListActivity extends AppCompatActivity {
 
         rvCharities = (RecyclerView) findViewById(R.id.rvCharities);
         rvCharities.setAdapter(charitySearchAdapter);
-        rvCharities.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvCharities.setLayoutManager(linearLayoutManager);
         rvCharities.addItemDecoration(new DividerItemDecoration(rvCharities.getContext(), DividerItemDecoration.VERTICAL));
         String query = getIntent().getStringExtra("query");
-        fetchCharities(query);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // triggered only when new data needs to be appended to the list
+                fetchCharities(query, page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvCharities.addOnScrollListener(scrollListener);
+
+        fetchCharities(query, 1);
         setTitle(query);
     }
 
-    private void fetchCharities(String query) {
+    private void fetchCharities(String query, int page) {
         RequestParams params = new RequestParams();
         params.put(API_PAGE_SIZE_PARAM, 10);
         params.put(API_SEARCH_PARAM, query);
+        if (page != 1) {
+            params.put("pageNum", page);
+        }
         // TODO stretch - add search filter and more params
         client.getOrganizations(params, new JsonHttpResponseHandler() {
             @Override
