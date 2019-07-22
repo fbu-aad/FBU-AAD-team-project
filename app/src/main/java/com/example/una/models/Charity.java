@@ -2,6 +2,8 @@ package com.example.una.models;
 
 import android.location.Address;
 
+import androidx.annotation.Nullable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,4 +62,5 @@ public class Charity {
 
         return charity;
     }
+
 }

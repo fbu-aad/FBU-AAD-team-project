@@ -103,10 +103,18 @@ public class HomePageFragment extends Fragment {
                     JSONArray groupsArr = response.getJSONArray("groups");
                     JSONObject groupsObj = groupsArr.getJSONObject(0);
                     JSONArray organizations = groupsObj.getJSONArray("organizations");
+
+                    String prevName = "";
                     for (int i = 0; i < organizations.length(); i++) {
                         JSONObject rankedCharity = organizations.getJSONObject(i);
                         Charity charity = fromJSON(rankedCharity.getJSONObject("organization"));
-                        featured.add(charity);
+
+                        // make sure there are no duplicates in the data
+                        String newName = charity.name;
+                        if (!prevName.equals(newName)) {
+                            featured.add(charity);
+                        }
+                        prevName = newName;
                     }
                     Log.i(TAG, String.format("Found %s featured charities", featured.size()));
                     adapter.notifyDataSetChanged();
