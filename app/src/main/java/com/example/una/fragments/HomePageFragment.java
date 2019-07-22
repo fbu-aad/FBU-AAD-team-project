@@ -74,6 +74,8 @@ public class HomePageFragment extends Fragment {
         inflater.inflate(R.menu.menu_charity_search, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
+        // make the search bar cover the title
+        searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -129,6 +131,7 @@ public class HomePageFragment extends Fragment {
     }
 
     private void getFeatured() {
+        featured = new ArrayList<>();
         RequestParams params = new RequestParams();
         client.getFeatured(params, new JsonHttpResponseHandler() {
             @Override
