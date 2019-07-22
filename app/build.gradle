@@ -69,7 +69,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.buglife.sdk:buglife-android:1.5.1'
 
     // Buglife dependencies
     implementation 'com.buglife.sdk:buglife-android:1.5.1'
