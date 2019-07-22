@@ -13,6 +13,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -69,6 +70,8 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
+    // Buglife dependencies
+    implementation 'com.buglife.sdk:buglife-android:1.5.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
