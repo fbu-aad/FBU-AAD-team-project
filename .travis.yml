@@ -2,7 +2,7 @@ language: android
 dist: trusty
 android:
   before_script:
-    - echo $secrets_values
+    - echo $google_services_value > /home/travis/build/fbu-aad/FBU-AAD-team-project/app/google-services.json
   components:
     # Uncomment the lines below if you want to
     # use the latest revision of Android SDK Tools
