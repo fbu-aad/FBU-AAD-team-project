@@ -80,10 +80,6 @@ public class CharitySearchListActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-//                Intent searchListActivity = new Intent(CharitySearchListActivity.this, CharitySearchListActivity.class);
-//                searchListActivity.putExtra("query", query);
-//                startActivity(searchListActivity);
-
                 sQuery = query;
                 charities.clear();
                 charitySearchAdapter.notifyDataSetChanged();
