@@ -12,14 +12,14 @@ import java.util.Locale;
 public class Charity {
 
     // attributes
-    public String ein; // federal Employer Identification Number
-    public String name;
-    public String description; // tag line describing the charity
-    public String mission; // organization's mission statement
-    public String category;
-    public String cause;
-    public Address donationAddress;
-    public boolean isFeatured;
+    private String ein; // federal Employer Identification Number
+    private String name;
+    private String description; // tag line describing the charity
+    private String mission; // organization's mission statement
+    private String category;
+    private String cause;
+    private Address donationAddress;
+    private boolean isFeatured;
     // TODO - add donorList, photoUrl, verified
 
     // deserialize the JSON

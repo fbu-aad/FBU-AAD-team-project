@@ -141,10 +141,10 @@ public class HomePageFragment extends Fragment {
                     String prevName = "";
                     for (int i = 0; i < organizations.length(); i++) {
                         JSONObject rankedCharity = organizations.getJSONObject(i);
-                        Charity charity = fromJSON(rankedCharity.getJSONObject("organization"));
+                        Charity charity = new Charity(rankedCharity.getJSONObject("organization"));
 
                         // make sure there are no duplicates in the data
-                        String newName = charity.name;
+                        String newName = charity.getName();
                         if (!prevName.equals(newName)) {
                             featured.add(charity);
                         }

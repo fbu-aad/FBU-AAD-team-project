@@ -20,16 +20,15 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
         tools:srcCompat="@tools:sample/avatars[1]" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="99dp"
-        android:layout_height="76dp"
+        android:layout_width="118dp"
+        android:layout_height="57dp"
         android:layout_marginStart="@dimen/standard_padding"
         android:layout_marginLeft="@dimen/standard_padding"
         android:layout_marginTop="@dimen/standard_padding"
@@ -37,6 +36,7 @@
         android:layout_marginRight="@dimen/standard_padding"
         app:layout_constraintBottom_toTopOf="@+id/tvCharityName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:color/holo_orange_light" />
