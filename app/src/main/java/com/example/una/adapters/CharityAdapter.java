@@ -38,7 +38,7 @@ public class CharityAdapter extends RecyclerView.Adapter<CharityAdapter.ViewHold
     public void onBindViewHolder(@NonNull CharityAdapter.ViewHolder viewHolder, int i) {
         // get the charity data at the specified position
         Charity charity = (Charity) charities.get(i);
-        viewHolder.tvCharityName.setText(charity.name);
+        viewHolder.tvCharityName.setText(charity.getName());
     }
 
     @Override
