@@ -1,4 +1,4 @@
-package com.example.una;
+package com.example.una.ScrollListener;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;

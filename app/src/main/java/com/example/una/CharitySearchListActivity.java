@@ -6,13 +6,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.una.ScrollListener.EndlessRecyclerViewScrollListener;
 import com.example.una.models.Charity;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -31,9 +30,12 @@ public class CharitySearchListActivity extends AppCompatActivity {
     private CharityNavigatorClient client;
     private ArrayList<Charity> charities = new ArrayList<Charity>();
     private EndlessRecyclerViewScrollListener scrollListener;
+    private String sQuery;
 
     // the parameter name for the page size
     public final static String API_PAGE_SIZE_PARAM = "pageSize";
+    // the parameter name for the page number
+    public final static String API_PAGE_NUM_PARAM = "pageNum";
     // the parameter name for the search query
     public final static String API_SEARCH_PARAM = "search";
     public final static String TAG = "CharitySearchList";
@@ -51,20 +53,20 @@ public class CharitySearchListActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvCharities.setLayoutManager(linearLayoutManager);
         rvCharities.addItemDecoration(new DividerItemDecoration(rvCharities.getContext(), DividerItemDecoration.VERTICAL));
-        String query = getIntent().getStringExtra("query");
+        sQuery = getIntent().getStringExtra("query");
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // triggered only when new data needs to be appended to the list
-                fetchCharities(query, page);
+                fetchCharities(sQuery, page);
             }
         };
         // Adds the scroll listener to RecyclerView
         rvCharities.addOnScrollListener(scrollListener);
 
-        fetchCharities(query, 1);
-        setTitle(query);
+        fetchCharities(sQuery, 1);
+        setTitle(sQuery);
     }
 
     @Override
@@ -78,9 +80,16 @@ public class CharitySearchListActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Intent searchListActivity = new Intent(CharitySearchListActivity.this, CharitySearchListActivity.class);
-                searchListActivity.putExtra("query", query);
-                startActivity(searchListActivity);
+//                Intent searchListActivity = new Intent(CharitySearchListActivity.this, CharitySearchListActivity.class);
+//                searchListActivity.putExtra("query", query);
+//                startActivity(searchListActivity);
+
+                sQuery = query;
+                charities.clear();
+                charitySearchAdapter.notifyDataSetChanged();
+                fetchCharities(sQuery, 1);
+                setTitle(sQuery);
+                scrollListener.resetState();
 
                 // reset SearchView
                 searchView.clearFocus();
@@ -113,9 +122,9 @@ public class CharitySearchListActivity extends AppCompatActivity {
     private void fetchCharities(String query, int page) {
         RequestParams params = new RequestParams();
         params.put(API_PAGE_SIZE_PARAM, 10);
-        params.put(API_SEARCH_PARAM, query);
+        params.put(API_SEARCH_PARAM, sQuery);
         if (page != 1) {
-            params.put("pageNum", page);
+            params.put(API_PAGE_NUM_PARAM, page);
         }
         // TODO stretch - add search filter and more params
         client.getOrganizations(params, new JsonHttpResponseHandler() {
