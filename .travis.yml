@@ -28,4 +28,4 @@ before_script:
   - echo $secrets_value > /home/travis/build/fbu-aad/FBU-AAD-team-project/app/src/main/res/values/secrets.xml
   - echo "updated json and xml file"
 
-script: ./gradlew build connectedCheck
+script: ./gradlew buildDebug
