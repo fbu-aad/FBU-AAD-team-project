@@ -51,7 +51,7 @@ public class CharityAdapter extends RecyclerView.Adapter<CharityAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvCharityName = (TextView) itemView.findViewById(R.id.tvCharityName);
+            tvCharityName = (TextView) itemView.findViewById(R.id.charityName);
             itemView.setOnClickListener(this);
         }
 

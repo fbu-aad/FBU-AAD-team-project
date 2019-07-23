@@ -62,7 +62,7 @@ public class CharitySearchAdapter extends RecyclerView.Adapter<CharitySearchAdap
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivCharityImage = (ImageView) itemView.findViewById(R.id.ivCharityImage);
-            tvCharityName = (TextView) itemView.findViewById(R.id.tvCharityName);
+            tvCharityName = (TextView) itemView.findViewById(R.id.charityName);
             itemView.setOnClickListener(this);
         }
 
