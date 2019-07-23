@@ -1,26 +1,16 @@
 package com.example.una;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.zip.Deflater;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,15 +26,12 @@ public class DonationActivity extends AppCompatActivity {
     private final String TAG = "DonationActivity";
 
     boolean valueSet;
-    Context context;
     String currentAmount = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation);
-        context = this;
-
         ButterKnife.bind(this);
 
         amountInput.addTextChangedListener(new TextWatcher() {
@@ -54,17 +41,19 @@ public class DonationActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!s.toString().equals(currentAmount)) {
+                    // remove the change listener
                     amountInput.removeTextChangedListener(this);
 
+                    // format the string to be in $#,##0.00 format
                     String cleanAmount = s.toString().replaceAll("[,$.]", "");
                     double parsed = Double.parseDouble(cleanAmount);
                     String formatted = NumberFormat.getCurrencyInstance().format(parsed/100);
 
                     currentAmount = formatted;
-
                     amountInput.setText(formatted);
                     amountInput.setSelection(formatted.length());
 
+                    // replace the change listener
                     amountInput.addTextChangedListener(this);
                 }
 
