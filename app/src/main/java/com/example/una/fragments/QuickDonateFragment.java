@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class QuickDonateFragment extends Fragment {
+    @BindView(R.id.tvQuickDonate) TextView quickDonateText;
     @BindView(R.id.ibQuickDonate) ImageButton ibQuickDonate;
     @BindView(R.id.tvCharityDescription) TextView tvCharityDescription;
     @BindView(R.id.charityName) TextView tvCharityName;
