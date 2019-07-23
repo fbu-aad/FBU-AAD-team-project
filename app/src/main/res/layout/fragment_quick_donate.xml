@@ -7,17 +7,6 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tvCharityName"
-        android:layout_width="@dimen/small_textView_width"
-        android:layout_height="@dimen/extra_small_textView_height"
-        android:layout_marginTop="@dimen/small_padding"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ibQuickDonate"
-        android:gravity="center" />
-
-    <TextView
         android:id="@+id/tvCharityDescription"
         android:layout_width="@dimen/large_textView_width"
         android:layout_height="@dimen/extra_small_textView_height"
