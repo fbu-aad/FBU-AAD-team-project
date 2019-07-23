@@ -1,5 +1,6 @@
 package com.example.una.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +11,17 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.una.DonationActivity;
 import com.example.una.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class QuickDonateFragment extends Fragment {
+    @BindView(R.id.tvQuickDonate) TextView quickDonateText;
     @BindView(R.id.ibQuickDonate) ImageButton ibQuickDonate;
     @BindView(R.id.tvCharityDescription) TextView tvCharityDescription;
-    @BindView(R.id.tvCharityName) TextView tvCharityName;
+    @BindView(R.id.charityName) TextView tvCharityName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,7 +35,8 @@ public class QuickDonateFragment extends Fragment {
         ibQuickDonate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "ImageButton is working", Toast.LENGTH_LONG).show();
+                Intent donateIntent = new Intent(getContext(), DonationActivity.class);
+                startActivity(donateIntent);
             }
         });
         tvCharityName.setText("Dummy holder name");

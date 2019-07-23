@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tvCharityName"
+        android:id="@+id/charityName"
         android:layout_width="@dimen/small_textView_width"
         android:layout_height="@dimen/extra_small_textView_height"
         android:layout_marginTop="@dimen/small_padding"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCharityName"
+        app:layout_constraintTop_toBottomOf="@+id/charityName"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
@@ -39,13 +39,13 @@
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCharityName"
+        app:layout_constraintTop_toBottomOf="@+id/tvQuickDonate"
         app:srcCompat="@drawable/ic_cuppa_24dp"
         android:background="@color/bumbleYellow"
         tools:ignore="VectorDrawableCompat" />
 
     <TextView
-        android:id="@+id/tvCharityName"
+        android:id="@+id/tvQuickDonate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/small_textView_height"
