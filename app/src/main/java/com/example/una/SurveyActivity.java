@@ -15,6 +15,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +58,7 @@ public class SurveyActivity extends AppCompatActivity {
     DocumentReference userRef;
 
     boolean firstLoad = true;
+    ArrayList<CheckBox> cbCategories = new ArrayList<>();
 
     // map of category names to their ids
     Map<String, Integer> categories = new HashMap<String, Integer>();
@@ -66,33 +69,20 @@ public class SurveyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_survey);
         ButterKnife.bind(this);
 
+        cbCategories.addAll(Arrays.asList(cbAnimals, cbArts, cbEducation, cbEnvironment,
+                cbHealth, cbHumanServices, cbInternational, cbRights, cbReligion, cbCommunity, cbResearch));
+
         // set categories where the key is the category name and value is its id
-        categories.put(Integer.toString(R.string.text_survey_cb_animals), 1);
-        categories.put(Integer.toString(R.string.text_survey_cb_arts), 2);
-        categories.put(Integer.toString(R.string.text_survey_cb_education), 3);
-        categories.put(Integer.toString(R.string.text_survey_cb_environment), 4);
-        categories.put(Integer.toString(R.string.text_survey_cb_health), 5);
-        categories.put(Integer.toString(R.string.text_survey_cb_human_services), 6);
-        categories.put(Integer.toString(R.string.text_survey_cb_international), 7);
-        categories.put(Integer.toString(R.string.text_survey_cb_rights), 8);
-        categories.put(Integer.toString(R.string.text_survey_cb_religion), 9);
-        categories.put(Integer.toString(R.string.text_survey_cb_community), 10);
-        categories.put(Integer.toString(R.string.text_survey_cb_research), 11);
+        for (int i = 0; i < cbCategories.size(); i++) {
+            categories.put(cbCategories.get(i).getText().toString(), i+1);
+        }
 
         // TODO make first and last name fields required
 
         // handle user interaction with checkboxes
-        setCheckedState(cbAnimals);
-        setCheckedState(cbArts);
-        setCheckedState(cbCommunity);
-        setCheckedState(cbEducation);
-        setCheckedState(cbEnvironment);
-        setCheckedState(cbHealth);
-        setCheckedState(cbHumanServices);
-        setCheckedState(cbInternational);
-        setCheckedState(cbReligion);
-        setCheckedState(cbResearch);
-        setCheckedState(cbRights);
+        for (CheckBox cbCategory : cbCategories) {
+            setCheckedState(cbCategory);
+        }
         firstLoad = false;
 
         // get user_id from intent
@@ -116,17 +106,11 @@ public class SurveyActivity extends AppCompatActivity {
                 userRef.update(user);
 
                 // add user's interest areas to database
-                updateInterestAreas(cbAnimals, categories.get(Integer.toString(R.string.text_survey_cb_animals)));
-                updateInterestAreas(cbArts, categories.get(Integer.toString(R.string.text_survey_cb_arts)));
-                updateInterestAreas(cbCommunity, categories.get(Integer.toString(R.string.text_survey_cb_community)));
-                updateInterestAreas(cbEducation, categories.get(Integer.toString(R.string.text_survey_cb_education)));
-                updateInterestAreas(cbEnvironment, categories.get(Integer.toString(R.string.text_survey_cb_environment)));
-                updateInterestAreas(cbHealth, categories.get(Integer.toString(R.string.text_survey_cb_health)));
-                updateInterestAreas(cbHumanServices, categories.get(Integer.toString(R.string.text_survey_cb_human_services)));
-                updateInterestAreas(cbInternational, categories.get(Integer.toString(R.string.text_survey_cb_international)));
-                updateInterestAreas(cbReligion, categories.get(Integer.toString(R.string.text_survey_cb_religion)));
-                updateInterestAreas(cbResearch, categories.get(Integer.toString(R.string.text_survey_cb_research)));
-                updateInterestAreas(cbRights, categories.get(Integer.toString(R.string.text_survey_cb_rights)));
+                for (CheckBox cbCategory : cbCategories) {
+                    String categoryName = cbCategory.getText().toString();
+                    int categoryId = categories.get(categoryName);
+                    updateInterestAreas(cbCategory, categoryId);
+                }
 
                 // launch MainActivity
                 Intent homeActivity = new Intent(SurveyActivity.this, MainActivity.class);
@@ -143,9 +127,9 @@ public class SurveyActivity extends AppCompatActivity {
         }
     }
 
-    private void updateInterestAreas(CheckBox cb, int category_id) {
+    private void updateInterestAreas(CheckBox cb, int categoryId) {
         if (cb.isChecked()) {
-            userRef.update("interest_areas", FieldValue.arrayUnion(category_id));
+            userRef.update("interest_areas", FieldValue.arrayUnion(categoryId));
         }
     }
 }

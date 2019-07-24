@@ -128,15 +128,15 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         Log.d(TAG, "Document does not exist!");
                         // create a new user with id and email address
-                        Map<String, Object> new_user = new HashMap<>();
+                        Map<String, Object> newUser = new HashMap<>();
                         if (email != null) {
-                            new_user.put("email", email);
+                            newUser.put("email", email);
                         }
 
                         // add a new document with a generated id
                         Intent surveyIntent = new Intent(getApplicationContext(), SurveyActivity.class);
                         surveyIntent.putExtra("user_id", uid);
-                        users.document(uid).set(new_user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        users.document(uid).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d(TAG, "DocumentSnapshot successfully written!");
