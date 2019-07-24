@@ -19,6 +19,13 @@
     <dimen name="challenge_description_font">16dp</dimen>
     <dimen name="featured_image_width">100dp</dimen>
     <dimen name="featured_image_height">57dp</dimen>
-
-
+    <dimen name="charity_image_height">300dp</dimen>
+    <dimen name="charity_name_font_size">24dp</dimen>
+    <dimen name="charity_about_us_font_size">20dp</dimen>
+    <dimen name="charity_description_font_size">18dp</dimen>
+    <dimen name="charity_more_info_font_size">20dp</dimen>
+    <dimen name="charity_link_info_font_size">18dp</dimen>
+    <dimen name="pb_margin_end_padding">108dp</dimen>
+    <dimen name="pb_margin_right_padding">108dp</dimen>
+    <dimen name="no_layout_width">0dp</dimen>
 </resources>

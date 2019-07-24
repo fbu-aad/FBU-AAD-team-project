@@ -1,6 +1,7 @@
 package com.example.una.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.una.CharityDetailsActivity;
+import com.example.una.CharityNavigatorClient;
 import com.example.una.R;
 import com.example.una.models.Charity;
 
@@ -17,6 +20,8 @@ import java.util.ArrayList;
 public class CharityAdapter extends RecyclerView.Adapter<CharityAdapter.ViewHolder> {
     ArrayList<Object> charities;
     Context context;
+    CharityNavigatorClient client;
+    String ein;
 
     // initialize with list
     public CharityAdapter(ArrayList<Object> charities) { this.charities = charities; }
@@ -46,18 +51,26 @@ public class CharityAdapter extends RecyclerView.Adapter<CharityAdapter.ViewHold
         return charities.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvCharityName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvCharityName = (TextView) itemView.findViewById(R.id.charityName);
-            itemView.setOnClickListener(this);
+            tvCharityName = (TextView) itemView.findViewById(R.id.tvCharityName);
+            itemView.setOnClickListener(new CharityClickListener());
         }
 
-        @Override
-        public void onClick(View v) {
-            // TODO display detail view of charity
+        class CharityClickListener implements View.OnClickListener {
+            @Override
+            public void onClick(View view) {
+                client = new CharityNavigatorClient(view.getContext());
+                int position = getAdapterPosition();
+                Charity charity = (Charity) charities.get(position);
+                ein = charity.getEin();
+                Intent charityDetailsIntent = new Intent(view.getContext(), CharityDetailsActivity.class);
+                charityDetailsIntent.putExtra("ein", ein);
+                view.getContext().startActivity(charityDetailsIntent);
+            }
         }
     }
 }

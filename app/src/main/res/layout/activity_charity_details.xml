@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CharityDetailsActivity">
+
+    <ImageView
+        android:id="@+id/ivCharityImage"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/charity_image_height"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic[5]"
+        app:layout_constraintBottom_toTopOf="@id/tvCharityName"/>
+
+    <TextView
+        android:id="@+id/tvCharityName"
+        style="@style/TextAppearance.Compat.Notification.Title.Media"
+        android:layout_width="@dimen/no_layout_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:textSize="@dimen/charity_name_font_size"
+        app:layout_constraintEnd_toStartOf="@+id/fabDonateOption"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivCharityImage" />
+
+    <TextView
+        android:id="@+id/tvCharityDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:textSize="@dimen/challenge_description_font"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAboutUs" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabDonateOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivCharityImage"
+        app:srcCompat="@color/arrow_annotation_fill_color" />
+
+    <TextView
+        android:id="@+id/tvAboutUs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/standard_padding"
+        android:text="@string/about_us_msg"
+        android:textSize="@dimen/charity_about_us_font_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCharityName"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/tvMoreInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:text="@string/for_more_info_charity_msg"
+        android:textSize="@dimen/charity_more_info_font_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCharityDescription"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/tvCharityLink"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:textSize="@dimen/charity_link_info_font_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMoreInfo" />
+
+    <ProgressBar
+        android:id="@+id/pbLoadingCharity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/pb_margin_end_padding"
+        android:layout_marginRight="@dimen/pb_margin_right_padding"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/fabDonateOption"
+        app:layout_constraintTop_toBottomOf="@+id/ivCharityImage" />
+</androidx.constraintlayout.widget.ConstraintLayout>
