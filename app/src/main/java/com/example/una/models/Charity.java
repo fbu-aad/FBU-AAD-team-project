@@ -1,6 +1,7 @@
 package com.example.una.models;
 
 import android.location.Address;
+import android.os.Parcelable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,27 +9,26 @@ import org.json.JSONObject;
 import java.util.Locale;
 import org.parceler.Parcel;
 
-@Parcel(Parcel.Serialization.BEAN)
+@Parcel
 public class Charity {
 
-    // attributes
-    private String ein; // federal Employer Identification Number
-    private String name;
-    private String description; // tag line describing the charity
-    private String mission; // organization's mission statement
-    private String category;
-    private String cause;
-    private Address donationAddress;
-    private String link;
-    private boolean isFeatured;
+    // attributes must be public for Parcel to work properly
+    String ein; // federal Employer Identification Number
+    String name;
+    String description; // tag line describing the charity
+    String mission; // organization's mission statement
+    String category;
+    String cause;
+    String link;
+    Address donationAddress;
+    boolean isFeatured;
 
     public Charity() {}
 
     // deserialize the JSON
     public Charity(JSONObject jsonObject) throws JSONException {
         // extract the values from JSON
-        ein = jsonObject.getString("ein");
-        name = jsonObject.getString("charityName");
+
         ein = jsonObject.getString("ein");
         name = jsonObject.getString("charityName");
         if (jsonObject.has("tagLine")) {
@@ -61,37 +61,38 @@ public class Charity {
         }
     }
 
-    public String getEin() {
-        return ein;
+    public Charity(String ein, String name) {
+        this.ein = ein;
+        this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getEin() { return ein; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getName() { return name; }
 
-    public String getMission() {
-        return mission;
-    }
+    public boolean hasDescription() { return description == null; }
 
-    public String getCategory() {
-        return category;
-    }
+    public String getDescription() { return description; }
 
-    public String getCause() {
-        return cause;
-    }
+    public boolean hasMission() { return mission == null; }
 
-    public Address getDonationAddress() {
-        return donationAddress;
-    }
+    public String getMission() { return mission; }
 
-    public boolean isFeatured() {
-        return isFeatured;
-    }
+    public boolean hasCategory() { return category == null; }
+
+    public String getCategory() { return category; }
+
+    public boolean hasCause() { return cause == null; }
+
+    public String getCause() { return cause; }
+
+    public boolean hasDonationAddress() { return donationAddress == null; }
+
+    public Address getDonationAddress() { return donationAddress; }
+
+    public boolean isFeatured() { return isFeatured; }
+
+    public boolean hasLink() { return link == null; }
 
     public String getLink() { return link; }
 

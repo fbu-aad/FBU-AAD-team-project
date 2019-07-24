@@ -1,18 +1,22 @@
 package com.example.una;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,17 +33,26 @@ public class FirestoreClient {
         this.context = context;
     }
 
-
-    public String getFavoriteCharity() {
+    public Charity getFavoriteCharity() {
         DocumentReference docRef = db.collection("users").document(user.getUid());
-        Log.i(TAG, docRef.get().toString());
-        return context.getString(R.string.red_cross_ein);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                // populate the charity here
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i(TAG, "get favorite charity failed");
+            }
+        });
+
+        // TODO: populate this with the charity from the user data, not this default charity
+        return new Charity(context.getString(R.string.red_cross_ein), "American Red Cross");
     }
 
     public void createNewDonation(Double amount, String frequency, String recipientEin) {
         Date timeOfDonation = new Date();
-        String donation_id = "donation_" + timeOfDonation;
-
         Map<String, Object> donation = new HashMap<>();
         donation.put("amount", amount);
         donation.put("donor_id", user.getUid());
@@ -47,15 +60,18 @@ public class FirestoreClient {
         donation.put("recipient", recipientEin);
         donation.put("time", new Timestamp(timeOfDonation));
 
-        db.collection("donations").document(donation_id).set(donation).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("donations").document().set(donation).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.d(TAG, "Donation Success!");
+                DecimalFormat df = new DecimalFormat("#0.00");
+                Toast.makeText(context, String.format("You donated $%s!", df.format(amount)), Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "Donation Success!");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error writing donation document", e);
+                Toast.makeText(context, "Donation failure :(", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "Donation Failure", e);
             }
         });
     }

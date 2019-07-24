@@ -13,9 +13,7 @@ import android.widget.Toast;
 
 import com.example.una.models.Charity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +34,7 @@ public class DonationActivity extends AppCompatActivity {
     private Double amount;
 
     FirestoreClient firestoreClient = new FirestoreClient(this);
-    private String charityEin;
+    private Charity charity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +42,8 @@ public class DonationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_donation);
         ButterKnife.bind(this);
 
-        charityEin = firestoreClient.getFavoriteCharity();
+        charity = Parcels.unwrap(getIntent().getParcelableExtra("charity"));
+        charityName.setText(charity.getName());
 
         CurrencyTextWatcher watcher = new CurrencyTextWatcher(amountInput, currentAmount);
         amountInput.addTextChangedListener(watcher);
@@ -53,7 +52,7 @@ public class DonationActivity extends AppCompatActivity {
     @OnClick(R.id.submitDonation)
     public void submitDonation() {
         if (valueSet) {
-            firestoreClient.createNewDonation(amount, Frequency.SINGLE_DONATION, charityEin);
+            firestoreClient.createNewDonation(amount, Frequency.SINGLE_DONATION, charity.getEin());
 
             Intent goHomeIntent = new Intent(this, MainActivity.class);
             startActivity(goHomeIntent);
