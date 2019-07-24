@@ -13,14 +13,10 @@ import com.example.una.fragments.HomePageFragment;
 import com.example.una.fragments.ImpactFragment;
 import com.example.una.fragments.MapsViewFragment;
 import com.example.una.fragments.QuickDonateFragment;
-import com.google.cloud.firestore.Firestore;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.cloud.FirestoreClient;
 
 public class MainActivity extends AppCompatActivity {
-
-    private final Firestore db = FirestoreClient.getFirestore();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

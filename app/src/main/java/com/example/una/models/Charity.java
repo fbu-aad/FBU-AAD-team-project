@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.util.Locale;
 import org.parceler.Parcel;
 
-@Parcel
+@Parcel(Parcel.Serialization.BEAN)
 public class Charity {
 
     // attributes

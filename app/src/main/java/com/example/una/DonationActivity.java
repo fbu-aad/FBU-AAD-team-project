@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
+
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,20 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.una.models.Charity;
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.cloud.FirestoreClient;
-
-import java.lang.ref.Reference;
-import java.text.NumberFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,11 +34,9 @@ public class DonationActivity extends AppCompatActivity {
     boolean valueSet;
     private String currentAmount = "";
     private Double amount;
-    private static int donationCount = 2;
 
-    private Firestore db = FirestoreClient.getFirestore();
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private Charity charity;
+    FirestoreClient firestoreClient = new FirestoreClient(this);
+    private String charityEin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,57 +44,17 @@ public class DonationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_donation);
         ButterKnife.bind(this);
 
-        // TODO if the user has donated already, get the most recent donation.
-        // otherwise, get the default charity
-        charity = getIntent().getParcelableExtra("charity");
+        charityEin = firestoreClient.getFavoriteCharity();
 
-        amountInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().equals(currentAmount)) {
-                    // remove the change listener
-                    amountInput.removeTextChangedListener(this);
-
-                    // format the string to be in $#,##0.00 format
-                    String cleanAmount = s.toString().replaceAll("[,$.]", "");
-                    double parsed = Double.parseDouble(cleanAmount);
-                    String formatted = NumberFormat.getCurrencyInstance().format(parsed/100);
-
-                    currentAmount = formatted;
-                    amountInput.setText(formatted);
-                    amountInput.setSelection(formatted.length());
-
-                    // replace the change listener
-                    amountInput.addTextChangedListener(this);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
+        CurrencyTextWatcher watcher = new CurrencyTextWatcher(amountInput, currentAmount);
+        amountInput.addTextChangedListener(watcher);
     }
 
     @OnClick(R.id.submitDonation)
     public void submitDonation() {
         if (valueSet) {
-            DocumentReference donationsRef = db.collection("donations").document();
+            firestoreClient.createNewDonation(amount, Frequency.SINGLE_DONATION, charityEin);
 
-            Map<String, Object> donationData = new HashMap<>();
-            donationData.put("amount", amount);
-            donationData.put("donation_id", "donation_" + donationCount);
-            donationData.put("donor_id", user.getUid());
-            donationData.put("frequency", Frequency.SINGLE_DONATION);
-            donationData.put("recipient", charity.getEin());
-            donationData.put("time", new Date());
-
-            ApiFuture<WriteResult> result = donationsRef.set(donationData);
-
-            donationCount++;
-            Toast.makeText(this, R.string.donation_success, Toast.LENGTH_SHORT).show();
             Intent goHomeIntent = new Intent(this, MainActivity.class);
             startActivity(goHomeIntent);
         } else {

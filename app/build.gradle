@@ -28,6 +28,7 @@ android {
     }
 }
 
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -60,6 +61,7 @@ dependencies {
     // google login
     implementation 'com.google.firebase:firebase-auth:18.1.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    // classpath 'com.google.gms:google-services:4.2.0'
 
     // Butterknife
     implementation 'com.jakewharton:butterknife:10.1.0'
@@ -67,11 +69,10 @@ dependencies {
 
     // Firebase & Cloud Firestore dependencies
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+    implementation 'com.google.firebase:firebase-database:18.0.0'
 
     // Firestore
     implementation 'com.google.firebase:firebase-firestore:20.1.0'
-
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     // Buglife dependencies
     implementation 'com.buglife.sdk:buglife-android:1.5.1'

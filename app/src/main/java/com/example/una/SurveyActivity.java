@@ -113,6 +113,7 @@ public class SurveyActivity extends AppCompatActivity {
                     Map<String, Object> user = new HashMap<>();
                     user.put("first_name", firstName);
                     user.put("last_name", lastName);
+                    user.put("favorite_charity", R.string.red_cross_ein);
                     userRef.update(user);
 
                     // launch MainActivity
