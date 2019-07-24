@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SurveyActivity"></activity>
+        <activity android:name=".DonationActivity"></activity>
         <activity android:name=".CharitySearchListActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
