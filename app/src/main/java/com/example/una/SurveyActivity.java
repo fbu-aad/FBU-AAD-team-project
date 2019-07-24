@@ -113,6 +113,9 @@ public class SurveyActivity extends AppCompatActivity {
                     Map<String, Object> user = new HashMap<>();
                     user.put("first_name", firstName);
                     user.put("last_name", lastName);
+                    // TODO : replace with the user's favorite charity
+                    user.put("fav_charity_ein", R.string.red_cross_ein);
+                    user.put("fav_charity_name", "American Red Cross");
                     userRef.update(user);
 
                     // launch MainActivity

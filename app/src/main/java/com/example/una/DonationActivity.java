@@ -4,13 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.text.NumberFormat;
+import com.example.una.models.Charity;
+import org.parceler.Parcels;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,7 +26,11 @@ public class DonationActivity extends AppCompatActivity {
     private final String TAG = "DonationActivity";
 
     boolean valueSet;
-    String currentAmount = "";
+    private String currentAmount = "";
+    private Double amount;
+
+    FirestoreClient firestoreClient = new FirestoreClient(this);
+    private Charity charity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,40 +38,18 @@ public class DonationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_donation);
         ButterKnife.bind(this);
 
-        amountInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+        charity = Parcels.unwrap(getIntent().getParcelableExtra("charity"));
+        charityName.setText(charity.getName());
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().equals(currentAmount)) {
-                    // remove the change listener
-                    amountInput.removeTextChangedListener(this);
-
-                    // format the string to be in $#,##0.00 format
-                    String cleanAmount = s.toString().replaceAll("[,$.]", "");
-                    double parsed = Double.parseDouble(cleanAmount);
-                    String formatted = NumberFormat.getCurrencyInstance().format(parsed/100);
-
-                    currentAmount = formatted;
-                    amountInput.setText(formatted);
-                    amountInput.setSelection(formatted.length());
-
-                    // replace the change listener
-                    amountInput.addTextChangedListener(this);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
+        CurrencyTextWatcher watcher = new CurrencyTextWatcher(amountInput, currentAmount);
+        amountInput.addTextChangedListener(watcher);
     }
 
     @OnClick(R.id.submitDonation)
     public void submitDonation() {
         if (valueSet) {
-            Toast.makeText(this, R.string.donation_success, Toast.LENGTH_SHORT).show();
+            firestoreClient.createNewDonation(amount, Frequency.SINGLE_DONATION, charity.getEin());
+
             Intent goHomeIntent = new Intent(this, MainActivity.class);
             startActivity(goHomeIntent);
         } else {
@@ -81,7 +63,7 @@ public class DonationActivity extends AppCompatActivity {
         if (text == null || text.toString().equals("")) {
             noInputToast();
         } else {
-            Double amount = Double.parseDouble(text.toString().replaceAll("[$,]", ""));
+            amount = Double.parseDouble(text.toString().replaceAll("[$,]", ""));
             Log.i(TAG, amount.toString());
             if (amount == 0) {
                 noInputToast();
