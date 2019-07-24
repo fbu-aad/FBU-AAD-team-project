@@ -1,11 +1,8 @@
 package com.example.una.models;
 
 import android.location.Address;
-import android.os.Parcelable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Locale;
 import org.parceler.Parcel;
 

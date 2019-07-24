@@ -79,5 +79,4 @@ public class FirestoreClient {
     public FirebaseUser getCurrentUser() {
         return user;
     }
-
 }
