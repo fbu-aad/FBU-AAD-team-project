@@ -50,7 +50,7 @@ public class SurveyActivity extends AppCompatActivity {
 
     @BindView(R.id.btnSubmit) Button btnSubmit;
 
-    String user_id;
+    String userId;
 
     // Access a Cloud Firestore instance
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -77,8 +77,6 @@ public class SurveyActivity extends AppCompatActivity {
             categories.put(cbCategories.get(i).getText().toString(), i+1);
         }
 
-        // TODO make first and last name fields required
-
         // handle user interaction with checkboxes
         for (CheckBox cbCategory : cbCategories) {
             setCheckedState(cbCategory);
@@ -86,25 +84,14 @@ public class SurveyActivity extends AppCompatActivity {
         firstLoad = false;
 
         // get user_id from intent
-        user_id = getIntent().getStringExtra("user_id");
+        userId = getIntent().getStringExtra("user_id");
         // get Firestore user document
-        userRef = users.document(user_id);
+        userRef = users.document(userId);
 
         // set on click listener for submit button
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // get user inputs
-                final String first_name = etFirstName.getText().toString();
-                final String last_name = etLastName.getText().toString();
-
-                // add user's name to database
-                Map<String, Object> user = new HashMap<>();
-                user.put("first_name", first_name);
-                user.put("last_name", last_name);
-                userRef.update(user);
-
                 // add user's interest areas to database
                 for (CheckBox cbCategory : cbCategories) {
                     String categoryName = cbCategory.getText().toString();
@@ -112,9 +99,26 @@ public class SurveyActivity extends AppCompatActivity {
                     updateInterestAreas(cbCategory, categoryId);
                 }
 
-                // launch MainActivity
-                Intent homeActivity = new Intent(SurveyActivity.this, MainActivity.class);
-                startActivity(homeActivity);
+                // get user inputs
+                final String firstName = etFirstName.getText().toString();
+                final String lastName = etLastName.getText().toString();
+
+                // first and last name fields are required
+                if (firstName.isEmpty()) {
+                    etFirstName.setError("Required");
+                } else if (lastName.isEmpty()) {
+                    etLastName.setError("Required");
+                } else {
+                    // add user's name to database
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("first_name", firstName);
+                    user.put("last_name", lastName);
+                    userRef.update(user);
+
+                    // launch MainActivity
+                    Intent homeActivity = new Intent(SurveyActivity.this, MainActivity.class);
+                    startActivity(homeActivity);
+                }
             }
         });
     }
