@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DonationActivity">
+
+    <EditText
+        android:id="@+id/amountInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:digits="0123456789"
+        android:ems="10"
+        android:hint="@string/donation_hint"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toTopOf="@+id/submitDonation"
+        app:layout_constraintEnd_toStartOf="@+id/valueOK"
+        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/valuePrompt" />
+
+    <TextView
+        android:id="@+id/valuePrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:text="@string/donate_value_prompt"
+        android:textSize="@dimen/medium_small_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/amountInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/charityName"
+        tools:text="@string/donate_value_prompt" />
+
+    <TextView
+        android:id="@+id/charityName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:text="charity name here"
+        android:textSize="@dimen/large_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/valuePrompt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Charity Name" />
+
+    <Button
+        android:id="@+id/submitDonation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:layout_marginBottom="@dimen/small_padding"
+        android:text="@string/donate_submit"
+        android:textSize="@dimen/medium_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amountInput"
+        tools:text="@string/donate_submit" />
+
+    <Button
+        android:id="@+id/valueOK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/large_padding"
+        android:layout_marginRight="@dimen/large_padding"
+        android:text="@string/donate_value_accept"
+        app:layout_constraintBottom_toBottomOf="@+id/amountInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/amountInput"
+        app:layout_constraintTop_toTopOf="@+id/amountInput" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="506dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

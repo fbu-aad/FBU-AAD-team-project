@@ -15,7 +15,7 @@ import com.example.una.models.Charity;
 import java.util.ArrayList;
 
 public class CharitySearchAdapter extends RecyclerView.Adapter<CharitySearchAdapter.ViewHolder> {
-
+    private LayoutInflater inflater;
     ArrayList<Charity> charities;
     Context context;
 
@@ -23,6 +23,7 @@ public class CharitySearchAdapter extends RecyclerView.Adapter<CharitySearchAdap
     public CharitySearchAdapter(Context context, ArrayList<Charity> charities) {
         this.charities = charities;
         this.context = context;
+        inflater = LayoutInflater.from(context);
     }
 
     @NonNull
@@ -30,7 +31,7 @@ public class CharitySearchAdapter extends RecyclerView.Adapter<CharitySearchAdap
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         // get the context and create the inflater
         context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
+        inflater = LayoutInflater.from(context);
         // create the view using the item_charity_search layout
         View charityView = inflater.inflate(R.layout.item_charity_search, parent, false);
         // return a new ViewHolder
@@ -61,7 +62,7 @@ public class CharitySearchAdapter extends RecyclerView.Adapter<CharitySearchAdap
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivCharityImage = (ImageView) itemView.findViewById(R.id.ivCharityImage);
-            tvCharityName = (TextView) itemView.findViewById(R.id.tvCharityName);
+            tvCharityName = (TextView) itemView.findViewById(R.id.charityName);
             itemView.setOnClickListener(this);
         }
 
