@@ -35,4 +35,13 @@
     <string name="text_survey_btn_submit">Submit</string>
     <string name="text_survey_cause_areas_info">Select the cause areas that interest you. We use this information to help you discover nonprofits.</string>
 
+    <string name="donate_value_prompt">How much would you like to donate?</string>
+    <string name="donate_charity_correct_prompt">Is this the correct charity?</string>
+    <string name="donate_value_accept">Ok</string>
+    <string name="donate_submit">Make an Impact</string>
+
+    <string name="donation_success">Donation Success!</string>
+    <string name="donation_no_input">Please input a donation amount.</string>
+    <string name="donation_hint">$0.00</string>
+
 </resources>

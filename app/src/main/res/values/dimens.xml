@@ -3,6 +3,7 @@
     <dimen name="standard_padding">16dp</dimen>
     <dimen name="small_padding">8dp</dimen>
     <dimen name="medium_large_padding">32dp</dimen>
+    <dimen name="large_padding">56dp</dimen>
     <dimen name="medium_button_width">120dp</dimen>
     <dimen name="large_textView_width">200dp</dimen>
     <dimen name="small_textView_width">80dp</dimen>
@@ -12,6 +13,9 @@
     <dimen name="challenge_viewHolder_height">150dp</dimen>
     <dimen name="impact_fragment_recycler_view_height">470dp</dimen>
     <dimen name="challenge_title_font">20dp</dimen>
+    <dimen name="large_font_size">36sp</dimen>
+    <dimen name="medium_font_size">24sp</dimen>
+    <dimen name="medium_small_font_size">18sp</dimen>
     <dimen name="challenge_description_font">16dp</dimen>
     <dimen name="featured_image_width">100dp</dimen>
     <dimen name="featured_image_height">57dp</dimen>
