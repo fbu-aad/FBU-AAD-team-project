@@ -6,7 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Locale;
+import org.parceler.Parcel;
 
+@Parcel
 public class Charity {
 
     // attributes
@@ -19,6 +21,8 @@ public class Charity {
     private Address donationAddress;
     private String link;
     private boolean isFeatured;
+
+    public Charity() {}
 
     // deserialize the JSON
     public Charity(JSONObject jsonObject) throws JSONException {
@@ -48,7 +52,8 @@ public class Charity {
         if (jsonObject.has("donationAddress")) {
             JSONObject address = jsonObject.getJSONObject("donationAddress");
             donationAddress = new Address(Locale.ENGLISH);
-            donationAddress.setAddressLine(0, address.getString("streetAddress1"));donationAddress.setAddressLine(1, address.getString("streetAddress2"));
+            donationAddress.setAddressLine(0, address.getString("streetAddress1"));
+            donationAddress.setAddressLine(1, address.getString("streetAddress2"));
             donationAddress.setLocality(address.getString("city"));
             donationAddress.setAdminArea(address.getString("stateOrProvince"));
             donationAddress.setPostalCode(address.getString("postalCode"));

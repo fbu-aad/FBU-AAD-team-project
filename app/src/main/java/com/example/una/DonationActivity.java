@@ -10,7 +10,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.una.models.Charity;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.cloud.FirestoreClient;
+
+import java.lang.ref.Reference;
 import java.text.NumberFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,13 +42,23 @@ public class DonationActivity extends AppCompatActivity {
     private final String TAG = "DonationActivity";
 
     boolean valueSet;
-    String currentAmount = "";
+    private String currentAmount = "";
+    private Double amount;
+    private static int donationCount = 2;
+
+    private Firestore db = FirestoreClient.getFirestore();
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private Charity charity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation);
         ButterKnife.bind(this);
+
+        // TODO if the user has donated already, get the most recent donation.
+        // otherwise, get the default charity
+        charity = getIntent().getParcelableExtra("charity");
 
         amountInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -67,6 +93,19 @@ public class DonationActivity extends AppCompatActivity {
     @OnClick(R.id.submitDonation)
     public void submitDonation() {
         if (valueSet) {
+            DocumentReference donationsRef = db.collection("donations").document();
+
+            Map<String, Object> donationData = new HashMap<>();
+            donationData.put("amount", amount);
+            donationData.put("donation_id", "donation_" + donationCount);
+            donationData.put("donor_id", user.getUid());
+            donationData.put("frequency", Frequency.SINGLE_DONATION);
+            donationData.put("recipient", charity.getEin());
+            donationData.put("time", new Date());
+
+            ApiFuture<WriteResult> result = donationsRef.set(donationData);
+
+            donationCount++;
             Toast.makeText(this, R.string.donation_success, Toast.LENGTH_SHORT).show();
             Intent goHomeIntent = new Intent(this, MainActivity.class);
             startActivity(goHomeIntent);
@@ -81,7 +120,7 @@ public class DonationActivity extends AppCompatActivity {
         if (text == null || text.toString().equals("")) {
             noInputToast();
         } else {
-            Double amount = Double.parseDouble(text.toString().replaceAll("[$,]", ""));
+            amount = Double.parseDouble(text.toString().replaceAll("[$,]", ""));
             Log.i(TAG, amount.toString());
             if (amount == 0) {
                 noInputToast();
