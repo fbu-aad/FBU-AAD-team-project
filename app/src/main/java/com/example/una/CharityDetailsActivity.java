@@ -45,8 +45,6 @@ public class CharityDetailsActivity extends AppCompatActivity {
     }
 
     static class DonateBtnClickListener implements View.OnClickListener {
-        @BindView(R.id.tvCharityName)
-        TextView tvCharityName;
         @Override
         public void onClick(View view) {
             Toast.makeText(view.getContext(), "CharityDetailsActivity -> I am working", Toast.LENGTH_LONG).show();
@@ -65,9 +63,14 @@ public class CharityDetailsActivity extends AppCompatActivity {
                     tvCharityName.setText(charity.getName());
                     tvCharityDescription.setText(charity.getDescription());
                     tvCharityLink.setText(charity.getLink());
+                    ivCharityImage.setVisibility(View.VISIBLE);
+                    tvCharityName.setVisibility(View.VISIBLE);
+                    tvCharityDescription.setVisibility(View.VISIBLE);
+                    tvCharityLink.setVisibility(View.VISIBLE);
                     tvMoreInfo.setVisibility(View.VISIBLE);
                     tvAboutUs.setVisibility(View.VISIBLE);
-                    pbLoadingCharity.setVisibility(View.INVISIBLE);
+                    fabDonateOption.setVisibility(View.VISIBLE);
+                    pbLoadingCharity.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.e("CharityDetailsActivity", "Failed to parse response", e);
                 }
