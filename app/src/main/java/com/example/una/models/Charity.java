@@ -2,8 +2,6 @@ package com.example.una.models;
 
 import android.location.Address;
 
-import androidx.annotation.Nullable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,6 +17,7 @@ public class Charity {
     private String category;
     private String cause;
     private Address donationAddress;
+    private String link;
     private boolean isFeatured;
 
     // deserialize the JSON
@@ -39,6 +38,9 @@ public class Charity {
         }
         if (jsonObject.has("cause")) {
             cause = jsonObject.getJSONObject("cause").getString("causeName");
+        }
+        if (jsonObject.has("websiteURL")) {
+            link = jsonObject.getString("websiteURL");
         }
         isFeatured = false;
 
@@ -85,5 +87,7 @@ public class Charity {
     public boolean isFeatured() {
         return isFeatured;
     }
+
+    public String getLink() { return link; }
 
 }
