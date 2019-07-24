@@ -2,6 +2,7 @@
 <resources>
     <dimen name="standard_padding">16dp</dimen>
     <dimen name="small_padding">8dp</dimen>
+    <dimen name="large_padding">32dp</dimen>
     <dimen name="medium_button_width">120dp</dimen>
     <dimen name="large_textView_width">200dp</dimen>
     <dimen name="small_textView_width">80dp</dimen>

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SurveyActivity">
+
+    <TextView
+        android:id="@+id/tvCompleteProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:text="@string/text_survey_complete_profile"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:text="@string/text_survey_complete_profile_info"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCompleteProfile" />
+
+    <TextView
+        android:id="@+id/tvFirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/large_padding"
+        android:text="@string/text_survey_first_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfo" />
+
+    <TextView
+        android:id="@+id/tvLastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/large_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:text="@string/text_survey_last_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvFirstName"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfo" />
+
+    <CheckBox
+        android:id="@+id/cbHumanServices"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:checked="false"
+        android:text="@string/text_survey_cb_human_services"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/etFirstName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCauseAreaInfo" />
+
+    <EditText
+        android:id="@+id/etFirstName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:ems="10"
+        android:hint="@string/text_survey_first_name_hint"
+        android:inputType="textPersonName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toStartOf="@+id/etLastName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFirstName" />
+
+    <EditText
+        android:id="@+id/etLastName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:ems="10"
+        android:hint="@string/text_survey_last_name_hint"
+        android:inputType="textPersonName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvLastName"
+        app:layout_constraintTop_toBottomOf="@+id/tvLastName" />
+
+    <TextView
+        android:id="@+id/tvCauseAreas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/large_padding"
+        android:text="@string/text_survey_cause_areas"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etFirstName" />
+
+    <CheckBox
+        android:id="@+id/cbEducation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:checked="false"
+        android:text="@string/text_survey_cb_education"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/cbHumanServices"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbHumanServices" />
+
+    <CheckBox
+        android:id="@+id/cbInternational"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:checked="false"
+        android:text="@string/text_survey_cb_international"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/cbEducation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbEducation" />
+
+    <CheckBox
+        android:id="@+id/cbRights"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:checked="false"
+        android:text="@string/text_survey_cb_rights"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/cbInternational"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbInternational" />
+
+    <CheckBox
+        android:id="@+id/cbReligion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:checked="false"
+        android:text="@string/text_survey_cb_religion"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/cbRights"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbRights" />
+
+    <CheckBox
+        android:id="@+id/cbAnimals"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:checked="false"
+        android:text="@string/text_survey_cb_animals"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/cbReligion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbReligion" />
+
+    <CheckBox
+        android:id="@+id/cbArts"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:checked="false"
+        android:text="@string/text_survey_cb_arts"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cbHumanServices"
+        app:layout_constraintTop_toBottomOf="@+id/tvCauseAreaInfo" />
+
+    <CheckBox
+        android:id="@+id/cbEnvironment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:checked="false"
+        android:text="@string/text_survey_cb_environment"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cbEducation"
+        app:layout_constraintTop_toBottomOf="@+id/cbArts" />
+
+    <CheckBox
+        android:id="@+id/cbHealth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:checked="false"
+        android:text="@string/text_survey_cb_health"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cbInternational"
+        app:layout_constraintTop_toBottomOf="@+id/cbEnvironment" />
+
+    <CheckBox
+        android:id="@+id/cbCommunity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:checked="false"
+        android:text="@string/text_survey_cb_community"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cbRights"
+        app:layout_constraintTop_toBottomOf="@+id/cbHealth" />
+
+    <CheckBox
+        android:id="@+id/cbResearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:checked="false"
+        android:text="@string/text_survey_cb_research"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cbReligion"
+        app:layout_constraintTop_toBottomOf="@+id/cbCommunity" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:text="@string/text_survey_btn_submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbAnimals" />
+
+    <TextView
+        android:id="@+id/tvCauseAreaInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:text="@string/text_survey_cause_areas_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCauseAreas" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
