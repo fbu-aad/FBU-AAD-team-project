@@ -27,5 +27,5 @@
     <dimen name="charity_link_info_font_size">18dp</dimen>
     <dimen name="pb_margin_end_padding">108dp</dimen>
     <dimen name="pb_margin_right_padding">108dp</dimen>
-    <dimen name="no_layout_width">0dp</dimen>
+    <dimen name="no_layout_width_textview">0dp</dimen>
 </resources>
