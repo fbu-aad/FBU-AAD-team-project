@@ -20,7 +20,6 @@ public class Charity {
     private String cause;
     private Address donationAddress;
     private boolean isFeatured;
-    // TODO - add donorList, photoUrl, verified
 
     // deserialize the JSON
     public Charity(JSONObject jsonObject) throws JSONException {
