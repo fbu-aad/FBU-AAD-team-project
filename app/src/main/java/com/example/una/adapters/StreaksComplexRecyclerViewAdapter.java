@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static android.view.View.GONE;
+
 public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // The challenges to display in your RecyclerView
     private List<Object> items;
@@ -90,68 +92,90 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     private void configureChallengeViewHolder(ChallengeViewHolder vhChallenge, int position) {
         Challenge challenge = (Challenge) items.get(position);
         if (challenge != null) {
+            // set challenge title text view
             vhChallenge.getTvChallengeTitle().setText(challenge.getChallengeName());
-
-            // TODO factor out into separate function to get String
-            // check if challenge owner and associated charity are the same
-            String associatedCharity = challenge.getChallengeAssociatedCharityEin();
-            String challengeOwner = challenge.getChallengeOwnerId();
-            String ownerRecipientInfo;
-
-            // TODO test this case
-            // set text view with owner-recipient information
-            if (associatedCharity.equals(challengeOwner)) {
-                ownerRecipientInfo = "Fundraiser by " + challenge.getChallengeAssociatedCharityName();
-                vhChallenge.getTvChallengeOwnerRecipientInfo().setText(ownerRecipientInfo);
-            } else {
-                // owner is a user; get his or her name
-                // TODO refactor out into FirestoreClient
-                DocumentReference docRef = users.document(challengeOwner);
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                // TODO clean up code
-                                String ownerName = document.get("first_name") + " " + document.get("last_name");
-                                vhChallenge.getTvChallengeOwnerRecipientInfo()
-                                        .setText("Fundraiser for " + challenge.getChallengeAssociatedCharityName() +
-                                                " by " + ownerName);
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            } else {
-                                Log.d(TAG, "No such document");
-                            }
-                        } else {
-                            Log.d(TAG, "get failed with ", task.getException());
-                        }
-                    }
-                });
-            }
-
-            int numParticipants = challenge.getChallengeNumParticipants();
-            if (numParticipants == 1) {
-                vhChallenge.getTvNumParticipants().setText(challenge.getChallengeNumParticipants() + " participant");
-            } else {
-                vhChallenge.getTvNumParticipants().setText(challenge.getChallengeNumParticipants() + " participants");
-            }
+            // set challenge owner and associated charity text view
+            setTvOwnerRecipientInfo(vhChallenge, challenge);
+            // set number of participants text view
+            setTvNumParticipants(vhChallenge, challenge);
 
             // TODO if challenge has not yet begun, get time to start
+            // set time left in challenge text view
             vhChallenge.getTvTimeLeft().setText(getTimeLeft(Calendar.getInstance().getTime(), challenge.getChallengeEndDate()));
 
-            long amountRaised = challenge.getChallengeAmountRaised();
-            long amountTarget = challenge.getChallengeAmountTarget();
-            vhChallenge.getTvProgress().setText("$" + amountRaised + " raised of $" + amountTarget);
-
-            // set progress bar
-            vhChallenge.getPbProgress().setMax((int) amountTarget);
-            vhChallenge.getPbProgress().setProgress((int) amountRaised);
+            // set challenge progress text view and progress bar
+            setTvProgress(vhChallenge, challenge);
 
             // set challenge image placeholder
             int random = (int) (Math.random() * 100 + 1);
             Glide.with(context)
                     .load("https://picsum.photos/id/" + random + "/400/200")
                     .into(vhChallenge.getIvChallengeImage());
+        }
+    }
+
+    // set text view with donor-recipient information
+    private void setTvOwnerRecipientInfo(ChallengeViewHolder vhChallenge, Challenge challenge) {
+        String associatedCharity = challenge.getChallengeAssociatedCharityEin();
+        String associatedCharityName = challenge.getChallengeAssociatedCharityName();
+        String challengeOwner = challenge.getChallengeOwnerId();
+        String ownerRecipientInfo;
+
+        // check if challenge owner and associated charity are the same
+        if (associatedCharity.equals(challengeOwner)) {
+            ownerRecipientInfo = "Fundraiser by " + associatedCharityName;
+            vhChallenge.getTvChallengeOwnerRecipientInfo().setText(ownerRecipientInfo);
+        } else {
+            // owner is a user; get his or her name
+            // TODO refactor out into FirestoreClient
+            DocumentReference docRef = users.document(challengeOwner);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String ownerName = document.get("first_name") + " " + document.get("last_name");
+                            vhChallenge.getTvChallengeOwnerRecipientInfo()
+                                    .setText("Fundraiser for " + associatedCharityName +
+                                            " by " + ownerName);
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+        }
+    }
+
+    // set text view with number of participants
+    private void setTvNumParticipants(ChallengeViewHolder vhChallenge, Challenge challenge) {
+        int numParticipants = challenge.getChallengeNumParticipants();
+        if (numParticipants == 1) {
+            vhChallenge.getTvNumParticipants().setText(challenge.getChallengeNumParticipants() + " participant");
+        } else {
+            vhChallenge.getTvNumParticipants().setText(challenge.getChallengeNumParticipants() + " participants");
+        }
+    }
+
+    // TODO format amountRaised and amountTarget strings
+    // set text view with challenge progress information
+    private void setTvProgress(ChallengeViewHolder vhChallenge, Challenge challenge) {
+        long amountRaised = challenge.getChallengeAmountRaised();
+        long amountTarget = challenge.getChallengeAmountTarget();
+        // check if there is a target goal
+        if (amountTarget == 0) {
+            vhChallenge.getTvProgress().setText("$" + amountRaised + " raised");
+            // hide progress bar
+            vhChallenge.getPbProgress().setVisibility(GONE);
+        } else {
+            vhChallenge.getTvProgress().setText("$" + amountRaised + " raised of $" + amountTarget);
+            // set progress bar
+            vhChallenge.getPbProgress().setMax((int) amountTarget);
+            vhChallenge.getPbProgress().setProgress((int) amountRaised);
         }
     }
 
@@ -173,7 +197,6 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
             result.put(unit, diff);
         }
 
-        // TODO test logic
         if (result.get(TimeUnit.DAYS) > 1) {
             return result.get(TimeUnit.DAYS) + " days left";
         } else if (result.get(TimeUnit.DAYS) == 1) {

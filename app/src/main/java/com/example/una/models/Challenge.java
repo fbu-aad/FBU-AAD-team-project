@@ -44,13 +44,11 @@ public class Challenge {
         }
 
         if (challengeFields.containsKey("start_date")) {
-            // TODO clean code
             Timestamp timestamp = (Timestamp) challengeFields.get("start_date");
             startDate = (Date) timestamp.toDate();
         }
 
         if (challengeFields.containsKey("end_date")) {
-            // TODO clean code
             Timestamp timestamp = (Timestamp) challengeFields.get("end_date");
             endDate = (Date) timestamp.toDate();
         }

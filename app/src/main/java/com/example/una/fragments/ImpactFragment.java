@@ -79,7 +79,6 @@ public class ImpactFragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvChallenges.setLayoutManager(layoutManager);
-//        bindDataToAdapter(); // TODO ?
     }
 
     // place challenges for user here
@@ -105,9 +104,4 @@ public class ImpactFragment extends Fragment {
 
         return challenges;
     }
-
-//    private void bindDataToAdapter() {
-//        // Bind adapter to recycler view object
-//        rvChallenges.setAdapter(new StreaksComplexRecyclerViewAdapter(getChallenges()));
-//    }
 }
