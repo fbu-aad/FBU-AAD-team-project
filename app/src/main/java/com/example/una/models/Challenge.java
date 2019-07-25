@@ -18,7 +18,6 @@ public class Challenge {
     String associatedCharityEin;
     // TODO remove after getting charity name from API
     String associatedCharityName;
-    // TODO change to type Frequency
     String frequency;
     String ownerId;
     String type;
@@ -69,7 +68,6 @@ public class Challenge {
             associatedCharityName = (String) challengeFields.get("associated_charity_name");
         }
 
-        // TODO change to type Frequency
         if (challengeFields.containsKey("frequency")) {
             frequency = (String) challengeFields.get("frequency");
         }
