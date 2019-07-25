@@ -9,7 +9,5 @@
     <color name="scrim_center_grey">#66000000</color>
     <color name="scrim_start_black">#CC000000</color>
     <color name="white">#ffffff</color>
-    <color name="una_orange_1">#3DFFD9B2</color>
-    <color name="una_orange_2">#FFCA94</color>
     <color name="una_orange_3">#ffba93</color>
 </resources>

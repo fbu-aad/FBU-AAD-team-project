@@ -43,6 +43,5 @@ public class UnaStartupActivity extends AppCompatActivity {
     public void startCharityLogin() {
         Intent charityLoginIntent = new Intent(this, CharityLoginActivity.class);
         startActivity(charityLoginIntent);
-        finish();
     }
 }
