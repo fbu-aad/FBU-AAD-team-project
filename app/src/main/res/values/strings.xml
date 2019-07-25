@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Una</string>
-<<<<<<< HEAD
+
     <string name="text_explore">Explore</string>
-=======
+
     <string name="lowercase_app_name">una</string>
     <string name="text_home">Home</string>
->>>>>>> added startup page and created xml for charity login
+
     <string name="text_quick_donate">Frequent</string>
     <string name="text_notifications">Notifications</string>
     <string name="text_impact">Challenges</string>

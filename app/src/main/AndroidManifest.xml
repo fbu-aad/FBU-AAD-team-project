@@ -19,10 +19,12 @@
         <activity android:name=".CharityDetailsActivity" />
         <activity android:name=".CharitySearchListActivity" />
         <activity android:name=".LoginActivity"/>
-        <activity android:name=".CharityLoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity android:name=".UnaStartupActivity"
+        <activity android:name=".CharityHomeActivity"></activity>
+        <activity
+            android:name=".CharityLoginActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity
+            android:name=".UnaStartupActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
