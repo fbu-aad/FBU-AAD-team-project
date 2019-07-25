@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NavigationDrawerProfileActivity" />
         <activity android:name=".SurveyActivity" />
         <activity android:name=".DonationActivity" />
         <activity android:name=".CharityDetailsActivity" />
