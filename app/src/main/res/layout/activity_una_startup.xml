@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/una_orange_3"
+    tools:context=".UnaStartupActivity">
+
+    <TextView
+        android:id="@+id/tvAppTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:layout_marginBottom="100dp"
+        android:fontFamily="@font/nunito_sans"
+        android:text="@string/lowercase_app_name"
+        android:textColor="@color/white"
+        android:textSize="@dimen/extra_large_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/userLoginBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.83"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/userLoginBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/skinny_button_height"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:background="#00FFFFFF"
+        android:text="@string/user_login_prompt"
+        android:textColor="@color/white"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toTopOf="@+id/charityLoginBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAppTitle" />
+
+    <Button
+        android:id="@+id/charityLoginBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/skinny_button_height"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:layout_marginBottom="@dimen/small_padding"
+        android:background="#00FFFFFF"
+        android:text="@string/charity_login_prompt"
+        android:textColor="@color/white"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userLoginBtn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

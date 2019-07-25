@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.una.FirestoreClient;
+import com.example.una.UnaStartupActivity;
 import com.example.una.models.Challenge;
-import com.example.una.LoginActivity;
 import com.example.una.R;
 import com.example.una.adapters.StreaksComplexRecyclerViewAdapter;
 import com.firebase.ui.auth.AuthUI;
@@ -63,15 +63,15 @@ public class ChallengesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AuthUI.getInstance()
-                    .signOut(getContext())
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Intent signOutIntent = new Intent(getContext(), LoginActivity.class);
-                            startActivity(signOutIntent);
-                            getActivity().finish();
-                        }
-                    });
+                        .signOut(getContext())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent signOutIntent = new Intent(getContext(), UnaStartupActivity.class);
+                                startActivity(signOutIntent);
+                                getActivity().finish();
+                            }
+                        });
             }
         });
 
