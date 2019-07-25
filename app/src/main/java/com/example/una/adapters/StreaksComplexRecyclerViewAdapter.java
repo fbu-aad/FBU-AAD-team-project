@@ -10,16 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.una.FirestoreClient;
 import com.example.una.models.Challenge;
 import com.example.una.R;
 import com.example.una.Viewholders.ChallengeViewHolder;
 import com.example.una.Viewholders.StreaksViewHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -42,9 +40,8 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     public final static String TAG = "StreaksComplexRVAdapter";
     Context context;
 
-    // Access a Cloud Firestore instance
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference users = db.collection("users");
+    // Firestore client
+    FirestoreClient client;
 
     public StreaksComplexRecyclerViewAdapter(List<Object> items) {
         this.items = items;
@@ -67,6 +64,7 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         context = viewGroup.getContext();
+        client = new FirestoreClient();
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         if (viewType == CHALLENGE) {
@@ -137,39 +135,38 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
             ownerRecipientInfo = "Fundraiser by " + associatedCharityName;
             vhChallenge.getTvChallengeOwnerRecipientInfo().setText(ownerRecipientInfo);
         } else {
+            // TODO remove if only charities can create challenges
             // owner is a user; get his or her name
-            // TODO refactor out into FirestoreClient
-            DocumentReference docRef = users.document(challengeOwner);
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            client.getChallengeUserCreator(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             String ownerName = document.get("first_name") + " " + document.get("last_name");
+                            String tvChallengeOwnerRecipientInfo = "Fundraiser for "
+                                    + associatedCharityName + " by " + ownerName;
                             vhChallenge.getTvChallengeOwnerRecipientInfo()
-                                    .setText("Fundraiser for " + associatedCharityName +
-                                            " by " + ownerName);
-                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        } else {
-                            Log.d(TAG, "No such document");
+                                    .setText(tvChallengeOwnerRecipientInfo);
                         }
                     } else {
                         Log.d(TAG, "get failed with ", task.getException());
                     }
                 }
-            });
+            }, challengeOwner);
         }
     }
 
     // set text view with number of participants
     private void setTvNumParticipants(ChallengeViewHolder vhChallenge, Challenge challenge) {
         int numParticipants = challenge.getChallengeNumParticipants();
+        String sNumParticipants;
         if (numParticipants == 1) {
-            vhChallenge.getTvNumParticipants().setText(challenge.getChallengeNumParticipants() + " participant");
+            sNumParticipants = numParticipants + " participant";
         } else {
-            vhChallenge.getTvNumParticipants().setText(challenge.getChallengeNumParticipants() + " participants");
+            sNumParticipants = numParticipants + " participants";
         }
+        vhChallenge.getTvNumParticipants().setText(sNumParticipants);
     }
 
     // set text view with challenge progress information
@@ -178,17 +175,19 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
         long amountTarget = challenge.getChallengeAmountTarget();
         String sAmountRaised = formatCurrency(amountRaised);
         String sAmountTarget = formatCurrency(amountTarget);
+        String tvProgress;
         // check if there is a target goal
         if (amountTarget == 0) {
-            vhChallenge.getTvProgress().setText(sAmountRaised + " raised");
+            tvProgress = sAmountRaised + " raised";
             // hide progress bar
             vhChallenge.getPbProgress().setVisibility(GONE);
         } else {
-            vhChallenge.getTvProgress().setText(sAmountRaised + " raised of " + sAmountTarget);
+            tvProgress = sAmountRaised + " raised of " + sAmountTarget;
             // set progress bar
             vhChallenge.getPbProgress().setMax((int) amountTarget);
             vhChallenge.getPbProgress().setProgress((int) amountRaised);
         }
+        vhChallenge.getTvProgress().setText(tvProgress);
     }
 
     private String formatCurrency(long amount) {

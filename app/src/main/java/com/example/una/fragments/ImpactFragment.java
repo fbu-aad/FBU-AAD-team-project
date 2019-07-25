@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.una.FirestoreClient;
 import com.example.una.models.Challenge;
 import com.example.una.LoginActivity;
 import com.example.una.R;
@@ -21,8 +22,6 @@ import com.example.una.adapters.StreaksComplexRecyclerViewAdapter;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -37,10 +36,8 @@ public class ImpactFragment extends Fragment {
     @BindView(R.id.signOutButton) Button signOutButton;
     @BindView(R.id.rvChallenges) RecyclerView rvChallenges;
 
-    // Access a Cloud Firestore instance
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference crChallenges = db.collection("challenges");
     public final static String TAG = "ImpactFragment";
+    FirestoreClient client;
 
     ArrayList<Object> challenges;
     StreaksComplexRecyclerViewAdapter adapter;
@@ -53,6 +50,7 @@ public class ImpactFragment extends Fragment {
         challenges = new ArrayList<>();
         adapter = new StreaksComplexRecyclerViewAdapter(challenges);
         rvChallenges.setAdapter(adapter);
+        client = new FirestoreClient();
         getChallenges();
         return view;
     }
@@ -82,12 +80,10 @@ public class ImpactFragment extends Fragment {
     }
 
     // place challenges for user here
-    // TODO refactor into FirestoreClient
     private ArrayList<Object> getChallenges() {
         challenges.add("image");
         // get all challenges from Firestore and create a new Challenge object for each one
-        crChallenges.get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        client.getChallenges(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
