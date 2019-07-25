@@ -1,7 +1,9 @@
 package com.example.una.Viewholders;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,8 +17,13 @@ import butterknife.ButterKnife;
 
 public class ChallengeViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvChallengeTitle) TextView tvChallengeTitle;
-    @BindView(R.id.tvChallengeDescription) TextView tvChallengeDescription;
+    @BindView(R.id.tvChallengeOwnerRecipientInfo) TextView tvChallengeOwnerRecipientInfo;
     @BindView(R.id.ivChallenge) ImageView ivChallenge;
+    @BindView(R.id.tvNumParticipants) TextView tvNumParticipants;
+    @BindView(R.id.btnJoin) Button btnJoin;
+    @BindView(R.id.tvTimeLeft) TextView tvTimeLeft;
+    @BindView(R.id.tvProgress) TextView tvProgress;
+    @BindView(R.id.pbProgress) ProgressBar pbProgress;
 
     public ChallengeViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -28,11 +35,29 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
         return tvChallengeTitle;
     }
 
-    public TextView getTvChallengeDescription() {
-        return tvChallengeDescription;
+    public TextView getTvChallengeOwnerRecipientInfo() {
+        return tvChallengeOwnerRecipientInfo;
     }
 
-    public ImageView getChallengeImage() { return ivChallenge; }
+    public ImageView getIvChallengeImage() { return ivChallenge; }
+
+    public TextView getTvNumParticipants() { return tvNumParticipants; }
+
+    public Button getBtnJoin() {
+        return btnJoin;
+    }
+
+    public TextView getTvTimeLeft() {
+        return tvTimeLeft;
+    }
+
+    public TextView getTvProgress() {
+        return tvProgress;
+    }
+
+    public ProgressBar getPbProgress() {
+        return pbProgress;
+    }
 
     static class ChallengeClickListener implements View.OnClickListener {
         @Override
