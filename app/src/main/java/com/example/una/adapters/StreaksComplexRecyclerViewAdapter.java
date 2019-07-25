@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -28,6 +29,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -166,17 +168,24 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     private void setTvProgress(ChallengeViewHolder vhChallenge, Challenge challenge) {
         long amountRaised = challenge.getChallengeAmountRaised();
         long amountTarget = challenge.getChallengeAmountTarget();
+        String sAmountRaised = formatCurrency(amountRaised);
+        String sAmountTarget = formatCurrency(amountTarget);
         // check if there is a target goal
         if (amountTarget == 0) {
-            vhChallenge.getTvProgress().setText("$" + amountRaised + " raised");
+            vhChallenge.getTvProgress().setText(sAmountRaised + " raised");
             // hide progress bar
             vhChallenge.getPbProgress().setVisibility(GONE);
         } else {
-            vhChallenge.getTvProgress().setText("$" + amountRaised + " raised of $" + amountTarget);
+            vhChallenge.getTvProgress().setText(sAmountRaised + " raised of " + sAmountTarget);
             // set progress bar
             vhChallenge.getPbProgress().setMax((int) amountTarget);
             vhChallenge.getPbProgress().setProgress((int) amountRaised);
         }
+    }
+
+    private String formatCurrency(long amount) {
+        NumberFormat dollars = NumberFormat.getCurrencyInstance(Locale.US);
+        return dollars.format(amount);
     }
 
     private void configureStreakViewHolder(StreaksViewHolder vhStreak) {
