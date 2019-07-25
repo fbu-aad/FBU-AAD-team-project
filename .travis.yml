@@ -32,4 +32,6 @@ jobs:
         skip_cleanup: true
         prerelease: true
         overwrite: true
+        name: master
+        body: "Changes from $TRAVIS_COMMIT containing $TRAVIS_COMMIT_MESSAGE"
 
