@@ -1,0 +1,37 @@
+language: android
+dist: trusty
+android:
+  components:
+    # The BuildTools version used by your project
+    - build-tools-29.0.0
+
+    # The SDK version used to compile your project
+    - android-28
+
+    # Additional components
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+
+before_script:
+  # Create and start emulator
+  - echo $google_services_value > /home/travis/build/fbu-aad/FBU-AAD-team-project/app/google-services.json
+  - echo $secrets_value > /home/travis/build/fbu-aad/FBU-AAD-team-project/app/src/main/res/values/secrets.xml
+  - echo "updated json and xml file"
+
+jobs:
+  include:
+    - stage: test_and_build
+      script: ./gradlew assembleDebug
+    - stage: deploy
+      script: skip
+      deploy: 
+        provider: releases
+        api_key: $github_api_key
+        file: /home/travis/build/fbu-aad/FBU-AAD-team-project/app/build/outputs/apk/debug/debug-app.apk
+        skip_cleanup: true
+        prerelease: true
+        overwrite: true
+        name: master
+        body: "Changes from $TRAVIS_COMMIT containing $TRAVIS_COMMIT_MESSAGE"
+
