@@ -1,6 +1,6 @@
 package com.example.una;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,27 +9,43 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.una.models.Charity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import org.parceler.Parcels;
+
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class DonationActivity extends AppCompatActivity {
 
-    @BindView(R.id.charityName) TextView charityName;
-    @BindView(R.id.valueOK) Button valueOKBtn;
-    @BindView(R.id.valuePrompt) TextView valuePrompt;
-    @BindView(R.id.submitDonation) Button submitDonationBtn;
-    @BindView(R.id.amountInput) EditText amountInput;
+    @BindView(R.id.charityName)
+    TextView charityName;
+    @BindView(R.id.valueOK)
+    Button valueOKBtn;
+    @BindView(R.id.valuePrompt)
+    TextView valuePrompt;
+    @BindView(R.id.submitDonation)
+    Button submitDonationBtn;
+    @BindView(R.id.amountInput)
+    EditText amountInput;
 
     private final String TAG = "DonationActivity";
 
     boolean valueSet;
     private String currentAmount = "";
     private Double amount;
+    private Context context;
 
-    FirestoreClient firestoreClient = new FirestoreClient(this);
+    FirestoreClient firestoreClient = new FirestoreClient();
     private Charity charity;
 
     @Override
@@ -37,6 +53,7 @@ public class DonationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation);
         ButterKnife.bind(this);
+        context = this;
 
         charity = Parcels.unwrap(getIntent().getParcelableExtra("charity"));
         charityName.setText(charity.getName());
@@ -48,7 +65,21 @@ public class DonationActivity extends AppCompatActivity {
     @OnClick(R.id.submitDonation)
     public void submitDonation() {
         if (valueSet) {
-            firestoreClient.createNewDonation(amount, Frequency.SINGLE_DONATION, charity.getEin());
+            firestoreClient.createNewDonation(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    DecimalFormat df = new DecimalFormat("#0.00");
+                    Toast.makeText(context, String.format("You donated $%s!", df.format(amount)),
+                            Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "Donation Success!");
+                }
+            }, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(context, "Donation failure :(", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "Donation Failure", e);
+                }
+            }, amount, Frequency.SINGLE_DONATION, charity.getEin());
 
             Intent goHomeIntent = new Intent(this, MainActivity.class);
             startActivity(goHomeIntent);

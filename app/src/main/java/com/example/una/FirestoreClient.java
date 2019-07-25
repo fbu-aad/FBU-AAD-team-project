@@ -26,32 +26,18 @@ public class FirestoreClient {
     private final String TAG = "FirestoreClient";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser user;
-    Context context;
 
-    public FirestoreClient(Context context) {
+    public FirestoreClient() {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        this.context = context;
     }
 
-    public Charity getFavoriteCharity() {
+    public void getFavoriteCharity(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener) {
         DocumentReference docRef = db.collection("users").document(user.getUid());
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                // populate the charity here
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.i(TAG, "get favorite charity failed");
-            }
-        });
-
-        // TODO: populate this with the charity from the user data, not this default charity
-        return new Charity(context.getString(R.string.red_cross_ein), "American Red Cross");
+        docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
     }
 
-    public void createNewDonation(Double amount, String frequency, String recipientEin) {
+    public void createNewDonation(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener,
+                                  Double amount, String frequency, String recipientEin) {
         Date timeOfDonation = new Date();
         Map<String, Object> donation = new HashMap<>();
         donation.put("amount", amount);
@@ -60,20 +46,9 @@ public class FirestoreClient {
         donation.put("recipient", recipientEin);
         donation.put("time", new Timestamp(timeOfDonation));
 
-        db.collection("donations").document().set(donation).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                DecimalFormat df = new DecimalFormat("#0.00");
-                Toast.makeText(context, String.format("You donated $%s!", df.format(amount)), Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "Donation Success!");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Donation failure :(", Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "Donation Failure", e);
-            }
-        });
+        db.collection("donations").document().set(donation)
+                .addOnSuccessListener(onSuccessListener)
+                .addOnFailureListener(onFailureListener);
     }
 
     public FirebaseUser getCurrentUser() {
