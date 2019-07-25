@@ -14,7 +14,7 @@ android:
     - extra-android-m2repository
 
 before_script:
-  # Create and start emulator
+  # Add files not in source control
   - echo $google_services_value > /home/travis/build/fbu-aad/FBU-AAD-team-project/app/google-services.json
   - echo $secrets_value > /home/travis/build/fbu-aad/FBU-AAD-team-project/app/src/main/res/values/secrets.xml
   - echo "updated json and xml file"
@@ -33,5 +33,4 @@ jobs:
         prerelease: true
         overwrite: true
         name: master
-        body: "Changes from $TRAVIS_COMMIT containing $TRAVIS_COMMIT_MESSAGE"
 
