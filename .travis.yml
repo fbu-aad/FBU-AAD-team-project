@@ -2,11 +2,6 @@ language: android
 dist: trusty
 android:
   components:
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
-    # - tools
-    # - platform-tools
-
     # The BuildTools version used by your project
     - build-tools-29.0.0
 
@@ -18,14 +13,19 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
 
-    # Specify at least one system image,
-    # if you need to run emulator(s) during your tests
-    # - sys-img-x86-android-28
-    # - sys-img-armeabi-v7a-android-28
 before_script:
   # Create and start emulator
   - echo $google_services_value > /home/travis/build/fbu-aad/FBU-AAD-team-project/app/google-services.json
   - echo $secrets_value > /home/travis/build/fbu-aad/FBU-AAD-team-project/app/src/main/res/values/secrets.xml
   - echo "updated json and xml file"
 
-script: ./gradlew buildDebug
+jobs:
+  include:
+    - stage: test
+      script: ./gradlew test
+    - stage: build
+      script: ./gradlew assembleDebug
+      
+stages:
+  - test
+  - build
