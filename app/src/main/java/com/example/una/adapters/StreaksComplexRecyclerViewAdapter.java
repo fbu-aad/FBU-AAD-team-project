@@ -100,11 +100,8 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
             setTvOwnerRecipientInfo(vhChallenge, challenge);
             // set number of participants text view
             setTvNumParticipants(vhChallenge, challenge);
-
-            // TODO if challenge has not yet begun, get time to start
-            // set time left in challenge text view
-            vhChallenge.getTvTimeLeft().setText(getTimeLeft(Calendar.getInstance().getTime(), challenge.getChallengeEndDate()));
-
+            // set text view for time left to start or end date of challenge
+            setTvTimeLeft(vhChallenge, challenge);
             // set challenge progress text view and progress bar
             setTvProgress(vhChallenge, challenge);
 
@@ -113,6 +110,18 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
             Glide.with(context)
                     .load("https://picsum.photos/id/" + random + "/400/200")
                     .into(vhChallenge.getIvChallengeImage());
+        }
+    }
+
+    private void setTvTimeLeft(ChallengeViewHolder vhChallenge, Challenge challenge) {
+        // set time left in challenge text view
+        Date now = Calendar.getInstance().getTime();
+        Date startDate = challenge.getChallengeStartDate();
+        Date endDate = challenge.getChallengeEndDate();
+        if (startDate.after(now)) {
+            vhChallenge.getTvTimeLeft().setText(getTimeLeft("Begins in ", now, startDate));
+        } else {
+            vhChallenge.getTvTimeLeft().setText(getTimeLeft("Ends in ", now, endDate));
         }
     }
 
@@ -163,7 +172,6 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
         }
     }
 
-    // TODO format amountRaised and amountTarget strings
     // set text view with challenge progress information
     private void setTvProgress(ChallengeViewHolder vhChallenge, Challenge challenge) {
         long amountRaised = challenge.getChallengeAmountRaised();
@@ -193,7 +201,7 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     }
 
     // https://stackoverflow.com/questions/42610657/how-to-calculate-the-time-left-untill-some-date
-    public static String getTimeLeft(Date date1, Date date2) {
+    public static String getTimeLeft(String beginOrEnd, Date date1, Date date2) {
         long diffInMillies = date2.getTime() - date1.getTime();
         List<TimeUnit> units = new ArrayList<TimeUnit>(EnumSet.allOf(TimeUnit.class));
         Collections.reverse(units);
@@ -207,17 +215,17 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
         }
 
         if (result.get(TimeUnit.DAYS) > 1) {
-            return result.get(TimeUnit.DAYS) + " days left";
+            return beginOrEnd + result.get(TimeUnit.DAYS) + " days";
         } else if (result.get(TimeUnit.DAYS) == 1) {
-            return result.get(TimeUnit.DAYS) + " day left";
+            return beginOrEnd + result.get(TimeUnit.DAYS) + " day";
         } else if (result.get(TimeUnit.HOURS) > 1) {
-            return result.get(TimeUnit.HOURS) + " hours left";
+            return beginOrEnd + result.get(TimeUnit.HOURS) + " hours";
         } else if (result.get(TimeUnit.HOURS) == 1) {
-            return result.get(TimeUnit.HOURS) + " hour left";
+            return beginOrEnd + result.get(TimeUnit.HOURS) + " hour";
         } else if (result.get(TimeUnit.MINUTES) > 1) {
-            return result.get(TimeUnit.MINUTES) + " minutes left";
+            return beginOrEnd + result.get(TimeUnit.MINUTES) + " minutes";
         } else if (result.get(TimeUnit.MINUTES) == 1) {
-            return result.get(TimeUnit.MINUTES) + " minute left";
+            return beginOrEnd + result.get(TimeUnit.MINUTES) + " minute";
         } else {
             return "Fundraiser ended";
         }
