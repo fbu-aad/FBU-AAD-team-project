@@ -63,15 +63,15 @@ public class ImpactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AuthUI.getInstance()
-                        .signOut(getContext())
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Intent signOutIntent = new Intent(getContext(), LoginActivity.class);
-                                startActivity(signOutIntent);
-                                getActivity().finish();
-                            }
-                        });
+                    .signOut(getContext())
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Intent signOutIntent = new Intent(getContext(), LoginActivity.class);
+                            startActivity(signOutIntent);
+                            getActivity().finish();
+                        }
+                    });
             }
         });
 

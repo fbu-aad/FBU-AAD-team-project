@@ -35,7 +35,7 @@ import static android.view.View.GONE;
 
 public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // The challenges to display in your RecyclerView
-    private List<Object> items;
+    private ArrayList<Object> challenges;
     private final int IMAGE = 0, CHALLENGE = 1;
     public final static String TAG = "StreaksComplexRVAdapter";
     Context context;
@@ -43,13 +43,13 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     // Firestore client
     FirestoreClient client;
 
-    public StreaksComplexRecyclerViewAdapter(List<Object> items) {
-        this.items = items;
+    public StreaksComplexRecyclerViewAdapter(ArrayList<Object> challenges) {
+        this.challenges = challenges;
     }
 
     @Override
     public int getItemCount() {
-        return this.items.size();
+        return this.challenges.size();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         if (viewType == CHALLENGE) {
             View itemViewChallenge = inflater.inflate(R.layout.challenge_item_layout, viewGroup, false);
-            viewHolder = new ChallengeViewHolder(itemViewChallenge);
+            viewHolder = new ChallengeViewHolder(itemViewChallenge, challenges, context);
         }
         else {
             View itemViewStreaks = inflater.inflate(R.layout.user_current_streaks_layout, viewGroup, false);
@@ -90,7 +90,7 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     }
 
     private void configureChallengeViewHolder(ChallengeViewHolder vhChallenge, int position) {
-        Challenge challenge = (Challenge) items.get(position);
+        Challenge challenge = (Challenge) challenges.get(position);
         if (challenge != null) {
             // set challenge title text view
             vhChallenge.getTvChallengeTitle().setText(challenge.getChallengeName());
