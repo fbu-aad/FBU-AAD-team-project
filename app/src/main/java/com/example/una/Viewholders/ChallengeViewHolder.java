@@ -49,7 +49,6 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
                     detailChallenge.putExtra(Challenge.class.getSimpleName(), Parcels.wrap(challenge));
                     context.startActivity(detailChallenge);
                 }
-                Toast.makeText(v.getContext(), "I am working", Toast.LENGTH_LONG).show();
             }
         });
     }
