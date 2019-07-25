@@ -21,11 +21,15 @@ before_script:
 
 jobs:
   include:
-    - stage: test
-      script: ./gradlew test
-    - stage: build
+    - stage: test_and_build
       script: ./gradlew assembleDebug
-      
-stages:
-  - test
-  - build
+    - stage: deploy
+      script: skip
+      deploy: 
+        provider: releases
+        api_key: $github_api_key
+        file: /home/travis/build/fbu-aad/FBU-AAD-team-project/app/build/outputs/apk/debug/debug-app.apk
+        skip_cleanup: true
+        prerelease: true
+        overwrite: true
+
