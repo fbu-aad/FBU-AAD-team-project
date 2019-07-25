@@ -29,4 +29,5 @@
     <dimen name="pb_margin_end_padding">108dp</dimen>
     <dimen name="pb_margin_right_padding">108dp</dimen>
     <dimen name="no_layout_width_textview">0dp</dimen>
+    <dimen name="navigation_drawer_heading_height">150dp</dimen>
 </resources>

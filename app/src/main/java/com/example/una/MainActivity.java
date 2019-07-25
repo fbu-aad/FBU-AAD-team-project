@@ -1,27 +1,43 @@
 package com.example.una;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.una.fragments.HomePageFragment;
-
 import com.example.una.fragments.ImpactFragment;
 import com.example.una.fragments.MapsViewFragment;
 import com.example.una.fragments.QuickDonateFragment;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
+    @BindView(R.id.nvDrawer) NavigationView nvDrawer;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        setupDrawerContent(nvDrawer);
+        drawerToggle = setupDrawerToggle();
+        drawerLayout.addDrawerListener(drawerToggle);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -59,4 +75,61 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.action_home_page);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        switch(menuItem.getItemId()) {
+            case R.id.profile_item:
+                Toast.makeText(this, "Profile Item is working", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.donation_history_item:
+                Toast.makeText(this, "Donation History Item is working", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.notification_item:
+                Toast.makeText(this, "Notifications Item is working", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                Toast.makeText(this, "Default Item", Toast.LENGTH_LONG).show();
+        }
+
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        drawerLayout.closeDrawers();
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open,  R.string.drawer_close);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
 }
