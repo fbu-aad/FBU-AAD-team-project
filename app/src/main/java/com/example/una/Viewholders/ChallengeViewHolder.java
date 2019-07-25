@@ -1,5 +1,6 @@
 package com.example.una.Viewholders;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -7,9 +8,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.una.ChallengeDetailsActivity;
@@ -46,8 +48,14 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
                     Challenge challenge = (Challenge) challenges.get(position);
                     // open detail view of challenge
                     Intent detailChallenge = new Intent(context, ChallengeDetailsActivity.class);
+                    Pair<View, String> p1 = Pair.create((View) ivChallenge, "image");
+                    Pair<View, String> p2 = Pair.create((View) tvChallengeTitle, "title");
+
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation((Activity) context, p1, p2);
+
                     detailChallenge.putExtra(Challenge.class.getSimpleName(), Parcels.wrap(challenge));
-                    context.startActivity(detailChallenge);
+                    context.startActivity(detailChallenge, options.toBundle());
                 }
             }
         });

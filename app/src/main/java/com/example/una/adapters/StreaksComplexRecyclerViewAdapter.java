@@ -105,8 +105,10 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
 
             // set challenge image placeholder
             int random = (int) (Math.random() * 100 + 1);
+            String url = "https://picsum.photos/id/" + random + "/400/200";
+            challenge.setChallengeImageURl(url);
             Glide.with(context)
-                    .load("https://picsum.photos/id/" + random + "/400/200")
+                    .load(url)
                     .into(vhChallenge.getIvChallengeImage());
         }
     }

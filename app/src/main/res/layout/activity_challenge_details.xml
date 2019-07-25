@@ -23,6 +23,7 @@
 
     <ImageView
         android:id="@+id/ivChallenge"
+        android:transitionName="image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -33,6 +34,7 @@
 
     <TextView
         android:id="@+id/tvChallengeTitle"
+        android:transitionName="title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_padding"
@@ -83,7 +85,7 @@
         android:layout_marginEnd="@dimen/small_padding"
         android:layout_marginRight="@dimen/small_padding"
         android:layout_marginBottom="@dimen/small_padding"
-        android:text="Join"
+        android:text="@string/join"
         app:layout_constraintBottom_toBottomOf="@+id/tvNumParticipants"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvChallengeTitle" />

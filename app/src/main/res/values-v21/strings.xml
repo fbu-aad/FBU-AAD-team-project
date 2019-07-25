@@ -48,14 +48,6 @@
 
     <string name="about_us_msg">About us!</string>
     <string name="for_more_info_charity_msg">For more info, please visit our link below!</string>
-
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-
-    <string name="navigation_drawer_profile">Profile Settings</string>
-    <string name="navigation_drawer_donation_history">Donation History</string>
-    <string name="navigation_drawer_header">My Name</string>
-    <string name="navigation_drawer_notifications">Notifications</string>
     <string name="donate">Donate</string>
     <string name="about">About</string>
     <string name="join">Join</string>

@@ -93,9 +93,8 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
         }
 
         // set challenge image placeholder
-        int random = (int) (Math.random() * 100 + 1);
         Glide.with(context)
-                .load("https://picsum.photos/id/" + random + "/400/200")
+                .load(challenge.getChallengeImageUrl())
                 .into(ivChallenge);
     }
 

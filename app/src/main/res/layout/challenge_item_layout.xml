@@ -36,6 +36,7 @@
 
         <ImageView
             android:id="@+id/ivChallenge"
+            android:transitionName="image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -46,6 +47,7 @@
 
         <TextView
             android:id="@+id/tvChallengeTitle"
+            android:transitionName="title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="@dimen/small_padding"
