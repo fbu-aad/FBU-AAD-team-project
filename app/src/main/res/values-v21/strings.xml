@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Una</string>
+    <string name="text_home">Home</string>
+    <string name="text_quick_donate">Frequent</string>
+    <string name="text_maps_view">Maps</string>
+    <string name="text_impact">Streaks</string>
+
+    <string name="text_donate_quickly">Donate Quickly!</string>
+
+    <string name="text_search_view">Search</string>
+    <string name="text_home_featured">Featured</string>
+    <string name="text_home_recommended">Recommended for You</string>
+    <string name="text_home_explore">Explore</string>
+    <string name="challenge_description_dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In molestie, tellus sollicitudin eleifend mollis, sapien mi gravida arcu, nec dapibus.</string>
+
+    <string name="featured_list_id">15</string>
+
+    <string name="text_survey_complete_profile">Complete Your Profile</string>
+    <string name="text_survey_complete_profile_info">Your account information is private and is not shared with nonprofits.</string>
+    <string name="text_survey_first_name">First Name</string>
+    <string name="text_survey_last_name">Last Name</string>
+    <string name="text_survey_cb_human_services">Human Services</string>
+    <string name="text_survey_first_name_hint">Mark</string>
+    <string name="text_survey_last_name_hint">Zuckerberg</string>
+    <string name="text_survey_cause_areas">Cause Areas</string>
+    <string name="text_survey_cb_education">Education</string>
+    <string name="text_survey_cb_international">International</string>
+    <string name="text_survey_cb_rights">Human and Civil Rights</string>
+    <string name="text_survey_cb_religion">Religion</string>
+    <string name="text_survey_cb_animals">Animals</string>
+    <string name="text_survey_cb_arts">Arts, Culture, Humanities</string>
+    <string name="text_survey_cb_environment">Environment</string>
+    <string name="text_survey_cb_health">Health</string>
+    <string name="text_survey_cb_community">Community Development</string>
+    <string name="text_survey_cb_research">Research and Public Policy</string>
+    <string name="text_survey_btn_submit">Submit</string>
+    <string name="text_survey_cause_areas_info">Select the cause areas that interest you. We use this information to help you discover nonprofits.</string>
+
+    <string name="donate_value_prompt">How much would you like to donate?</string>
+    <string name="donate_charity_correct_prompt">Is this the correct charity?</string>
+    <string name="donate_value_accept">Ok</string>
+    <string name="donate_submit">Make an Impact</string>
+
+    <string name="donation_success">Donation Success!</string>
+    <string name="donation_no_input">Please input a donation amount.</string>
+    <string name="donation_hint">$0.00</string>
+    <string name="red_cross_ein">530196605</string>
+
+    <string name="about_us_msg">About us!</string>
+    <string name="for_more_info_charity_msg">For more info, please visit our link below!</string>
+    <string name="donate">Donate</string>
+    <string name="about">About</string>
+    <string name="join">Join</string>
+</resources>
