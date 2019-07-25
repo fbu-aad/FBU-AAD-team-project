@@ -29,7 +29,6 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
     Challenge challenge;
     Context context;
     FirestoreClient client;
-    public final static String TAG = "ChallengeDetails";
 
     // the view objects
     @BindView(R.id.ivChallenge) ImageView ivChallenge;
