@@ -1,5 +1,6 @@
 package com.example.una;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.una.NavigationDrawerActivities.DonationHistoryActivity;
 import com.example.una.fragments.HomePageFragment;
 import com.example.una.fragments.ImpactFragment;
 import com.example.una.fragments.MapsViewFragment;
@@ -102,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.donation_history_item:
                 Toast.makeText(this, "Donation History Item is working", Toast.LENGTH_LONG).show();
+                Intent donationIntent = new Intent(MainActivity.this, DonationHistoryActivity.class);
+                startActivity(donationIntent);
                 break;
             case R.id.notification_item:
                 Toast.makeText(this, "Notifications Item is working", Toast.LENGTH_LONG).show();
