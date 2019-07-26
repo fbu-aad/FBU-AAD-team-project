@@ -1,32 +1,19 @@
 package com.example.una.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.una.ChallengeDetailsActivity;
 import com.example.una.FirestoreClient;
 import com.example.una.models.Challenge;
 import com.example.una.R;
 import com.example.una.Viewholders.ChallengeViewHolder;
 import com.example.una.Viewholders.StreaksViewHolder;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
