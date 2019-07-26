@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
@@ -16,7 +17,6 @@ import java.util.Map;
 
 public class FirestoreClient {
 
-    private final String TAG = "FirestoreClient";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference users = db.collection("users");
     private CollectionReference challenges = db.collection("challenges");
@@ -31,10 +31,22 @@ public class FirestoreClient {
         docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
     }
 
-    // TODO remove if only charities can create challenges
     public void getChallengeUserCreator(OnCompleteListener onCompleteListener, String challengeOwner) {
         DocumentReference docRef = users.document(challengeOwner);
         docRef.get().addOnCompleteListener(onCompleteListener);
+    }
+
+    public void getChallengeParticipants(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener, String challengeId) {
+        DocumentReference docRef = challenges.document(challengeId);
+        docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
+    }
+
+    public void addUserToChallenge(String challengeId, String userId) {
+        challenges.document(challengeId).update("users_accepted", FieldValue.arrayUnion(userId));
+    }
+
+    public void removeUserFromChallenge(String challengeId, String userId) {
+        challenges.document(challengeId).update("users_accepted", FieldValue.arrayRemove(userId));
     }
 
     public void getChallenges(OnCompleteListener onCompleteListener) {

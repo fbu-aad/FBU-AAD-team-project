@@ -1,19 +1,29 @@
 package com.example.una;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.example.una.models.Challenge;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -21,6 +31,8 @@ import static android.view.View.GONE;
 import static com.example.una.utils.ChallengeViewsUtil.getStrNumParticipants;
 import static com.example.una.utils.ChallengeViewsUtil.getStrProgress;
 import static com.example.una.utils.ChallengeViewsUtil.getStrTimeLeft;
+import static com.example.una.utils.ChallengeViewsUtil.handleClickJoinBtn;
+import static com.example.una.utils.ChallengeViewsUtil.setJoinBtn;
 import static com.example.una.utils.ChallengeViewsUtil.setPbProgress;
 import static com.example.una.utils.ChallengeViewsUtil.setTvOwnerRecipientInfo;
 
@@ -35,7 +47,8 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tvChallengeTitle) TextView tvChallengeTitle;
     @BindView(R.id.tvChallengeOwnerRecipientInfo) TextView tvChallengeOwnerRecipientInfo;
     @BindView(R.id.tvNumParticipants) TextView tvNumParticipants;
-    @BindView(R.id.btnJoin) Button btnJoin;
+    @BindView(R.id.btnJoin) ToggleButton btnJoin;
+    @BindView(R.id.btnDonate) ToggleButton btnDonate;
     @BindView(R.id.tvTimeLeft) TextView tvTimeLeft;
     @BindView(R.id.pbProgress) ProgressBar pbProgress;
     @BindView(R.id.tvProgress) TextView tvProgress;
@@ -75,6 +88,10 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
         Glide.with(context)
                 .load(challenge.getChallengeImageUrl())
                 .into(ivChallenge);
+
+        setJoinBtn(btnJoin, btnDonate, challenge);
+
+        handleClickJoinBtn(btnJoin, btnDonate, challenge, context);
     }
 
     private void setChip(String sChip, Chip chip) {
