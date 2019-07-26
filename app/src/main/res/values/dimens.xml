@@ -47,5 +47,6 @@
     <dimen name="charity_item_textview_font_size">18sp</dimen>
 
     <dimen name="skinny_button_height">32dp</dimen>
+    <dimen name="profile_image_width">48dp</dimen>
 
 </resources>

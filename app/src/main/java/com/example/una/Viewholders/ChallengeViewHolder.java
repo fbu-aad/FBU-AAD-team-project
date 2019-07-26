@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -89,4 +90,11 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
     public ProgressBar getPbProgress() {
         return pbProgress;
     }
+
+static class ChallengeClickListener implements View.OnClickListener {
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(v.getContext(), "I am working", Toast.LENGTH_LONG).show();
+    }
+}
 }
