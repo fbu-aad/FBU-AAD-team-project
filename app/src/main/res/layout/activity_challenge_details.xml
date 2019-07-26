@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChallengeDetailsActivity">
+
+    <TextView
+        android:id="@+id/tvChallengeOwnerRecipientInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:text="TextView"
+        android:textSize="@dimen/challenge_description_font"
+        app:layout_constraintEnd_toStartOf="@+id/btnJoin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvChallengeTitle" />
+
+    <ImageView
+        android:id="@+id/ivChallenge"
+        android:transitionName="image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic[2]" />
+
+    <TextView
+        android:id="@+id/tvChallengeTitle"
+        android:transitionName="title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="@dimen/challenge_title_font"
+        app:layout_constraintEnd_toEndOf="@+id/ivChallenge"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivChallenge" />
+
+    <TextView
+        android:id="@+id/tvNumParticipants"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/btnJoin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvChallengeOwnerRecipientInfo" />
+
+    <View
+        android:id="@+id/viewTop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNumParticipants" />
+
+    <Button
+        android:id="@+id/btnJoin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:layout_marginBottom="@dimen/small_padding"
+        android:text="@string/join"
+        app:layout_constraintBottom_toBottomOf="@+id/tvNumParticipants"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvChallengeTitle" />
+
+    <TextView
+        android:id="@+id/tvTimeLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewTop" />
+
+    <TextView
+        android:id="@+id/tvProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pbProgress" />
+
+    <ProgressBar
+        android:id="@+id/pbProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/standard_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTimeLeft" />
+
+    <View
+        android:id="@+id/viewBottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProgress" />
+
+    <Button
+        android:id="@+id/btnDonate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:layout_marginBottom="@dimen/small_padding"
+        android:text="@string/donate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvAbout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:text="@string/about"
+        android:textSize="@dimen/challenge_title_font"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewBottom" />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:layout_marginBottom="@dimen/small_padding"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/chipGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAbout" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:layout_marginBottom="@dimen/small_padding"
+        app:layout_constraintBottom_toTopOf="@+id/btnDonate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipFrequency"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/btnDonate"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipType"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_padding"
+            app:layout_constraintBottom_toTopOf="@+id/btnDonate"
+            app:layout_constraintStart_toEndOf="@+id/chipFrequency" />
+    </com.google.android.material.chip.ChipGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

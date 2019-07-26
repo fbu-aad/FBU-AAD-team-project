@@ -2,10 +2,13 @@ package com.example.una.models;
 
 import com.google.firebase.Timestamp;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
+@Parcel
 public class Challenge {
     String name;
     String description;
@@ -23,6 +26,7 @@ public class Challenge {
     String type;
     ArrayList<String> usersAccepted;
 
+    public Challenge() {}
 
     public Challenge(Map<String, Object> challengeFields) {
         if (challengeFields.containsKey("name")) {
@@ -92,6 +96,8 @@ public class Challenge {
     public String getChallengeImageUrl() {
         return imageUrl;
     }
+
+    public void setChallengeImageURl(String url) { this.imageUrl = url; }
 
     public int getChallengeNumParticipants() {
         return numParticipants;

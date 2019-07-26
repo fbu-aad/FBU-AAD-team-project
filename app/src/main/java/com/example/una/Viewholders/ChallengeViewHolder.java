@@ -1,16 +1,26 @@
 package com.example.una.Viewholders;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.una.ChallengeDetailsActivity;
 import com.example.una.R;
+import com.example.una.models.Challenge;
+
+import org.parceler.Parcels;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,10 +35,30 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvProgress) TextView tvProgress;
     @BindView(R.id.pbProgress) ProgressBar pbProgress;
 
-    public ChallengeViewHolder(@NonNull View itemView) {
+    public ChallengeViewHolder(@NonNull View itemView, ArrayList<Object> challenges, Context context) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        itemView.setOnClickListener(new ChallengeClickListener());
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // get item position
+                int position = getAdapterPosition();
+                // make sure the position is valid, i.e. actually exists in the view
+                if (position != RecyclerView.NO_POSITION) {
+                    Challenge challenge = (Challenge) challenges.get(position);
+                    // open detail view of challenge
+                    Intent detailChallenge = new Intent(context, ChallengeDetailsActivity.class);
+                    Pair<View, String> p1 = Pair.create((View) ivChallenge, "image");
+                    Pair<View, String> p2 = Pair.create((View) tvChallengeTitle, "title");
+
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation((Activity) context, p1, p2);
+
+                    detailChallenge.putExtra(Challenge.class.getSimpleName(), Parcels.wrap(challenge));
+                    context.startActivity(detailChallenge, options.toBundle());
+                }
+            }
+        });
     }
 
     public TextView getTvChallengeTitle() {
@@ -57,12 +87,5 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
 
     public ProgressBar getPbProgress() {
         return pbProgress;
-    }
-
-    static class ChallengeClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(v.getContext(), "I am working", Toast.LENGTH_LONG).show();
-        }
     }
 }

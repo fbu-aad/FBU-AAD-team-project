@@ -56,4 +56,7 @@
     <string name="navigation_drawer_donation_history">Donation History</string>
     <string name="navigation_drawer_header">My Name</string>
     <string name="navigation_drawer_notifications">Notifications</string>
+    <string name="donate">Donate</string>
+    <string name="about">About</string>
+    <string name="join">Join</string>
 </resources>
