@@ -104,7 +104,7 @@ public class Challenge {
         return imageUrl;
     }
 
-    public void setChallengeImageURl(String url) { this.imageUrl = url; }
+    public void setChallengeImageUrl(String url) { this.imageUrl = url; }
 
     public int getChallengeNumParticipants() {
         return numParticipants;
