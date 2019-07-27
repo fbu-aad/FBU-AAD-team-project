@@ -1,19 +1,18 @@
 package com.example.una;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.example.una.models.Challenge;
 import com.google.android.material.chip.Chip;
-
 import org.parceler.Parcels;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -21,6 +20,8 @@ import static android.view.View.GONE;
 import static com.example.una.utils.ChallengeViewsUtil.getStrNumParticipants;
 import static com.example.una.utils.ChallengeViewsUtil.getStrProgress;
 import static com.example.una.utils.ChallengeViewsUtil.getStrTimeLeft;
+import static com.example.una.utils.ChallengeViewsUtil.handleClickJoinBtn;
+import static com.example.una.utils.ChallengeViewsUtil.setJoinBtn;
 import static com.example.una.utils.ChallengeViewsUtil.setPbProgress;
 import static com.example.una.utils.ChallengeViewsUtil.setTvOwnerRecipientInfo;
 
@@ -29,14 +30,14 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
     Challenge challenge;
     Context context;
     FirestoreClient client;
-    public final static String TAG = "ChallengeDetails";
 
     // the view objects
     @BindView(R.id.ivChallenge) ImageView ivChallenge;
     @BindView(R.id.tvChallengeTitle) TextView tvChallengeTitle;
     @BindView(R.id.tvChallengeOwnerRecipientInfo) TextView tvChallengeOwnerRecipientInfo;
     @BindView(R.id.tvNumParticipants) TextView tvNumParticipants;
-    @BindView(R.id.btnJoin) Button btnJoin;
+    @BindView(R.id.btnJoin) ToggleButton btnJoin;
+    @BindView(R.id.btnDonate) ToggleButton btnDonate;
     @BindView(R.id.tvTimeLeft) TextView tvTimeLeft;
     @BindView(R.id.pbProgress) ProgressBar pbProgress;
     @BindView(R.id.tvProgress) TextView tvProgress;
@@ -76,6 +77,10 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
         Glide.with(context)
                 .load(challenge.getChallengeImageUrl())
                 .into(ivChallenge);
+
+        setJoinBtn(btnJoin, btnDonate, challenge);
+
+        handleClickJoinBtn(btnJoin, btnDonate, challenge, context);
     }
 
     private void setChip(String sChip, Chip chip) {

@@ -10,6 +10,7 @@ import java.util.Map;
 
 @Parcel
 public class Challenge {
+    String uid;
     String name;
     String description;
     String imageUrl;
@@ -28,7 +29,9 @@ public class Challenge {
 
     public Challenge() {}
 
-    public Challenge(Map<String, Object> challengeFields) {
+    public Challenge(Map<String, Object> challengeFields, String uid) {
+        this.uid = uid;
+
         if (challengeFields.containsKey("name")) {
             name = (String) challengeFields.get("name");
         }
@@ -85,6 +88,10 @@ public class Challenge {
         }
     }
 
+    public String getUid() {
+        return uid;
+    }
+
     public String getChallengeName() {
         return name;
     }
@@ -97,7 +104,7 @@ public class Challenge {
         return imageUrl;
     }
 
-    public void setChallengeImageURl(String url) { this.imageUrl = url; }
+    public void setChallengeImageUrl(String url) { this.imageUrl = url; }
 
     public int getChallengeNumParticipants() {
         return numParticipants;

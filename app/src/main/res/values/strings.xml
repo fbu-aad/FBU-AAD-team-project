@@ -59,4 +59,6 @@
     <string name="donate">Donate</string>
     <string name="about">About</string>
     <string name="join">Join</string>
+    <string name="donated">Donated</string>
+    <string name="joined">Joined</string>
 </resources>

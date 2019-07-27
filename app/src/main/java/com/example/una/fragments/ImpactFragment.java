@@ -88,7 +88,7 @@ public class ImpactFragment extends Fragment {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot challengeDoc : task.getResult()) {
-                            challenges.add(new Challenge(challengeDoc.getData()));
+                            challenges.add(new Challenge(challengeDoc.getData(), challengeDoc.getId()));
                             Log.d(TAG, challengeDoc.getId() + " => " + challengeDoc.getData());
                         }
                         adapter.notifyDataSetChanged();

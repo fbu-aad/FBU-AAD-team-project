@@ -1,16 +1,26 @@
 package com.example.una.utils;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 
+import com.example.una.ChallengeDetailsActivity;
 import com.example.una.FirestoreClient;
 import com.example.una.models.Challenge;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import org.parceler.Parcels;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -60,6 +70,64 @@ public class ChallengeViewsUtil {
                 }
             }, challengeOwner);
         }
+    }
+
+    // set join button depending on whether user already accepted challenge
+    public static void setJoinBtn(ToggleButton btnJoin, ToggleButton btnDonate, Challenge challenge) {
+        String userId = client.getCurrentUser().getUid();
+        String challengeId = challenge.getUid();
+        client.getChallengeParticipants(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                ArrayList<String> usersAccepted = (ArrayList<String>) documentSnapshot.get("users_accepted");
+                if (usersAccepted.contains(userId)) {
+                    btnJoin.setChecked(true);
+                    if (btnDonate != null) {
+                        btnDonate.setEnabled(true);
+                    }
+                } else {
+                    btnJoin.setChecked(false);
+                    if (btnDonate != null) {
+                        btnDonate.setEnabled(false);
+                    }
+                }
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        }, challengeId);
+    }
+
+    // set on click listener for join button
+    public static void handleClickJoinBtn(ToggleButton btnJoin, ToggleButton btnDonate, Challenge challenge, Context context) {
+        String userId = client.getCurrentUser().getUid();
+        String challengeId = challenge.getUid();
+        btnJoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!btnJoin.isChecked()) {
+                    // user already joined; click to leave, removing user from challenge collection
+                    client.removeUserFromChallenge(challengeId, userId);
+                    if (btnDonate != null) {
+                        btnDonate.setEnabled(false);
+                    }
+                    Toast.makeText(context, "You have left the challenge", Toast.LENGTH_SHORT).show();
+                } else {
+                    // add user to challenge collection
+                    client.addUserToChallenge(challengeId, userId);
+                    if (btnDonate != null) {
+                        btnDonate.setEnabled(true);
+                    } else {
+                        Intent challengeDetails = new Intent(context, ChallengeDetailsActivity.class);
+                        challengeDetails.putExtra(Challenge.class.getSimpleName(), Parcels.wrap(challenge));
+                        context.startActivity(challengeDetails);
+                    }
+                    Toast.makeText(context, "You have joined the challenge", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     // get number of participants string

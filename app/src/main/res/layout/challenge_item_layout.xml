@@ -73,7 +73,7 @@
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/tvChallengeOwnerRecipientInfo" />
 
-        <Button
+        <ToggleButton
             android:id="@+id/btnJoin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,7 +81,8 @@
             android:layout_marginEnd="@dimen/small_padding"
             android:layout_marginRight="@dimen/small_padding"
             android:layout_marginBottom="@dimen/small_padding"
-            android:text="Join"
+            android:textOff="@string/join"
+            android:textOn="@string/joined"
             card_view:layout_constraintBottom_toBottomOf="@+id/tvNumParticipants"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/tvChallengeTitle" />

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ToggleButton;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,11 +14,14 @@ import com.example.una.models.Challenge;
 import com.example.una.R;
 import com.example.una.Viewholders.ChallengeViewHolder;
 import com.example.una.Viewholders.StreaksViewHolder;
+
 import java.util.ArrayList;
 
 import static com.example.una.utils.ChallengeViewsUtil.getStrNumParticipants;
 import static com.example.una.utils.ChallengeViewsUtil.getStrProgress;
 import static com.example.una.utils.ChallengeViewsUtil.getStrTimeLeft;
+import static com.example.una.utils.ChallengeViewsUtil.handleClickJoinBtn;
+import static com.example.una.utils.ChallengeViewsUtil.setJoinBtn;
 import static com.example.una.utils.ChallengeViewsUtil.setPbProgress;
 import static com.example.una.utils.ChallengeViewsUtil.setTvOwnerRecipientInfo;
 
@@ -100,10 +104,16 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
             // set challenge image placeholder
             int random = (int) (Math.random() * 100 + 1);
             String url = "https://picsum.photos/id/" + random + "/400/200";
-            challenge.setChallengeImageURl(url);
+            challenge.setChallengeImageUrl(url);
             Glide.with(context)
                     .load(url)
                     .into(vhChallenge.getIvChallengeImage());
+
+            // set join button depending on whether user already accepted challenge
+            ToggleButton btnJoin = vhChallenge.getBtnJoin();
+            setJoinBtn(btnJoin, null, challenge);
+
+            handleClickJoinBtn(btnJoin, null, challenge, context);
         }
     }
 

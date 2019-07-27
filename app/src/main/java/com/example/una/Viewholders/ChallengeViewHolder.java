@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
@@ -30,7 +31,7 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvChallengeOwnerRecipientInfo) TextView tvChallengeOwnerRecipientInfo;
     @BindView(R.id.ivChallenge) ImageView ivChallenge;
     @BindView(R.id.tvNumParticipants) TextView tvNumParticipants;
-    @BindView(R.id.btnJoin) Button btnJoin;
+    @BindView(R.id.btnJoin) ToggleButton btnJoin;
     @BindView(R.id.tvTimeLeft) TextView tvTimeLeft;
     @BindView(R.id.tvProgress) TextView tvProgress;
     @BindView(R.id.pbProgress) ProgressBar pbProgress;
@@ -73,7 +74,7 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
 
     public TextView getTvNumParticipants() { return tvNumParticipants; }
 
-    public Button getBtnJoin() {
+    public ToggleButton getBtnJoin() {
         return btnJoin;
     }
 
