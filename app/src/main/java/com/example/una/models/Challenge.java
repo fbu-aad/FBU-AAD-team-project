@@ -26,6 +26,7 @@ public class Challenge {
     String ownerId;
     String type;
     ArrayList<String> usersAccepted;
+    long defaultAmount;
 
     public Challenge() {}
 
@@ -85,6 +86,10 @@ public class Challenge {
 
         if (challengeFields.containsKey("type")) {
             type = (String) challengeFields.get("type");
+        }
+
+        if (challengeFields.containsKey("default_amount")) {
+            defaultAmount = (long) challengeFields.get("default_amount");
         }
     }
 
@@ -148,5 +153,9 @@ public class Challenge {
 
     public ArrayList<String> getChallengeUsersAccepted() {
         return usersAccepted;
+    }
+
+    public long getDefaultAmount() {
+        return defaultAmount;
     }
 }

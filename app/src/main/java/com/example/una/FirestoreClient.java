@@ -65,6 +65,10 @@ public class FirestoreClient {
         challenges.document(challengeId).update("users_accepted", FieldValue.arrayRemove(userId));
     }
 
+    public void addDonorToChallenge(String challengeId, String userId) {
+        challenges.document(challengeId).update("users_donated", FieldValue.arrayUnion(userId));
+    }
+
     public void getChallenges(OnCompleteListener onCompleteListener) {
         challenges.get().addOnCompleteListener(onCompleteListener);
     }

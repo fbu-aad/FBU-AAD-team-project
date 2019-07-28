@@ -80,11 +80,8 @@ public class ChallengeViewsUtil {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 ArrayList<String> usersAccepted = (ArrayList<String>) documentSnapshot.get("users_accepted");
-                if (usersAccepted.contains(userId)) {
+                if (usersAccepted != null && usersAccepted.contains(userId)) {
                     btnJoin.setChecked(true);
-                    if (btnDonate != null) {
-                        btnDonate.setEnabled(true);
-                    }
                 } else {
                     btnJoin.setChecked(false);
                     if (btnDonate != null) {
@@ -118,7 +115,9 @@ public class ChallengeViewsUtil {
                     // add user to challenge collection
                     client.addUserToChallenge(challengeId, userId);
                     if (btnDonate != null) {
-                        btnDonate.setEnabled(true);
+                        if (!btnDonate.isEnabled() && !btnDonate.isChecked()) {
+                            btnDonate.setEnabled(true);
+                        }
                     } else {
                         Intent challengeDetails = new Intent(context, ChallengeDetailsActivity.class);
                         challengeDetails.putExtra(Challenge.class.getSimpleName(), Parcels.wrap(challenge));
