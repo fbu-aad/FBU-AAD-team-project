@@ -21,7 +21,7 @@ public class CurrencyTextWatcher implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (!s.toString().equals(currentAmount)) {
+        if (!s.toString().equals("") && !s.toString().equals(currentAmount)) {
             // remove the change listener
             editText.removeTextChangedListener(this);
 

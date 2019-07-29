@@ -46,7 +46,6 @@ public class FirestoreClient {
         }
     }
 
-    // TODO remove if only charities can create challenges
     public void getChallengeUserCreator(OnCompleteListener onCompleteListener, String challengeOwner) {
         DocumentReference docRef = users.document(challengeOwner);
         docRef.get().addOnCompleteListener(onCompleteListener);
@@ -93,6 +92,11 @@ public class FirestoreClient {
 
     public void getCharityBroadcasts(String ein, OnCompleteListener onCompleteListener) {
         broadcasts.whereEqualTo("charity_ein", ein).get().addOnCompleteListener(onCompleteListener);
+    }
+
+    public void getChallengeDefaultAmount(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener, String challengeId) {
+        DocumentReference docRef = challenges.document(challengeId);
+        docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
     }
 
     public void createNewDonation(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener,
