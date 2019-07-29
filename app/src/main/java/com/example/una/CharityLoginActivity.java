@@ -3,7 +3,9 @@ package com.example.una;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -38,6 +40,7 @@ public class CharityLoginActivity extends AppCompatActivity {
     private final String TAG = "CharityLoginActivity";
     FirestoreClient client;
     FirebaseAuth mAuth;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,8 @@ public class CharityLoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         client = new FirestoreClient();
         mAuth = FirebaseAuth.getInstance();
+
+        context = this;
     }
 
     @OnClick(R.id.signUpBtn)
@@ -69,6 +74,12 @@ public class CharityLoginActivity extends AppCompatActivity {
                                 client.setNewCharity(name, ein, email, new OnSuccessListener() {
                                     @Override
                                     public void onSuccess(Object o) {
+                                        SharedPreferences sharedPref = context.getSharedPreferences(
+                                                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        editor.putBoolean("user_is_not_charity", false);
+                                        editor.apply();
+
                                         Log.d(TAG, String.format("%s successfully added", name));
                                         startCharityHome(new Charity(ein, name));
                                     }
@@ -76,6 +87,7 @@ public class CharityLoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Log.d(TAG, String.format("%s not added to database", name));
+                                        mAuth.signOut();
                                     }
                                 });
 
@@ -104,6 +116,12 @@ public class CharityLoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                SharedPreferences sharedPref = context.getSharedPreferences(
+                                        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putBoolean("user_is_not_charity", false);
+                                editor.apply();
+
                                 // make sure the user is in Firestore and check name and ein
                                 client.getCharityUserFromEin(ein, new OnCompleteListener<DocumentSnapshot>() {
                                     @Override

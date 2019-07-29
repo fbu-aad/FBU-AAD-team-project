@@ -1,6 +1,8 @@
 package com.example.una;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     // Access a Cloud Firestore instance
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference users = db.collection("users");
+    Context context;
 
     final List<AuthUI.IdpConfig> PROVIDERS = Arrays.asList(
             new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -46,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        context = this;
     }
 
     // start the login process
@@ -79,6 +84,12 @@ public class LoginActivity extends AppCompatActivity {
             // TODO never enters if block upon login - sign-in error
             if (resultCode == RESULT_OK) {
                 Log.i(TAG, "starting home activity from activity result");
+                SharedPreferences sharedPref = context.getSharedPreferences(
+                        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean("user_is_not_charity", true);
+                editor.apply();
+
                 // user is signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 startHomeActivity(user);
