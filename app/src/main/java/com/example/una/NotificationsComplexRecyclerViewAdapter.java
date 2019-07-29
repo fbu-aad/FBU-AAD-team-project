@@ -29,13 +29,13 @@ public class NotificationsComplexRecyclerViewAdapter extends RecyclerView.Adapte
 
     public NotificationsComplexRecyclerViewAdapter(List<Object> items) {
         this.items = items;
+        client = new FirestoreClient();
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        client = new FirestoreClient();
 
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(context);

@@ -5,19 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
 import com.example.una.models.Broadcast;
-import com.example.una.models.Challenge;
 import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -32,16 +28,14 @@ import butterknife.OnClick;
 public class CharityHomeActivity extends AppCompatActivity {
 
     Charity charity;
-    @BindView(R.id.rvNotifications) RecyclerView rvNotifications;
+    @BindView(R.id.rvBroadcasts) RecyclerView rvBroadcasts;
     @BindView(R.id.signOutBtn) Button signOutBtn;
 
     private final String TAG = "CharityHomeActivity";
     FirestoreClient client;
 
-    ArrayList<Object> notifications;
     ArrayList<Broadcast> broadcasts;
-    ArrayList<Challenge> challenges;
-    NotificationsComplexRecyclerViewAdapter adapter;
+    BroadcastsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,59 +44,47 @@ public class CharityHomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         charity = Parcels.unwrap(getIntent().getParcelableExtra("charity"));
-        notifications = new ArrayList<>();
-        challenges = new ArrayList<>();
         broadcasts = new ArrayList<>();
-        adapter = new NotificationsComplexRecyclerViewAdapter(notifications);
-        rvNotifications.setAdapter(adapter);
+        adapter = new BroadcastsAdapter(broadcasts);
+
+        rvBroadcasts.setAdapter(adapter);
         client = new FirestoreClient();
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        rvNotifications.setLayoutManager(layoutManager);
+        rvBroadcasts.setLayoutManager(layoutManager);
 
         getBroadcasts();
-        getCharitySpecificChallenges();
+        // getCharitySpecificChallenges();
     }
 
     @OnClick(R.id.signOutBtn)
     public void signOutCharity() {
-        FirebaseAuth.getInstance().signOut();
         Intent goToStartupPage = new Intent(this, UnaStartupActivity.class);
         startActivity(goToStartupPage);
     }
 
+    // TODO create tab view with two screens for the challenges and donations
+
     // get the charities broadcasts
     private void getBroadcasts() {
+        Log.i(TAG, String.format("Getting broadcasts for %s", charity.getEin()));
         client.getCharityBroadcasts(charity.getEin(), new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot broadcastsDoc : task.getResult()) {
-                        Log.i(TAG, broadcastsDoc.getData().toString());
-                        broadcasts.add(new Broadcast(broadcastsDoc.getData()));
+                    Log.i(TAG, "completed getting broadcasts");
+                    int count = 0;
+                    QuerySnapshot result = task.getResult();
+                    for (QueryDocumentSnapshot broadcastsDoc : result) {
+                        count++;
+                        broadcasts.add(0, new Broadcast(broadcastsDoc.getData()));
                     }
-                    notifications.addAll(broadcasts);
-                    adapter.notifyDataSetChanged();
+                    Log.i(TAG, "" + count);
+                    adapter.notifyItemInserted(0);
                 } else {
-                    Log.d(TAG, "Error getting notifications: ", task.getException());
+                    Log.d(TAG, "Error getting broadcasts: ", task.getException());
                 }
             }
-        });
-    }
-
-    // query the charity's challenges
-    private void getCharitySpecificChallenges() {
-        client.getCharitySpecificChallenges(charity.getEin(), new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        challenges.add(new Challenge(document.getData()));
-                    }
-                    notifications.addAll(challenges);
-                    // TODO sort the arrays by time so that the broadcasts arent always above the challenges
-                    adapter.notifyDataSetChanged();
-                }
-             }
         });
     }
 }
