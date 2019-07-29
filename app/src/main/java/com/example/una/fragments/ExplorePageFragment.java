@@ -36,14 +36,14 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class HomePageFragment extends Fragment {
+public class ExplorePageFragment extends Fragment {
     public RecyclerView verticalRecyclerView;
     public VerticalRecyclerViewAdapter adapter;
     ArrayList<HomeFragmentSection> arrayListVertical;
 
     protected ArrayList<Object> categories = new ArrayList<>();
     protected ArrayList<Object> featured = new ArrayList<>();
-    public final static String TAG = "HomePageFragment";
+    public final static String TAG = "ExplorePageFragment";
     CharityNavigatorClient client;
 
     @Nullable

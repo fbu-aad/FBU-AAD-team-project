@@ -31,12 +31,12 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ImpactFragment extends Fragment {
+public class ChallengesFragment extends Fragment {
     @BindString(R.string.challenge_description_dummy_text) String challengeDescription;
     @BindView(R.id.signOutButton) Button signOutButton;
     @BindView(R.id.rvChallenges) RecyclerView rvChallenges;
 
-    public final static String TAG = "ImpactFragment";
+    public final static String TAG = "ChallengesFragment";
     FirestoreClient client;
 
     ArrayList<Object> challenges;

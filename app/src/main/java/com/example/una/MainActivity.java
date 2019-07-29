@@ -14,9 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.una.NavigationDrawerActivities.DonationHistoryActivity;
-import com.example.una.fragments.HomePageFragment;
-import com.example.una.fragments.ImpactFragment;
-import com.example.una.fragments.MapsViewFragment;
+import com.example.una.fragments.ExplorePageFragment;
+import com.example.una.fragments.ChallengesFragment;
+import com.example.una.fragments.NotificationsFragment;
 import com.example.una.fragments.QuickDonateFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -45,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
-        final Fragment homePageFragment = new HomePageFragment();
+        final Fragment explorePageFragment = new ExplorePageFragment();
         final Fragment quickDonateFragment = new QuickDonateFragment();
-        final Fragment mapsViewFragment = new MapsViewFragment();
-        final Fragment impactFragment = new ImpactFragment();
+        final Fragment notificationsFragment = new NotificationsFragment();
+        final Fragment challengesFragment = new ChallengesFragment();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_home);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -56,27 +56,27 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 Fragment fragment;
                 switch (menuItem.getItemId()) {
-                    case R.id.action_home_page:
-                        fragment = homePageFragment;
+                    case R.id.action_explore:
+                        fragment = explorePageFragment;
                         break;
                     case R.id.action_quick_donate:
                         fragment = quickDonateFragment;
                         break;
-                    case R.id.action_maps_view:
-                        fragment = mapsViewFragment;
+                    case R.id.action_notifications:
+                        fragment = notificationsFragment;
                         break;
-                    case R.id.action_impact:
-                        fragment = impactFragment;
+                    case R.id.action_challenges:
+                        fragment = challengesFragment;
                         break;
                     default:
-                        fragment = homePageFragment;
+                        fragment = explorePageFragment;
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flMainFragments, fragment).commit();
                 return true;
             }
         });
-        bottomNavigationView.setSelectedItemId(R.id.action_home_page);
+        bottomNavigationView.setSelectedItemId(R.id.action_quick_donate);
     }
 
     @Override

@@ -2,29 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_home_page"
-        android:enabled="true"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/text_home"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_quick_donate"
         android:enabled="true"
-        android:icon="@drawable/ic_cuppa_24dp"
+        android:icon="@drawable/ic_quick_dontaion"
         android:title="@string/text_quick_donate"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_maps_view"
-        android:enabled="true"
-        android:icon="@drawable/ic_explore_black_24dp"
-        android:title="@string/text_maps_view"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/action_impact"
+        android:id="@+id/action_challenges"
         android:enabled="true"
         android:icon="@drawable/ic_streak_black_24dp"
         android:title="@string/text_impact"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_explore"
+        android:enabled="true"
+        android:icon="@drawable/ic_explore_black_24dp"
+        android:title="@string/text_explore"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_notifications"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:title="@string/text_notifications"
         app:showAsAction="ifRoom" />
 
 </menu>
