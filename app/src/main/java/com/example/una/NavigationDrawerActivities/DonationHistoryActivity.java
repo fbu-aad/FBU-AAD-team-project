@@ -2,9 +2,12 @@ package com.example.una.NavigationDrawerActivities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,22 +30,33 @@ public class DonationHistoryActivity extends AppCompatActivity {
 
     @BindView(R.id.rvDonations)
     RecyclerView rvDonations;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     public final static String TAG = "DonationHistoryActivity";
     FirestoreClient client;
 
     List<Donation> donations; // passes to my adapter class
     DonationsHistoryAdapter adapter; // what handles the item in the RecyclerView
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Set action bar title
+        setTitle(R.string.navigation_drawer_donation_history);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation_history);
         ButterKnife.bind(this);
-
         donations = new ArrayList<>(); // currently creating new donation list
-
         adapter = new DonationsHistoryAdapter(donations); // stop and go to adapter
+        setSupportActionBar(toolbar);
+        // enabling action bar app icon and behaving it as toggle button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         // sets up the rows in the recycler view
         // taking all item XML's and organize them in a linear fashion
@@ -51,18 +65,20 @@ public class DonationHistoryActivity extends AppCompatActivity {
         rvDonations.setLayoutManager(linearLayoutManager);
         // giving an adapter to the recyclerView
         rvDonations.setAdapter(adapter);
+        // divides each item within in the recyclerView with a horizontal line
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvDonations.getContext(), linearLayoutManager.getOrientation());
+        rvDonations.addItemDecoration(dividerItemDecoration);
 
         // TODO -- endless scrolling here using endless recycler view holder
 
-        // FETCH DONATIONS FROM FIREBASE
         client = new FirestoreClient();
-        // not needed to notify adapter because it's currently empty
+        // FETCH DONATIONS FROM FIREBASE
         fetchDonations();
     }
 
     // fetch donations for user here
     private void fetchDonations() {
-        // get all donations from Firestore and create a new Donation object for each one
+        // get donations from current user from Firestore and create a new Donation object for each one
         client.findDonationsByUserId(client.getCurrentUser().getUid(), new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -70,6 +86,7 @@ public class DonationHistoryActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot donationDoc : task.getResult()) {
                         donations.add(new Donation(donationDoc.getData()));
                         Log.d(TAG, donationDoc.getId() + " => " + donationDoc.getData());
+                        Log.i("DonationDoc ID: ", donationDoc.getId());
                     }
                     // notifies that adapter has been changed
                     // need to notify here because at this point, the data has been added to donations list
@@ -80,4 +97,5 @@ public class DonationHistoryActivity extends AppCompatActivity {
             }
         });
     }
+
 }

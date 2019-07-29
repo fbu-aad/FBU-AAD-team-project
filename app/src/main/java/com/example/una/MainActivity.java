@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        // telling android to use the toolbar as the actionbar
         setSupportActionBar(toolbar);
+
         setupDrawerContent(nvDrawer);
         drawerToggle = setupDrawerToggle();
         drawerLayout.addDrawerListener(drawerToggle);
@@ -115,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
         // Close the navigation drawer
         drawerLayout.closeDrawers();
     }

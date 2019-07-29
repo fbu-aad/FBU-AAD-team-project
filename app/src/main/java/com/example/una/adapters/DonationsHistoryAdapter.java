@@ -22,6 +22,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DonationsHistoryAdapter extends RecyclerView.Adapter<DonationsHistoryAdapter.ViewHolder> {
 
     private List<Donation> mDonations;
@@ -32,18 +35,13 @@ public class DonationsHistoryAdapter extends RecyclerView.Adapter<DonationsHisto
     // create ViewHolder class
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView ivCharityImage;
-        public TextView tvCharityName;
-        public TextView tvDonationAmount;
-        public TextView tvTimestamp;
-
+        @BindView(R.id.ivCharityImage) ImageView ivCharityImage;
+        @BindView(R.id.tvCharityName) TextView tvCharityName;
+        @BindView(R.id.tvDonationAmount) TextView tvDonationAmount;
+        @BindView(R.id.tvTimestamp) TextView tvTimestamp;
         public ViewHolder(View itemView) {
             super(itemView);
-            // perform findViewById lookups
-            ivCharityImage = itemView.findViewById(R.id.ivCharityImage);
-            tvCharityName = itemView.findViewById(R.id.tvCharityName);
-            tvDonationAmount = itemView.findViewById(R.id.tvDonationAmount);
-            tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
+            ButterKnife.bind(this, itemView);
         }
     }
 
@@ -60,12 +58,9 @@ public class DonationsHistoryAdapter extends RecyclerView.Adapter<DonationsHisto
         // this will inflate each row with our XML layout for that item
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View donationItemView = inflater.inflate(R.layout.item_donation_history, parent, false);
         final ViewHolder viewHolder = new ViewHolder(donationItemView);
-
-        // implement onclicklisteners here
-
+        // TODO -- implement onclicklisteners here
         return viewHolder;
     }
 
@@ -75,14 +70,10 @@ public class DonationsHistoryAdapter extends RecyclerView.Adapter<DonationsHisto
         // gets the viewHolder from onCreateViewHolder and populates it with data for each UI element
         // get the data according to position
         Donation donation = mDonations.get(position);
-
         // populate the views according to this data
-        viewHolder.tvDonationAmount.setText(donation.getDonationAmount().toString());
-
-        SimpleDateFormat sfd = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
-
+        viewHolder.tvDonationAmount.setText("$" + donation.getDonationAmount().toString());
+        SimpleDateFormat sfd = new SimpleDateFormat("MM/dd/yy");
         viewHolder.tvTimestamp.setText(sfd.format(donation.getTimestamp().toDate()));
-
         client.findCharityByEIN(donation.getRecipient(), new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
