@@ -15,8 +15,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-
 import org.parceler.Parcels;
 
 import java.util.Map;
@@ -31,10 +32,12 @@ public class CharityLoginActivity extends AppCompatActivity {
     @BindView(R.id.etCharityEin) EditText etCharityEin;
     @BindView(R.id.etCharityName) EditText etCharityName;
     @BindView(R.id.signUpBtn) Button signUpBtn;
+    @BindView(R.id.loginBtn) Button loginBtn;
     @BindView(R.id.etEmail) EditText etEmail;
 
     private final String TAG = "CharityLoginActivity";
     FirestoreClient client;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,57 +46,95 @@ public class CharityLoginActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         client = new FirestoreClient();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @OnClick(R.id.signUpBtn)
+    public void signUpCharity() {
+        String name = etCharityName.getText().toString();
+        String ein = etCharityEin.getText().toString();
+        String email = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
+
+        if(checkInputs(name, ein, email, password)) {
+            Charity charityUser = new Charity(ein, name);
+
+            // sign up the user with firebase
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // sign up the user with firestore
+                                client.setNewCharity(name, ein, email, new OnSuccessListener() {
+                                    @Override
+                                    public void onSuccess(Object o) {
+                                        Log.d(TAG, String.format("%s successfully added", name));
+                                        startCharityHome(new Charity(ein, name));
+                                    }
+                                }, new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, String.format("%s not added to database", name));
+                                    }
+                                });
+
+                                startCharityHome(charityUser);
+                            } else {
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(CharityLoginActivity.this,
+                                        "Authentication Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+    }
+
+    @OnClick(R.id.loginBtn)
     public void logInCharity() {
         final String name = etCharityName.getText().toString();
         final String ein = etCharityEin.getText().toString();
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
+
         if (checkInputs(name, ein, email, password)) {
-            client.getCharityUserFromEin(ein, new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot doc = task.getResult();
-                        if (!doc.exists()) {
-                            // add the charity user to the database
-                            Log.i(TAG, "adding new user to the database");
+            // sign in the charity with firebase
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // make sure the user is in Firestore and check name and ein
+                                client.getCharityUserFromEin(ein, new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot doc = task.getResult();
+                                            if (!doc.exists()) {
+                                                Log.d(TAG, "user signed in that is not in the database");
+                                            } else {
+                                                String storedName;
+                                                Map<String, Object> fields = doc.getData();
+                                                if (fields.containsKey("name")) {
+                                                    storedName = (String) fields.get("name");
+                                                } else {
+                                                    Log.d(TAG, "charity name not stored");
+                                                    storedName = name;
+                                                }
 
-                            client.setNewCharity(name, ein, email, new OnSuccessListener() {
-                                @Override
-                                public void onSuccess(Object o) {
-                                    Log.d(TAG, String.format("%s successfully added", name));
-                                    startCharityHome(new Charity(ein, name));
-                                }
-                            }, new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d(TAG, String.format("%s not added to database", name));
-                                }
-                            });
-
-                        } else {
-                            String storedName;
-
-                            Map<String, Object> fields = doc.getData();
-                            if (fields.containsKey("name")) {
-                                storedName = (String) fields.get("name");
+                                                Charity charity = new Charity(ein, name);
+                                                startCharityHome(charity);
+                                            }
+                                        }
+                                    }
+                                });
                             } else {
-                                Log.d(TAG, "charity name not stored");
-                                storedName = name;
+                                Log.w(TAG, "loginUserWithEmail:failure", task.getException());
+                                Toast.makeText(CharityLoginActivity.this,
+                                        "Authentication Failed", Toast.LENGTH_SHORT).show();
                             }
-
-                            Charity charity = new Charity(ein, name);
-                            startCharityHome(charity);
                         }
-                    } else {
-                        Toast.makeText(CharityLoginActivity.this, "Error Accessing Database",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+                    });
         }
 
     }

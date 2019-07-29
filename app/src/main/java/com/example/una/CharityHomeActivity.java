@@ -14,6 +14,7 @@ import com.example.una.models.Broadcast;
 import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -59,6 +60,7 @@ public class CharityHomeActivity extends AppCompatActivity {
 
     @OnClick(R.id.signOutBtn)
     public void signOutCharity() {
+        FirebaseAuth.getInstance().signOut();
         Intent goToStartupPage = new Intent(this, UnaStartupActivity.class);
         startActivity(goToStartupPage);
     }

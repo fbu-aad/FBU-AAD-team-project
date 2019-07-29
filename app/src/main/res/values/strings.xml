@@ -76,7 +76,7 @@
     <string name="user_login_prompt">user login</string>
     <string name="charity_login_prompt">charity login</string>
 
-    <string name="charity_signup_explanation">Log in to connect to your donors</string>
+    <string name="charity_signup_explanation">Sign up to connect to your donors</string>
     <string name="charity_login_explanation">Log in</string>
     <string name="your_charity_ein">Charity EIN</string>
     <string name="your_charity_name">Charity Name</string>

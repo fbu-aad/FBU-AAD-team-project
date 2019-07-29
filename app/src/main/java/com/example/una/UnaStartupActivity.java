@@ -22,6 +22,8 @@ public class UnaStartupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_una_startup);
 
         ButterKnife.bind(this);
+
+
     }
 
     @OnClick(R.id.userLoginBtn)
