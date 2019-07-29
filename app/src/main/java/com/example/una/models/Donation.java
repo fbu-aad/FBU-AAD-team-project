@@ -5,7 +5,6 @@ import com.google.firebase.Timestamp;
 import java.util.Map;
 
 public class Donation {
-    String id; // Donation's document ID
     Timestamp timestamp;
     Number donationAmount;
     String recipient;

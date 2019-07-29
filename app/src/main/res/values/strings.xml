@@ -65,6 +65,4 @@
 
     <string name="donation_item_you_donated">You Donated: </string>
     <string name="donation_item_timestamp">On: </string>
-
->>>>>>> Added current user's donation history to navigation drawer.
 </resources>

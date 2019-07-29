@@ -17,23 +17,9 @@ public class DonationHistoryViewHolder extends RecyclerView.ViewHolder {
     TextView tvDonationName;
     @BindView(R.id.tvDonationAmount)
     TextView tvDonationAmount;
-//    @BindView(R.id.tvTimeStamp)
-//    Timestamp tvTimeStamp;
 
     public DonationHistoryViewHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
-
-    public TextView getTvDonationName() {
-        return tvDonationName;
-    }
-
-    public TextView getTvDonationAmount() {
-        return tvDonationAmount;
-    }
-
-//    public Timestamp getTvTimeStamp() {
-//        return tvTimeStamp;
-//    }
 }
