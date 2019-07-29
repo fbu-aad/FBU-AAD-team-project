@@ -56,9 +56,13 @@
     <string name="navigation_drawer_donation_history">Donation History</string>
     <string name="navigation_drawer_header">My Name</string>
     <string name="navigation_drawer_notifications">Notifications</string>
+
     <string name="donate">Donate</string>
     <string name="about">About</string>
     <string name="join">Join</string>
     <string name="donated">Donated</string>
     <string name="joined">Joined</string>
+
+    <string name="donation_item_you_donated">You Donated: </string>
+    <string name="donation_item_timestamp">On: </string>
 </resources>

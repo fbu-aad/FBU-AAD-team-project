@@ -20,6 +20,8 @@ public class FirestoreClient {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference users = db.collection("users");
     private CollectionReference challenges = db.collection("challenges");
+    private CollectionReference donations = db.collection("donations");
+    private CollectionReference charities = db.collection("charity_users");
     private FirebaseUser user;
 
     public FirestoreClient() {
@@ -53,6 +55,20 @@ public class FirestoreClient {
         challenges.get().addOnCompleteListener(onCompleteListener);
     }
 
+    public void getCharity(String charityKey, OnCompleteListener onCompleteListener) {
+        DocumentReference docRef = charities.document(charityKey);
+        docRef.get().addOnCompleteListener(onCompleteListener);
+    }
+
+    public void findCharityByEIN(String ein, OnCompleteListener onCompleteListener) {
+        // findCharityByEIN compares current Donation's EIN to charity's EIN
+        charities.whereEqualTo("ein", ein).get().addOnCompleteListener(onCompleteListener);
+    }
+
+    public void findDonationsByUserId(String userId, OnCompleteListener onCompleteListener) {
+        donations.whereEqualTo("donor_id", userId).get().addOnCompleteListener(onCompleteListener);
+    }
+
     public void createNewDonation(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener,
                                   Double amount, String frequency, String recipientEin) {
         Date timeOfDonation = new Date();
@@ -63,7 +79,7 @@ public class FirestoreClient {
         donation.put("recipient", recipientEin);
         donation.put("time", new Timestamp(timeOfDonation));
 
-        db.collection("donations").document().set(donation)
+        donations.document().set(donation)
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
     }
