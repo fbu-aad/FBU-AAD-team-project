@@ -51,7 +51,7 @@ public class QuickDonateFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 String charityName = (String) documentSnapshot.get("fav_charity_name");
-                String charityEin =(String) documentSnapshot.get("fav_charity_ein");
+                String charityEin = documentSnapshot.get("fav_charity_ein").toString();
                 charity = new Charity(charityEin, charityName);
 
                 tvCharityName.setText(charity.getName());

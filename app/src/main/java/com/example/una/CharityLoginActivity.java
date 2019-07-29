@@ -85,7 +85,7 @@ public class CharityLoginActivity extends AppCompatActivity {
                                 storedName = name;
                             }
 
-                            Charity charity = new Charity(storedName, ein);
+                            Charity charity = new Charity(ein, name);
                             startCharityHome(charity);
                         }
                     } else {

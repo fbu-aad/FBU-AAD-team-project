@@ -68,18 +68,16 @@ public class CharityHomeActivity extends AppCompatActivity {
     // get the charities broadcasts
     private void getBroadcasts() {
         Log.i(TAG, String.format("Getting broadcasts for %s", charity.getEin()));
+        Log.d(TAG, charity.getEin());
         client.getCharityBroadcasts(charity.getEin(), new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     Log.i(TAG, "completed getting broadcasts");
-                    int count = 0;
                     QuerySnapshot result = task.getResult();
                     for (QueryDocumentSnapshot broadcastsDoc : result) {
-                        count++;
                         broadcasts.add(0, new Broadcast(broadcastsDoc.getData()));
                     }
-                    Log.i(TAG, "" + count);
                     adapter.notifyItemInserted(0);
                 } else {
                     Log.d(TAG, "Error getting broadcasts: ", task.getException());
