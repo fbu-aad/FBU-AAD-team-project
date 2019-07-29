@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.una.R;
 
-public class MapsViewFragment extends Fragment {
+public class NotificationsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_map_view, container, false);
