@@ -1,7 +1,9 @@
 <resources>
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/una_paper</item>
+        <item name="colorPrimaryDark">@color/una_charcoal</item>
+        <item name="colorAccent">@color/una_gold</item>
+
     </style>
 </resources>

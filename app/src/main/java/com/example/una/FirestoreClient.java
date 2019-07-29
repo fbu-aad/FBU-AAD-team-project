@@ -1,5 +1,7 @@
 package com.example.una;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,8 +37,12 @@ public class FirestoreClient {
         docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
     }
 
-    public void getCharityFromEmail(OnCompleteListener onCompleteListener) {
-
+    public void getCharityUserFromEin(String ein, OnCompleteListener onCompleteListener) {
+        if (ein == null) {
+            Log.d(TAG, "EIN is null");
+        } else {
+            charityUsers.document(ein).get().addOnCompleteListener(onCompleteListener);
+        }
     }
 
     // TODO remove if only charities can create challenges
@@ -101,5 +107,16 @@ public class FirestoreClient {
 
     public FirebaseUser getCurrentUser() {
         return user;
+    }
+
+    public void setNewCharity(String name, String ein, String email, OnSuccessListener onSuccessListener,
+                              OnFailureListener onFailureListener) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", name);
+        data.put("ein", ein);
+        data.put("email", email);
+
+        charityUsers.document(ein).set(data).addOnSuccessListener(onSuccessListener)
+                .addOnFailureListener(onFailureListener);
     }
 }

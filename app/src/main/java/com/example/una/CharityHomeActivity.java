@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Notification;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import com.example.una.models.Broadcast;
 import com.example.una.models.Challenge;
@@ -15,6 +17,7 @@ import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -24,11 +27,13 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class CharityHomeActivity extends AppCompatActivity {
 
     Charity charity;
     @BindView(R.id.rvNotifications) RecyclerView rvNotifications;
+    @BindView(R.id.signOutBtn) Button signOutBtn;
 
     private final String TAG = "CharityHomeActivity";
     FirestoreClient client;
@@ -58,6 +63,13 @@ public class CharityHomeActivity extends AppCompatActivity {
         getCharitySpecificChallenges();
     }
 
+    @OnClick(R.id.signOutBtn)
+    public void signOutCharity() {
+        FirebaseAuth.getInstance().signOut();
+        Intent goToStartupPage = new Intent(this, UnaStartupActivity.class);
+        startActivity(goToStartupPage);
+    }
+
     // get the charities broadcasts
     private void getBroadcasts() {
         client.getCharityBroadcasts(charity.getEin(), new OnCompleteListener<QuerySnapshot>() {
@@ -65,6 +77,7 @@ public class CharityHomeActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot broadcastsDoc : task.getResult()) {
+                        Log.i(TAG, broadcastsDoc.getData().toString());
                         broadcasts.add(new Broadcast(broadcastsDoc.getData()));
                     }
                     notifications.addAll(broadcasts);

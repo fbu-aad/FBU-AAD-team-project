@@ -22,11 +22,6 @@ public class UnaStartupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_una_startup);
 
         ButterKnife.bind(this);
-
-        FirestoreClient client = new FirestoreClient();
-        if (client.getCurrentUser() != null) {
-            startUserLogin();
-        }
     }
 
     @OnClick(R.id.userLoginBtn)

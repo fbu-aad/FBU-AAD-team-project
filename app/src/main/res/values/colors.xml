@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="og_colorPrimary">#008577</color>
+    <color name="og_colorPrimaryDark">#00574B</color>
+    <color name="og_colorAccent">#D81B60</color>
+
+    <color name="colorPrimary">@color/una_paper</color>
+    <color name="colorPrimaryDark">@color/una_silk</color>
+    <color name="colorAccent">@color/una_charcoal</color>
+
     <color name="bumbleYellow">#FFCB37</color>
     <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
@@ -13,5 +18,10 @@
     <color name="una_orange_1">#3DFFD9B2</color>
     <color name="una_orange_2">#FFCA94</color>
     <color name="una_orange_3">#ffba93</color>
+
+    <color name="una_gold">#C0B283</color>
+    <color name="una_silk">#DCD0C0</color>
+    <color name="una_paper">#F4F4F4</color>
+    <color name="una_charcoal">#373737</color>
 
 </resources>

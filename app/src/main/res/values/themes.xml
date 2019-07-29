@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--
-    <palette>
-        <color name="Give-Me-a-(Zodiac)-Sign-1">rgb='51595D' r='80' g='89' b='93' <>
-        <color name="Give-Me-a-(Zodiac)-Sign-2">rgb='B5F2EE' r='181' g='242' b='237' <>
-        <color name="Give-Me-a-(Zodiac)-Sign-3"> rgb='91BDBA' r='144' g='188' b='186' />
-        <color name=Give-Me-a-(Zodiac)-Sign-4 rgb='F1D3C8' r='240' g='211' b='200' />
-        <color name=Give-Me-a-(Zodiac)-Sign-5 rgb='A89B97' r='168' g='154' b='151' />
-    </palette>
 
-    <palette>
-        <color name=Orange-fruit-and-flowers.-1 rgb='5A7302' r='90' g='114' b='2' />
-        <color name=Orange-fruit-and-flowers.-2 rgb='F2B705' r='242' g='182' b='4' />
-        <color name=Orange-fruit-and-flowers.-3 rgb='F29F05' r='242' g='159' b='4' />
-        <color name=Orange-fruit-and-flowers.-4 rgb='F28705' r='242' g='135' b='4' />
-        <color name=Orange-fruit-and-flowers.-5 rgb='F2F2F2' r='242' g='242' b='242' />
-    </palette>
-
-    <palette>
-        <color name=Orange-Isolated-on-White-Background-1 rgb='F2B705' r='242' g='182' b='4' />
-        <color name=Orange-Isolated-on-White-Background-2 rgb='F29F05' r='242' g='159' b='4' />
-        <color name=Orange-Isolated-on-White-Background-3 rgb='F28705' r='242' g='135' b='4' />
-        <color name=Orange-Isolated-on-White-Background-4 rgb='F27405' r='242' g='115' b='4' />
-        <color name=Orange-Isolated-on-White-Background-5 rgb='F2F2F2' r='242' g='242' b='242' />
-    </palette>
-    -->
 </resources>

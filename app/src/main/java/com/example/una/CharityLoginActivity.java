@@ -12,13 +12,14 @@ import android.widget.Toast;
 
 import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.parceler.Parcels;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,12 +30,11 @@ public class CharityLoginActivity extends AppCompatActivity {
     @BindView(R.id.etPassword) EditText etPassword;
     @BindView(R.id.etCharityEin) EditText etCharityEin;
     @BindView(R.id.etCharityName) EditText etCharityName;
-    @BindView(R.id.loginBtn) Button loginBtn;
     @BindView(R.id.signUpBtn) Button signUpBtn;
     @BindView(R.id.etEmail) EditText etEmail;
 
     private final String TAG = "CharityLoginActivity";
-    FirebaseAuth mAuth;
+    FirestoreClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,69 +42,60 @@ public class CharityLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_charity_login);
 
         ButterKnife.bind(this);
-    }
-
-    @OnClick(R.id.loginBtn)
-    public void logInCharity() {
-        String name = etCharityName.getText().toString();
-        String ein = etCharityEin.getText().toString();
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-
-        if(checkInputs(name, ein, email, password)) {
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-
-                        FirestoreClient client = new FirestoreClient();
-
-                        client.getCharityFromEmail(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-
-                                Charity charity = new Charity(, );
-                                startCharityHome(charity);
-                            }
-                        });
-                    } else {
-                        Log.w(TAG, "loginUserWithEmail:failure", task.getException());
-                        Toast.makeText(CharityLoginActivity.this,
-                                "Authentication Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
+        client = new FirestoreClient();
     }
 
     @OnClick(R.id.signUpBtn)
-    public void createCharityUser() {
-        String name = etCharityName.getText().toString();
-        String ein = etCharityEin.getText().toString();
+    public void logInCharity() {
+        final String name = etCharityName.getText().toString();
+        final String ein = etCharityEin.getText().toString();
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
-
-        if(checkInputs(name, ein, email, password)) {
-            Charity charityUser = new Charity(ein, name);
-
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        if (checkInputs(name, ein, email, password)) {
+            client.getCharityUserFromEin(ein, new OnCompleteListener<DocumentSnapshot>() {
                 @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
-                        // TODO: update the user as a charity in Firestore and start home activity
+                        DocumentSnapshot doc = task.getResult();
+                        if (!doc.exists()) {
+                            // add the charity user to the database
+                            Log.i(TAG, "adding new user to the database");
 
-                        startCharityHome(charityUser);
+                            client.setNewCharity(name, ein, email, new OnSuccessListener() {
+                                @Override
+                                public void onSuccess(Object o) {
+                                    Log.d(TAG, String.format("%s successfully added", name));
+                                    startCharityHome(new Charity(ein, name));
+                                }
+                            }, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, String.format("%s not added to database", name));
+                                }
+                            });
+
+                        } else {
+                            String storedName;
+
+                            Map<String, Object> fields = doc.getData();
+                            if (fields.containsKey("name")) {
+                                storedName = (String) fields.get("name");
+                            } else {
+                                Log.d(TAG, "charity name not stored");
+                                storedName = name;
+                            }
+
+                            Charity charity = new Charity(storedName, ein);
+                            startCharityHome(charity);
+                        }
                     } else {
-                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(CharityLoginActivity.this,
-                                "Authentication Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CharityLoginActivity.this, "Error Accessing Database",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
+
     }
 
     private void startCharityHome(Charity charity) {
@@ -114,20 +105,23 @@ public class CharityLoginActivity extends AppCompatActivity {
     }
 
     private boolean checkInputs(String name, String ein, String email, String password) {
-
+        boolean allFilled = true;
         if(name.isEmpty()) {
             etCharityName.setError("Required");
-            return false;
-        } else if (ein.isEmpty()) {
-            etCharityEin.setError("Required");
-            return false;
-        } else if(email.isEmpty()) {
-            etEmail.setError("Required");
-            return false;
-        } else if (password.isEmpty()) {
-            etPassword.setError("Required");
-            return false;
+            allFilled = false;
         }
-        return true;
+        if (ein.isEmpty()) {
+            etCharityEin.setError("Required");
+            allFilled = false;
+        }
+        if(email.isEmpty()) {
+            etEmail.setError("Required");
+            allFilled = false;
+        }
+        if (password.isEmpty()) {
+            etPassword.setError("Required");
+            allFilled = false;
+        }
+        return allFilled;
     }
 }

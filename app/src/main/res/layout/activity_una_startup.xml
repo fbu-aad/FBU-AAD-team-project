@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/una_orange_3"
+    android:background="@color/colorPrimary"
     tools:context=".UnaStartupActivity">
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_marginBottom="100dp"
         android:fontFamily="@font/nunito_sans"
         android:text="@string/lowercase_app_name"
-        android:textColor="@color/white"
+        android:textColor="@color/colorAccent"
         android:textSize="@dimen/extra_large_font_size"
         app:layout_constraintBottom_toTopOf="@+id/userLoginBtn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,7 @@
         android:layout_marginRight="@dimen/small_padding"
         android:background="#00FFFFFF"
         android:text="@string/user_login_prompt"
-        android:textColor="@color/white"
+        android:textColor="@color/una_charcoal"
         android:typeface="monospace"
         app:layout_constraintBottom_toTopOf="@+id/charityLoginBtn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
         android:layout_marginBottom="@dimen/small_padding"
         android:background="#00FFFFFF"
         android:text="@string/charity_login_prompt"
-        android:textColor="@color/white"
+        android:textColor="@color/una_charcoal"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
