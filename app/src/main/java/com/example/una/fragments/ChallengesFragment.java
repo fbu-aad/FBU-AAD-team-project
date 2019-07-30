@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.una.FirestoreClient;
+import com.example.una.CreateChallengeScreenSlideActivity;
 import com.example.una.UnaStartupActivity;
 import com.example.una.models.Challenge;
 import com.example.una.R;
@@ -81,6 +82,12 @@ public class ChallengesFragment extends Fragment {
         fabCreateChallenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent createChallenge = new Intent(getContext(), CreateChallengeScreenSlideActivity.class);
+                // TODO startActivityForResult
+                startActivity(createChallenge);
+
+
+
                 Toast.makeText(view.getContext(), "Create Challenge -> I am working", Toast.LENGTH_LONG).show();
             }
         });

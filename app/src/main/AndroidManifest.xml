@@ -17,6 +17,7 @@
         <activity android:name=".NavigationDrawerActivities.DonationHistoryActivity" />
         <activity android:name=".ChallengeDonationActivity" />
         <activity android:name=".SurveyActivity" />
+        <activity android:name=".CreateChallengeScreenSlideActivity"/>
         <activity android:name=".DonationActivity" />
         <activity android:name=".CharityDetailsActivity" />
         <activity android:name=".CharitySearchListActivity" />

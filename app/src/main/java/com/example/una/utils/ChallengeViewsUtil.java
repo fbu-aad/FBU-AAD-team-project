@@ -188,7 +188,6 @@ public class ChallengeViewsUtil {
         return dollars.format(amount);
     }
 
-    // https://stackoverflow.com/questions/42610657/how-to-calculate-the-time-left-untill-some-date
     public static String getTimeLeft(String beginOrEnd, Date date1, Date date2) {
         long diffInMillies = date2.getTime() - date1.getTime();
         List<TimeUnit> units = new ArrayList<TimeUnit>(EnumSet.allOf(TimeUnit.class));
