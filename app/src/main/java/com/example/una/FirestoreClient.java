@@ -1,18 +1,14 @@
 package com.example.una;
 
 import android.util.Log;
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -31,36 +27,9 @@ public class FirestoreClient {
     private CollectionReference charityUsers = db.collection("charity_users");
     private FirebaseUser user;
     private final String TAG = "FirestoreClient";
-    private String userName;
-    private boolean isDonor;
 
     public FirestoreClient() {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            setIsDonor();
-        }
-    }
-
-    public void setIsDonor() {
-        DocumentReference docRef = users.document(getCurrentUser().getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if (documentSnapshot.exists()) {
-                        isDonor = true;
-                        getCurrentUserName();
-                    } else {
-                        isDonor = false;
-                    }
-                }
-            }
-        });
-    }
-
-    public boolean isDonor() {
-        return isDonor;
     }
 
     public void getFavoriteCharity(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener) {
@@ -143,7 +112,7 @@ public class FirestoreClient {
 
         if (type.equals(Broadcast.CHALLENGE_DONATION)) {
             broadcast.put("donor", user.getUid());
-            String message = userName + " participated in " + broadcast.get("charity_name")
+            String message = broadcast.get("user_name") + " participated in " + broadcast.get("charity_name")
                     + "'s \"" + broadcast.get("challenge_name") + "\" challenge.";
             broadcast.put("message", message);
         } else if (type.equals(Broadcast.DONATION)) {
@@ -197,18 +166,8 @@ public class FirestoreClient {
                 .addOnFailureListener(onFailureListener);
     }
 
-    public void getCurrentUserName() {
+    public void getCurrentUserName(OnCompleteListener onCompleteListener) {
         DocumentReference docRef = users.document(getCurrentUser().getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        userName = document.get("first_name") + " " + document.get("last_name");
-                    }
-                }
-            }
-        });
+        docRef.get().addOnCompleteListener(onCompleteListener);
     }
 }
