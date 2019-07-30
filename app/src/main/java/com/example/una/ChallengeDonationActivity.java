@@ -48,6 +48,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
     String challengeId;
     private String currentAmount = "";
     private static final String TAG = "ChallengeDonation";
+    boolean rgWasSelected = false;
 
     // radio button ids
     private static final int radio5Id = 5;
@@ -117,27 +118,33 @@ public class ChallengeDonationActivity extends AppCompatActivity {
         CurrencyTextWatcher watcher = new CurrencyTextWatcher(etCustomAmount, currentAmount);
         etCustomAmount.addTextChangedListener(watcher);
 
+        rgSuggestedDonations.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (rgSuggestedDonations.getCheckedRadioButtonId() != -1 && !rgWasSelected) {
+                    etCustomAmount.getText().clear();
+                    etCustomAmount.clearFocus();
+                }
+                if (rgWasSelected) {
+                    rgWasSelected = false;
+                }
+            }
+        });
+
         // on custom edit focus change, deselect all radio buttons
-        // TODO not working
         etCustomAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
+                    if (rgSuggestedDonations.getCheckedRadioButtonId() != -1) {
+                        rgWasSelected = true;
+                    }
+                    rgSuggestedDonations.clearCheck();
                     radio5.setChecked(false);
                     radio10.setChecked(false);
                     radio20.setChecked(false);
                     radio50.setChecked(false);
                     radio100.setChecked(false);
-                }
-            }
-        });
-
-        rgSuggestedDonations.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (!etCustomAmount.getText().toString().equals("")) {
-                    etCustomAmount.getText().clear();
-                    etCustomAmount.clearFocus();
                 }
             }
         });
@@ -151,11 +158,13 @@ public class ChallengeDonationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // get amount
-                double amount;
+                double amount = 0;
                 if (rgSuggestedDonations.getCheckedRadioButtonId() != -1) {
                     amount = rgSuggestedDonations.getCheckedRadioButtonId();
-                } else {
+                } else if (!etCustomAmount.getText().toString().isEmpty()) {
                     amount = getCustomDonationAmount(etCustomAmount);
+                } else {
+                    etCustomAmount.setError("Please enter an amount");
                 }
 
                 // get spinner selection
