@@ -32,10 +32,35 @@ public class FirestoreClient {
     private FirebaseUser user;
     private final String TAG = "FirestoreClient";
     private String userName;
+    private boolean isDonor;
 
     public FirestoreClient() {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        getCurrentUserName();
+        if (user != null) {
+            setIsDonor();
+        }
+    }
+
+    public void setIsDonor() {
+        DocumentReference docRef = users.document(getCurrentUser().getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()) {
+                        isDonor = true;
+                        getCurrentUserName();
+                    } else {
+                        isDonor = false;
+                    }
+                }
+            }
+        });
+    }
+
+    public boolean isDonor() {
+        return isDonor;
     }
 
     public void getFavoriteCharity(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener) {

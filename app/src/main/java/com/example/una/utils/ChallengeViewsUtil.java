@@ -49,7 +49,7 @@ public class ChallengeViewsUtil {
 
         // check if challenge owner and associated charity are the same
         if (associatedCharity.equals(challengeOwner)) {
-            ownerRecipientInfo = "Fundraiser by " + associatedCharityName;
+            ownerRecipientInfo = "Challenge by " + associatedCharityName;
             tvChallengeOwnerRecipientInfo.setText(ownerRecipientInfo);
         } else {
             // owner is a user; get his or her name
@@ -60,7 +60,7 @@ public class ChallengeViewsUtil {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             String ownerName = document.get("first_name") + " " + document.get("last_name");
-                            String sChallengeOwnerRecipientInfo = "Fundraiser for "
+                            String sChallengeOwnerRecipientInfo = "Challenge for "
                                     + associatedCharityName + " by " + ownerName;
                             tvChallengeOwnerRecipientInfo.setText(sChallengeOwnerRecipientInfo);
                         }
