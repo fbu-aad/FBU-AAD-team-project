@@ -80,11 +80,8 @@ public class ChallengeViewsUtil {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 ArrayList<String> usersAccepted = (ArrayList<String>) documentSnapshot.get("users_accepted");
-                if (usersAccepted.contains(userId)) {
+                if (usersAccepted != null && usersAccepted.contains(userId)) {
                     btnJoin.setChecked(true);
-                    if (btnDonate != null) {
-                        btnDonate.setEnabled(true);
-                    }
                 } else {
                     btnJoin.setChecked(false);
                     if (btnDonate != null) {
@@ -102,23 +99,24 @@ public class ChallengeViewsUtil {
 
     // set on click listener for join button
     public static void handleClickJoinBtn(ToggleButton btnJoin, ToggleButton btnDonate, Challenge challenge, Context context) {
-        String userId = client.getCurrentUser().getUid();
         String challengeId = challenge.getUid();
         btnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!btnJoin.isChecked()) {
                     // user already joined; click to leave, removing user from challenge collection
-                    client.removeUserFromChallenge(challengeId, userId);
+                    client.removeUserFromChallenge(challengeId);
                     if (btnDonate != null) {
                         btnDonate.setEnabled(false);
                     }
                     Toast.makeText(context, "You have left the challenge", Toast.LENGTH_SHORT).show();
                 } else {
                     // add user to challenge collection
-                    client.addUserToChallenge(challengeId, userId);
+                    client.addUserToChallenge(challengeId);
                     if (btnDonate != null) {
-                        btnDonate.setEnabled(true);
+                        if (!btnDonate.isEnabled() && !btnDonate.isChecked()) {
+                            btnDonate.setEnabled(true);
+                        }
                     } else {
                         Intent challengeDetails = new Intent(context, ChallengeDetailsActivity.class);
                         challengeDetails.putExtra(Challenge.class.getSimpleName(), Parcels.wrap(challenge));
@@ -158,7 +156,7 @@ public class ChallengeViewsUtil {
     public static String getStrProgress(Challenge challenge) {
         double amountRaised = challenge.getChallengeAmountRaised();
         long amountTarget = challenge.getChallengeAmountTarget();
-        String sAmountRaised = "" + amountRaised;
+        String sAmountRaised = formatCurrency((long) amountRaised);
         String sAmountTarget = formatCurrency(amountTarget);
         String sProgress;
         // check if there is a target goal
