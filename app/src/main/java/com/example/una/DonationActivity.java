@@ -79,7 +79,7 @@ public class DonationActivity extends AppCompatActivity {
                     Toast.makeText(context, "Donation failure :(", Toast.LENGTH_SHORT).show();
                     Log.i(TAG, "Donation Failure", e);
                 }
-            }, amount, Frequency.SINGLE_DONATION, charity.getEin());
+            }, amount, Frequency.SINGLE_DONATION, charity.getEin(), null);
 
             Intent goHomeIntent = new Intent(this, MainActivity.class);
             startActivity(goHomeIntent);

@@ -107,6 +107,14 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
                 Intent donate = new Intent(context, ChallengeDonationActivity.class);
                 // pass challenge id
                 donate.putExtra("challenge_id", challenge.getUid());
+                // pass challenge name
+                donate.putExtra("challenge_name", tvChallengeTitle.getText());
+                // pass challenge owner-recipient info
+                donate.putExtra("challenge_info", tvChallengeOwnerRecipientInfo.getText());
+                // pass charity ein
+                donate.putExtra("charity_ein", challenge.getChallengeAssociatedCharityEin());
+                // pass charity name
+                donate.putExtra("charity_name", challenge.getChallengeAssociatedCharityName());
                 // start activity for result
                 ((Activity) context).startActivityForResult(donate, CHALLENGE_DONATION);
             }

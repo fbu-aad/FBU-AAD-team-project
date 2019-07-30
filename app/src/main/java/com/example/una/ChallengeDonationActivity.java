@@ -6,7 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,10 +16,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +47,14 @@ public class ChallengeDonationActivity extends AppCompatActivity {
     FirestoreClient client;
     String challengeId;
     private String currentAmount = "";
+    private static final String TAG = "ChallengeDonation";
+
+    // radio button ids
+    private static final int radio5Id = 5;
+    private static final int radio10Id = 10;
+    private static final int radio20Id = 20;
+    private static final int radio50Id = 50;
+    private static final int radio100Id = 100;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -51,8 +64,26 @@ public class ChallengeDonationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         client = new FirestoreClient();
 
-        // get challenge id from intent
+        // get extras from intent
         challengeId = getIntent().getStringExtra("challenge_id");
+        String challengeName = getIntent().getStringExtra("challenge_name");
+        String challengeInfo = getIntent().getStringExtra("challenge_info");
+        String charityName = getIntent().getStringExtra("charity_name");
+        String charityEin = getIntent().getStringExtra("charity_ein");
+
+        // set challenge title
+        tvName.setText(challengeName);
+
+        // set challenge owner recipient info
+        tvOwnerRecipientInfo.setText(challengeInfo);
+
+        // set radio button ids
+        radio5.setId(radio5Id);
+        radio10.setId(radio10Id);
+        radio20.setId(radio20Id);
+        radio50.setId(radio50Id);
+        radio100.setId(radio100Id);
+
         // check if there is a default donation amount
         client.getChallengeDefaultAmount(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -87,6 +118,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
         etCustomAmount.addTextChangedListener(watcher);
 
         // on custom edit focus change, deselect all radio buttons
+        // TODO not working
         etCustomAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -119,16 +151,64 @@ public class ChallengeDonationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // get amount
+                double amount;
+                if (rgSuggestedDonations.getCheckedRadioButtonId() != -1) {
+                    amount = rgSuggestedDonations.getCheckedRadioButtonId();
+                } else {
+                    amount = getCustomDonationAmount(etCustomAmount);
+                }
 
                 // get spinner selection
+                String privacy;
+                if (sPrivacy.getSelectedItemPosition() == 0) {
+                    privacy = PrivacySetting.PUBLIC;
+                } else if (sPrivacy.getSelectedItemPosition() == 1) {
+                    privacy = PrivacySetting.FRIENDS;
+                } else {
+                    privacy = PrivacySetting.PRIVATE;
+                }
 
-                // add to challenge progress
+                // update challenge progress
+                client.updateChallengeProgress(challengeId, amount);
 
                 // write to broadcast collection regarding challenge participation if not private
+                if (!privacy.equals(PrivacySetting.PRIVATE)) {
+                    Map<String, Object> broadcast = new HashMap<>();
+                    broadcast.put("challenge_id", challengeId);
+                    broadcast.put("challenge_name", challengeName);
+                    broadcast.put("charity_name", charityName);
+                    broadcast.put("charity_ein", charityEin);
+                    client.createNewBroadcast(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.i(TAG, "Broadcast challenge donation success :)");
+                        }
+                    }, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.i(TAG, "Broadcast challenge donation failure :(");
+                        }
+                    }, Broadcast.CHALLENGE_DONATION, privacy, broadcast);
+                }
 
                 // write to donations collection, including a challenge id
+                client.createNewDonation(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i(TAG, "Donation challenge success :)");
+                    }
+                }, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i(TAG, "Donation challenge failure :(");
+                    }
+                }, amount, Frequency.SINGLE_DONATION, charityEin, challengeId);
+
+                client.addDonorToChallenge(challengeId);
 
                 // toast to confirm donation
+                Toast.makeText(getApplicationContext(), R.string.donation_success, Toast.LENGTH_SHORT).show();
+
                 // TODO show donation impact alert dialog and thank you message
 
                 // return result to calling activity
@@ -139,5 +219,21 @@ public class ChallengeDonationActivity extends AppCompatActivity {
         });
     }
 
+    public double getCustomDonationAmount(EditText etCustomAmount) {
+        Editable text = etCustomAmount.getText();
+        double amount = 0;
+        if (text == null || text.toString().equals("")) {
+            noInputToast();
+        } else {
+            amount = Double.parseDouble(text.toString().replaceAll("[$,]", ""));
+            if (amount == 0) {
+                noInputToast();
+            }
+        }
+        return amount;
+    }
 
+    private void noInputToast() {
+        Toast.makeText(this, R.string.donation_no_input, Toast.LENGTH_SHORT).show();
+    }
 }
