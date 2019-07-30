@@ -171,6 +171,7 @@ public class CharityLoginActivity extends AppCompatActivity {
         Intent goToCharityHome = new Intent(this, CharityHomeActivity.class);
         goToCharityHome.putExtra("charity", Parcels.wrap(charity));
         startActivity(goToCharityHome);
+        finish();
     }
 
     private boolean checkInputs(String name, String ein, String email, String password) {

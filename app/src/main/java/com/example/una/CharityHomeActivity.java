@@ -14,6 +14,7 @@ import com.example.una.models.Broadcast;
 import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -31,6 +32,7 @@ public class CharityHomeActivity extends AppCompatActivity {
     Charity charity;
     @BindView(R.id.rvBroadcasts) RecyclerView rvBroadcasts;
     @BindView(R.id.signOutBtn) Button signOutBtn;
+    @BindView(R.id.fabCreate) FloatingActionButton fabCreate;
 
     private final String TAG = "CharityHomeActivity";
     FirestoreClient client;
@@ -56,6 +58,12 @@ public class CharityHomeActivity extends AppCompatActivity {
 
         getBroadcasts();
         // getCharitySpecificChallenges();
+    }
+
+    @OnClick(R.id.fabCreate)
+    public void createBroadcast() {
+        Intent createBroadcastIntent = new Intent(this, CharityCreateBroadcastActivity.class);
+        startActivity(createBroadcastIntent);
     }
 
     @OnClick(R.id.signOutBtn)

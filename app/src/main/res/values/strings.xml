@@ -96,4 +96,5 @@
     <string name="notification_item_donated_to">donated to:</string>
     <string name="notification_item_donated_on">Donated on:</string>
 
+    <string name="broadcast_message_prompt">What do you want to share?</string>
 </resources>

@@ -51,4 +51,5 @@
     <dimen name="notification_item_top_padding">24dp</dimen>
     <dimen name="notification_item_imageview_with">70dp</dimen>
     <dimen name="notification_item_imageview_height">70dp</dimen>
+    <dimen name="profile_image_double_width">96dp</dimen>
 </resources>
