@@ -52,6 +52,13 @@ public class CharityLoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         context = this;
+
+        if (mAuth.getCurrentUser() != null) {
+            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            // TODO: this returns the default value instead of correct ein
+            String ein = sharedPref.getString("charity_ein", "530196605");
+            getCharity(ein);
+        }
     }
 
     @OnClick(R.id.signUpBtn)
@@ -74,12 +81,7 @@ public class CharityLoginActivity extends AppCompatActivity {
                                 client.setNewCharity(name, ein, email, new OnSuccessListener() {
                                     @Override
                                     public void onSuccess(Object o) {
-                                        SharedPreferences sharedPref = context.getSharedPreferences(
-                                                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = sharedPref.edit();
-                                        editor.putBoolean("user_is_not_charity", false);
-                                        editor.apply();
-
+                                        updateSharedPreferences(ein);
                                         Log.d(TAG, String.format("%s successfully added", name));
                                         startCharityHome(new Charity(ein, name));
                                     }
@@ -116,36 +118,8 @@ public class CharityLoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                SharedPreferences sharedPref = context.getSharedPreferences(
-                                        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.putBoolean("user_is_not_charity", false);
-                                editor.apply();
-
-                                // make sure the user is in Firestore and check name and ein
-                                client.getCharityUserFromEin(ein, new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            DocumentSnapshot doc = task.getResult();
-                                            if (!doc.exists()) {
-                                                Log.d(TAG, "user signed in that is not in the database");
-                                            } else {
-                                                String storedName;
-                                                Map<String, Object> fields = doc.getData();
-                                                if (fields.containsKey("name")) {
-                                                    storedName = (String) fields.get("name");
-                                                } else {
-                                                    Log.d(TAG, "charity name not stored");
-                                                    storedName = name;
-                                                }
-
-                                                Charity charity = new Charity(ein, name);
-                                                startCharityHome(charity);
-                                            }
-                                        }
-                                    }
-                                });
+                                updateSharedPreferences(ein);
+                                getCharity(ein);
                             } else {
                                 Log.w(TAG, "loginUserWithEmail:failure", task.getException());
                                 Toast.makeText(CharityLoginActivity.this,
@@ -155,6 +129,42 @@ public class CharityLoginActivity extends AppCompatActivity {
                     });
         }
 
+    }
+
+    private void updateSharedPreferences(String ein) {
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("user_is_not_charity", false);
+        editor.putString("charity_ein", ein);
+        editor.apply();
+    }
+
+    private void getCharity(String ein) {
+        // make sure the user is in Firestore and check name and ein
+        client.getCharityUserFromEin(ein, new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    if (!doc.exists()) {
+                        Log.d(TAG, "user signed in that is not in the database");
+                    } else {
+                        String storedName;
+                        Map<String, Object> fields = doc.getData();
+                        if (fields.containsKey("name")) {
+                            storedName = (String) fields.get("name");
+                        } else {
+                            Log.d(TAG, "charity name not stored");
+                            storedName = "";
+                        }
+
+                        Charity charity = new Charity(ein, storedName);
+                        startCharityHome(charity);
+                    }
+                }
+            }
+        });
     }
 
     private void startCharityHome(Charity charity) {

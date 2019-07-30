@@ -17,7 +17,7 @@ public class Challenge {
     int numParticipants = 0;
     Date startDate;
     Date endDate;
-    long amountRaised;
+    double amountRaised;
     long amountTarget;
     String associatedCharityEin;
     // TODO remove after getting charity name from API
@@ -60,7 +60,7 @@ public class Challenge {
         }
 
         if (challengeFields.containsKey("amount_raised")) {
-            amountRaised = (long) challengeFields.get("amount_raised");
+            amountRaised = (double) challengeFields.get("amount_raised");
         }
 
         if (challengeFields.containsKey("target")) {
@@ -118,7 +118,7 @@ public class Challenge {
         return endDate;
     }
 
-    public long getChallengeAmountRaised() {
+    public double getChallengeAmountRaised() {
         return amountRaised;
     }
 

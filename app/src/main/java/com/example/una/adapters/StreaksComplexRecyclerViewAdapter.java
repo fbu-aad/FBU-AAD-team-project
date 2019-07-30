@@ -181,9 +181,9 @@ public static void configureChallengeViewHolder(ChallengeViewHolder vhChallenge,
 
     // set text view with challenge progress information
     private static void setTvProgress(ChallengeViewHolder vhChallenge, Challenge challenge) {
-        long amountRaised = challenge.getChallengeAmountRaised();
+        double amountRaised = challenge.getChallengeAmountRaised();
         long amountTarget = challenge.getChallengeAmountTarget();
-        String sAmountRaised = formatCurrency(amountRaised);
+        String sAmountRaised = amountRaised + "";
         String sAmountTarget = formatCurrency(amountTarget);
         String tvProgress;
         // check if there is a target goal
