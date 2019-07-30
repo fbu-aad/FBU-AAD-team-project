@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,6 +23,7 @@ import com.example.una.adapters.StreaksComplexRecyclerViewAdapter;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -35,6 +37,7 @@ public class ChallengesFragment extends Fragment {
     @BindString(R.string.challenge_description_dummy_text) String challengeDescription;
     @BindView(R.id.signOutButton) Button signOutButton;
     @BindView(R.id.rvChallenges) RecyclerView rvChallenges;
+    @BindView(R.id.fabCreateChallenge) FloatingActionButton fabCreateChallenge;
 
     public final static String TAG = "ChallengesFragment";
     FirestoreClient client;
@@ -72,6 +75,13 @@ public class ChallengesFragment extends Fragment {
                                 getActivity().finish();
                             }
                         });
+            }
+        });
+
+        fabCreateChallenge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(view.getContext(), "Create Challenge -> I am working", Toast.LENGTH_LONG).show();
             }
         });
 
