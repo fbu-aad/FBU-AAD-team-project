@@ -27,6 +27,7 @@ public class FirestoreClient {
     private CollectionReference broadcasts = db.collection("broadcasts");
     private CollectionReference charityUsers = db.collection("charity_users");
     private FirebaseUser user;
+    private final String TAG = "FirestoreClient";
 
     public FirestoreClient() {
         user = FirebaseAuth.getInstance().getCurrentUser();
