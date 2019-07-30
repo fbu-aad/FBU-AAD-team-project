@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Una</string>
+
     <string name="text_explore">Explore</string>
+
+    <string name="lowercase_app_name">una</string>
+    <string name="text_home">Home</string>
+
     <string name="text_quick_donate">Frequent</string>
     <string name="text_notifications">Notifications</string>
     <string name="text_impact">Challenges</string>
@@ -49,6 +54,7 @@
     <string name="about_us_msg">About us!</string>
     <string name="for_more_info_charity_msg">For more info, please visit our link below!</string>
 
+
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
@@ -56,6 +62,7 @@
     <string name="navigation_drawer_donation_history">Donation History</string>
     <string name="navigation_drawer_header">My Name</string>
     <string name="navigation_drawer_notifications">Notifications</string>
+
 
     <string name="donate">Donate</string>
     <string name="about">About</string>
@@ -65,4 +72,16 @@
 
     <string name="donation_item_you_donated">You Donated: </string>
     <string name="donation_item_timestamp">On: </string>
+
+    <string name="user_login_prompt">user login</string>
+    <string name="charity_login_prompt">charity login</string>
+
+    <string name="charity_signup_explanation">Sign up to connect to your donors</string>
+    <string name="charity_login_explanation">Log in</string>
+    <string name="your_charity_ein">Charity EIN</string>
+    <string name="your_charity_name">Charity Name</string>
+    <string name="your_password">Password</string>
+    <string name="your_charity_email">Organization Email</string>
+
+    <string name="preference_file_key">com.example.una.PREFERENCE_FILE_KEY</string>
 </resources>
