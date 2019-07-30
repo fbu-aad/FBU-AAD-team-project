@@ -18,8 +18,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.HashMap;
@@ -47,6 +49,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
     FirestoreClient client;
     String challengeId;
     private String currentAmount = "";
+    private String userName;
     private static final String TAG = "ChallengeDonation";
     boolean rgWasSelected = false;
 
@@ -154,6 +157,19 @@ public class ChallengeDonationActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, privacyOptions);
         sPrivacy.setAdapter(adapter);
 
+        // get donor name
+        client.getCurrentUserName(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        userName = document.get("first_name") + " " + document.get("last_name");
+                    }
+                }
+            }
+        });
+
         btnDonate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +203,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
                     broadcast.put("challenge_name", challengeName);
                     broadcast.put("charity_name", charityName);
                     broadcast.put("charity_ein", charityEin);
+                    broadcast.put("user_name", userName);
                     client.createNewBroadcast(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
