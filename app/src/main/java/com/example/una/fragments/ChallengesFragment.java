@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +35,8 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+
 public class ChallengesFragment extends Fragment {
     @BindString(R.string.challenge_description_dummy_text) String challengeDescription;
     @BindView(R.id.signOutButton) Button signOutButton;
@@ -41,6 +44,7 @@ public class ChallengesFragment extends Fragment {
     @BindView(R.id.fabCreateChallenge) FloatingActionButton fabCreateChallenge;
 
     public final static String TAG = "ChallengesFragment";
+    static final int CREATE_CHALLENGE = 111;
     FirestoreClient client;
 
     ArrayList<Object> challenges;
@@ -83,8 +87,7 @@ public class ChallengesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent createChallenge = new Intent(getContext(), CreateChallengeScreenSlideActivity.class);
-                // TODO startActivityForResult
-                startActivity(createChallenge);
+                startActivityForResult(createChallenge, CREATE_CHALLENGE);
 
 
 
@@ -94,6 +97,18 @@ public class ChallengesFragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvChallenges.setLayoutManager(layoutManager);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // check which request we are responding to
+        if (requestCode == CREATE_CHALLENGE) {
+            // make sure request was successful
+            if (resultCode == RESULT_OK) {
+                // user successfully created challenge
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 
     // place challenges for user here

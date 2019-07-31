@@ -1,6 +1,7 @@
 package com.example.una;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -12,7 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.una.fragments.CreateChallengeBasicInfoFragment;
 import com.example.una.fragments.CreateChallengeStoryFragment;
 
-public class CreateChallengeScreenSlideActivity extends FragmentActivity {
+public class CreateChallengeScreenSlideActivity extends FragmentActivity implements CreateChallengeBasicInfoFragment.OnButtonClickListener, CreateChallengeStoryFragment.OnButtonClickListener {
     // number of pages (wizard steps) to show
     private static final int NUM_PAGES = 2;
 
@@ -40,6 +41,19 @@ public class CreateChallengeScreenSlideActivity extends FragmentActivity {
         } else {
             // otherwise, select the previous step
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+        }
+    }
+
+    @Override
+    public void onButtonClicked(View view){
+        int currPos = mPager.getCurrentItem();
+        switch(view.getId()){
+            case R.id.ibNext:
+                mPager.setCurrentItem(currPos + 1);
+                break;
+            case R.id.ibBack:
+                mPager.setCurrentItem(currPos - 1);
+                break;
         }
     }
 
