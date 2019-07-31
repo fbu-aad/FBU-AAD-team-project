@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CharityCreateBroadcastActivity">
+    tools:context=".CharityCreateBroadcastActivity"
+    android:background="@color/una_paper">
 
     <com.google.android.material.card.MaterialCardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +24,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside">
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        card_view:cardBackgroundColor="@color/una_paper">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

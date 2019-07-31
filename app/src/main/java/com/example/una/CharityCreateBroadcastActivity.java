@@ -60,9 +60,12 @@ public class CharityCreateBroadcastActivity extends AppCompatActivity {
         context = this;
 
         // TODO: allow the user to pick their profile picture
+        tvCharityName.setText(charity.getName());
+        tvMessagePrompt.setText(getString(R.string.broadcast_message_prompt));
+        etMessage.setHint(getString(R.string.broadcast_message_hint));
 
         Glide.with(context)
-                .load("https://picsum.photos" + "/96")
+                .load("https://picsum.photos" + "/120")
                 .apply(RequestOptions.circleCropTransform())
                 .into(ivProfileImage);
     }

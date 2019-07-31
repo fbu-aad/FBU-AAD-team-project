@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final String TAG = this.getClass().getSimpleName();
     Context context;
-
     ArrayList<Broadcast> broadcasts;
 
     public BroadcastsAdapter(ArrayList<Broadcast> broadcasts) {
@@ -52,7 +52,7 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             // set profile image placeholder
             Glide.with(context)
-                    .load("https://picsum.photos" + "/48")
+                    .load("https://picsum.photos" + "/64")
                     .apply(RequestOptions.circleCropTransform())
                     .into(broadcastViewHolder.getBroadcastProfileImage());
         }
