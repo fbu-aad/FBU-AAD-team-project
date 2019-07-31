@@ -47,7 +47,22 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private void configureBroadcastViewHolder(BroadcastViewHolder broadcastViewHolder, Broadcast broadcast) {
         if (broadcast != null) {
-            broadcastViewHolder.getBroadcastCharityName().setText(broadcast.getCharityName());
+            switch (broadcast.getType()) {
+                case Broadcast.DONATION:
+                    broadcastViewHolder.getBroadcastCharityName().setText(broadcast.getUserName());
+                    break;
+                case Broadcast.NEW_CHALLENGE:
+                case Broadcast.CHALLENGE_DONATION:
+                    broadcastViewHolder.getBroadcastCharityName().setText(broadcast.getChallengeName());
+                    break;
+                case Broadcast.POST:
+                    broadcastViewHolder.getBroadcastCharityName().setText(broadcast.getCharityName());
+                    break;
+                default:
+                    broadcastViewHolder.getBroadcastCharityName().setText("null");
+                    break;
+            }
+
             broadcastViewHolder.getBroadcastCharityMessage().setText(broadcast.getMessage());
 
             // set profile image placeholder
