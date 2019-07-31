@@ -129,6 +129,17 @@ public class FirestoreClient {
         db.collection("broadcasts").document().set(broadcast)
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
+
+    }
+
+    public void findUserWhereIDEquals(String uid, OnSuccessListener onSuccessListener, OnFailureListener onFailureListener) {
+        // pass in the users UID's & passes back the user's name
+        DocumentReference docRef = users.document(uid);
+        docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
+    }
+
+    public void getDonations(OnCompleteListener onCompleteListener) {
+        donations.get().addOnCompleteListener(onCompleteListener);
     }
 
     public void createNewDonation(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener,
