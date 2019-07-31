@@ -12,7 +12,6 @@
     android:layout_marginEnd="@dimen/extra_small_padding"
     android:layout_marginRight="@dimen/extra_small_padding"
     android:layout_marginBottom="@dimen/extra_small_padding"
-    android:minHeight="@dimen/horizontal_charity_view_min_height"
     app:cardCornerRadius="4dp"
     app:cardElevation="6dp"
     app:layout_constraintBottom_toTopOf="@+id/postBtn"
@@ -44,7 +43,7 @@
         <TextView
             android:id="@+id/tvCategoryName"
             android:layout_width="@dimen/featured_image_height"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/text_view_two_lines_fixed_size"
             android:maxLines="2"
             android:ellipsize="end"
             android:layout_marginStart="@dimen/standard_padding"
