@@ -22,8 +22,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
