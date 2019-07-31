@@ -12,18 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChallengeDetailsActivity"></activity>
-        <activity android:name=".NavigationDrawerActivities.DonationHistoryActivity"></activity>
-        <activity android:name=".ChallengeDonationActivity"></activity>
+        <activity android:name=".CharityCreateBroadcastActivity"></activity>
+        <activity android:name=".ChallengeDetailsActivity" />
+        <activity android:name=".NavigationDrawerActivities.DonationHistoryActivity" />
+        <activity android:name=".ChallengeDonationActivity" />
         <activity android:name=".SurveyActivity" />
         <activity android:name=".DonationActivity" />
         <activity android:name=".CharityDetailsActivity" />
         <activity android:name=".CharitySearchListActivity" />
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".CharityHomeActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".CharityHomeActivity" />
         <activity
             android:name=".CharityLoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".UnaStartupActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">

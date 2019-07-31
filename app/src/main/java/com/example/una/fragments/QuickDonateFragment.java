@@ -51,9 +51,15 @@ public class QuickDonateFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 String charityName = (String) documentSnapshot.get("fav_charity_name");
-                String charityEin = documentSnapshot.get("fav_charity_ein").toString();
-                charity = new Charity(charityEin, charityName);
+                String charityEin;
 
+                if (documentSnapshot.contains("fav_charity_ein")) {
+                    charityEin = documentSnapshot.get("fav_charity_ein").toString();
+                } else {
+                    charityEin = getString(R.string.red_cross_ein);
+                }
+
+                charity = new Charity(charityEin, charityName);
                 tvCharityName.setText(charity.getName());
 
                 ibQuickDonate.setOnClickListener(new View.OnClickListener() {

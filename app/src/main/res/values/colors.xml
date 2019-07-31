@@ -23,5 +23,7 @@
     <color name="una_silk">#DCD0C0</color>
     <color name="una_paper">#F4F4F4</color>
     <color name="una_charcoal">#373737</color>
+    <color name="una_grey">#bfbfbf</color>
+    <color name="una_white">#ffffff</color>
 
 </resources>

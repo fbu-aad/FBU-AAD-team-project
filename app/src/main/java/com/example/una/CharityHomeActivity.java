@@ -14,6 +14,7 @@ import com.example.una.models.Broadcast;
 import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -21,7 +22,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,6 +31,7 @@ public class CharityHomeActivity extends AppCompatActivity {
     Charity charity;
     @BindView(R.id.rvBroadcasts) RecyclerView rvBroadcasts;
     @BindView(R.id.signOutBtn) Button signOutBtn;
+    @BindView(R.id.fabCreate) FloatingActionButton fabCreate;
 
     private final String TAG = "CharityHomeActivity";
     FirestoreClient client;
@@ -58,6 +59,13 @@ public class CharityHomeActivity extends AppCompatActivity {
         // getCharitySpecificChallenges();
     }
 
+    @OnClick(R.id.fabCreate)
+    public void createBroadcast() {
+        Intent createBroadcastIntent = new Intent(this, CharityCreateBroadcastActivity.class);
+        createBroadcastIntent.putExtra("charity", Parcels.wrap(charity));
+        startActivity(createBroadcastIntent);
+    }
+
     @OnClick(R.id.signOutBtn)
     public void signOutCharity() {
         FirebaseAuth.getInstance().signOut();
@@ -75,12 +83,13 @@ public class CharityHomeActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    broadcasts.clear();
                     Log.i(TAG, "completed getting broadcasts");
                     QuerySnapshot result = task.getResult();
                     for (QueryDocumentSnapshot broadcastsDoc : result) {
-                        broadcasts.add(0, new Broadcast(broadcastsDoc.getData()));
+                        broadcasts.add(new Broadcast(broadcastsDoc.getData()));
                     }
-                    adapter.notifyItemInserted(0);
+                    adapter.notifyItemInserted(broadcasts.size() - 1);
                 } else {
                     Log.d(TAG, "Error getting broadcasts: ", task.getException());
                 }

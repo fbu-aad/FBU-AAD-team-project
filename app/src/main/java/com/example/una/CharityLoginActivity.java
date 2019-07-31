@@ -2,7 +2,7 @@ package com.example.una;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,10 +19,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import org.parceler.Parcels;
-
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +38,7 @@ public class CharityLoginActivity extends AppCompatActivity {
     FirestoreClient client;
     FirebaseAuth mAuth;
     Context context;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +50,21 @@ public class CharityLoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         context = this;
+        pd = new ProgressDialog(context);
+        pd.setTitle("Signing In...");
+        pd.setMessage("Please wait.");
+        pd.setCancelable(false);
 
         if (mAuth.getCurrentUser() != null) {
-            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            pd.show();
+
+            SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE);
+            if (sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user))) {
+                Intent goToUserSide = new Intent(this, LoginActivity.class);
+                pd.dismiss();
+                startActivity(goToUserSide);
+                finish();
+            }
             // TODO: this returns the default value instead of correct ein
             String ein = sharedPref.getString("charity_ein", "530196605");
             getCharity(ein);
@@ -71,6 +81,7 @@ public class CharityLoginActivity extends AppCompatActivity {
         if(checkInputs(name, ein, email, password)) {
             Charity charityUser = new Charity(ein, name);
 
+            pd.show();
             // sign up the user with firebase
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -81,7 +92,6 @@ public class CharityLoginActivity extends AppCompatActivity {
                                 client.setNewCharity(name, ein, email, new OnSuccessListener() {
                                     @Override
                                     public void onSuccess(Object o) {
-                                        updateSharedPreferences(ein);
                                         Log.d(TAG, String.format("%s successfully added", name));
                                         startCharityHome(new Charity(ein, name));
                                     }
@@ -92,7 +102,6 @@ public class CharityLoginActivity extends AppCompatActivity {
                                         mAuth.signOut();
                                     }
                                 });
-
                                 startCharityHome(charityUser);
                             } else {
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -118,7 +127,6 @@ public class CharityLoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                updateSharedPreferences(ein);
                                 getCharity(ein);
                             } else {
                                 Log.w(TAG, "loginUserWithEmail:failure", task.getException());
@@ -132,35 +140,25 @@ public class CharityLoginActivity extends AppCompatActivity {
     }
 
     private void updateSharedPreferences(String ein) {
-        SharedPreferences sharedPref = context.getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("user_is_not_charity", false);
+        editor.putBoolean("user_type", getResources().getBoolean(R.bool.is_charity));
         editor.putString("charity_ein", ein);
         editor.apply();
     }
 
     private void getCharity(String ein) {
         // make sure the user is in Firestore and check name and ein
-        client.getCharityUserFromEin(ein, new OnCompleteListener<DocumentSnapshot>() {
+        client.getCharityUserFromEin(ein, new OnCompleteListener<Charity>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            public void onComplete(@NonNull Task<Charity> task) {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    if (!doc.exists()) {
-                        Log.d(TAG, "user signed in that is not in the database");
-                    } else {
-                        String storedName;
-                        Map<String, Object> fields = doc.getData();
-                        if (fields.containsKey("name")) {
-                            storedName = (String) fields.get("name");
-                        } else {
-                            Log.d(TAG, "charity name not stored");
-                            storedName = "";
-                        }
-
-                        Charity charity = new Charity(ein, storedName);
+                    Charity charity = task.getResult();
+                    if (charity != null) {
                         startCharityHome(charity);
+                    } else {
+                        Log.d(TAG, "user signed in that is not in the database");
                     }
                 }
             }
@@ -169,8 +167,11 @@ public class CharityLoginActivity extends AppCompatActivity {
 
     private void startCharityHome(Charity charity) {
         Intent goToCharityHome = new Intent(this, CharityHomeActivity.class);
+        updateSharedPreferences(charity.getEin());
         goToCharityHome.putExtra("charity", Parcels.wrap(charity));
+        pd.dismiss();
         startActivity(goToCharityHome);
+        finish();
     }
 
     private boolean checkInputs(String name, String ein, String email, String password) {

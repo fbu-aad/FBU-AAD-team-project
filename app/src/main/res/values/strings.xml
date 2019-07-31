@@ -96,4 +96,11 @@
     <string name="notification_item_donated_to">donated to:</string>
     <string name="notification_item_donated_on">Donated on:</string>
 
+    <string name="broadcast_message_prompt">What do you want to share?</string>
+    <string name="post_button_text">post</string>
+
+    <string name="firestore_charity_ein_field">charity_ein</string>
+    <string name="firestore_charity_name_field">charity_name</string>
+    <string name="firestore_broadcast_message_field">message</string>
+    <string name="broadcast_message_hint">Message Body</string>
 </resources>
