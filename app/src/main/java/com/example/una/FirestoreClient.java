@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.una.models.Broadcast;
 import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -102,7 +104,8 @@ public class FirestoreClient {
         docRef.get().addOnCompleteListener(onCompleteListener);
     }
 
-    public void getChallengeParticipants(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener, String challengeId) {
+    public void getChallengeParticipants(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,
+                                         String challengeId) {
         DocumentReference docRef = challenges.document(challengeId);
         docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
     }
@@ -142,10 +145,12 @@ public class FirestoreClient {
     }
 
     public void getCharityBroadcasts(String ein, OnCompleteListener onCompleteListener) {
-        broadcasts.whereEqualTo("charity_ein", ein).get().addOnCompleteListener(onCompleteListener);
+        broadcasts.whereEqualTo("charity_ein", ein).orderBy("time", Query.Direction.DESCENDING)
+                .limit(20).get().addOnCompleteListener(onCompleteListener);
     }
 
-    public void getChallengeDefaultAmount(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener, String challengeId) {
+    public void getChallengeDefaultAmount(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,
+                                          String challengeId) {
         DocumentReference docRef = challenges.document(challengeId);
         docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
     }

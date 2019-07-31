@@ -2,8 +2,6 @@ package com.example.una;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +20,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import org.parceler.Parcels;
-
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +59,12 @@ public class CharityLoginActivity extends AppCompatActivity {
             pd.show();
 
             SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            if (sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user))) {
+                Intent goToUserSide = new Intent(this, LoginActivity.class);
+                pd.dismiss();
+                startActivity(goToUserSide);
+                finish();
+            }
             // TODO: this returns the default value instead of correct ein
             String ein = sharedPref.getString("charity_ein", "530196605");
             getCharity(ein);
@@ -90,7 +92,6 @@ public class CharityLoginActivity extends AppCompatActivity {
                                 client.setNewCharity(name, ein, email, new OnSuccessListener() {
                                     @Override
                                     public void onSuccess(Object o) {
-                                        updateSharedPreferences(ein);
                                         Log.d(TAG, String.format("%s successfully added", name));
                                         startCharityHome(new Charity(ein, name));
                                     }
@@ -101,7 +102,6 @@ public class CharityLoginActivity extends AppCompatActivity {
                                         mAuth.signOut();
                                     }
                                 });
-
                                 startCharityHome(charityUser);
                             } else {
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -127,7 +127,6 @@ public class CharityLoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                updateSharedPreferences(ein);
                                 getCharity(ein);
                             } else {
                                 Log.w(TAG, "loginUserWithEmail:failure", task.getException());
@@ -144,7 +143,7 @@ public class CharityLoginActivity extends AppCompatActivity {
         SharedPreferences sharedPref = context.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("user_is_not_charity", false);
+        editor.putBoolean("user_type", getResources().getBoolean(R.bool.is_charity));
         editor.putString("charity_ein", ein);
         editor.apply();
     }
@@ -168,6 +167,7 @@ public class CharityLoginActivity extends AppCompatActivity {
 
     private void startCharityHome(Charity charity) {
         Intent goToCharityHome = new Intent(this, CharityHomeActivity.class);
+        updateSharedPreferences(charity.getEin());
         goToCharityHome.putExtra("charity", Parcels.wrap(charity));
         pd.dismiss();
         startActivity(goToCharityHome);

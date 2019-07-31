@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,9 +89,9 @@ public class CharityHomeActivity extends AppCompatActivity {
                     Log.i(TAG, "completed getting broadcasts");
                     QuerySnapshot result = task.getResult();
                     for (QueryDocumentSnapshot broadcastsDoc : result) {
-                        broadcasts.add(0, new Broadcast(broadcastsDoc.getData()));
+                        broadcasts.add(new Broadcast(broadcastsDoc.getData()));
                     }
-                    adapter.notifyItemInserted(0);
+                    adapter.notifyItemInserted(broadcasts.size() - 1);
                 } else {
                     Log.d(TAG, "Error getting broadcasts: ", task.getException());
                 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,8 +29,9 @@ public class UnaStartupActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-            if (sharedPref.getBoolean("user_is_not_charity", true)) {
+            SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key),
+                    Context.MODE_PRIVATE);
+            if (sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user))) {
                 startUserLogin();
             } else {
                 startCharityLogin();

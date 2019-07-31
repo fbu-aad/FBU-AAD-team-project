@@ -76,6 +76,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void updateSharedPreferences() {
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("user_type", getResources().getBoolean(R.bool.is_user));
+        editor.apply();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -84,12 +92,6 @@ public class LoginActivity extends AppCompatActivity {
             // TODO never enters if block upon login - sign-in error
             if (resultCode == RESULT_OK) {
                 Log.i(TAG, "starting home activity from activity result");
-                SharedPreferences sharedPref = context.getSharedPreferences(
-                        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putBoolean("user_is_not_charity", true);
-                editor.apply();
-
                 // user is signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 startHomeActivity(user);
@@ -109,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startHomeActivity(FirebaseUser user) {
         Log.i(TAG, "starting home activity");
+        updateSharedPreferences();
         Intent homeIntent = new Intent(this, MainActivity.class);
         homeIntent.putExtra("user", user);
         startActivity(homeIntent);
@@ -161,6 +164,7 @@ public class LoginActivity extends AppCompatActivity {
                                 });
 
                         // launch survey activity
+                        updateSharedPreferences();
                         startActivity(surveyIntent);
                     }
                 } else {
