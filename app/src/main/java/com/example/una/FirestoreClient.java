@@ -1,20 +1,28 @@
 package com.example.una;
 
+import android.app.Activity;
 import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 public class FirestoreClient {
 
@@ -37,11 +45,55 @@ public class FirestoreClient {
         docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
     }
 
-    public void getCharityUserFromEin(String ein, OnCompleteListener onCompleteListener) {
+    public void getCharityUserFromEin(String ein, final OnCompleteListener<Charity> onCompleteListener) {
         if (ein == null) {
             Log.d(TAG, "EIN is null");
         } else {
-            charityUsers.document(ein).get().addOnCompleteListener(onCompleteListener);
+            charityUsers.document(ein).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (!task.isSuccessful()) {
+                        failTask(onCompleteListener);
+                        return;
+                    }
+                    DocumentSnapshot doc = task.getResult();
+                    if (!doc.exists()) {
+                        failTask(onCompleteListener);
+                        return;
+                    }
+                    String storedName;
+                    Map<String, Object> fields = doc.getData();
+                    if (fields.containsKey("name")) {
+                        storedName = (String) fields.get("name");
+                    } else {
+                        Log.d(TAG, "charity name not stored");
+                        storedName = "";
+                    }
+
+                    final Charity charity = new Charity(ein, storedName);
+                    onCompleteListener.onComplete(new SimpleTask<Charity>() {
+                        @Override
+                        public boolean isSuccessful() {
+                            return true;
+                        }
+
+                        @Nullable
+                        @Override
+                        public Charity getResult() {
+                            return charity;
+                        }
+                    });
+                }
+
+                private void failTask(OnCompleteListener<Charity> onCompleteListener) {
+                    onCompleteListener.onComplete(new SimpleTask<Charity>() {
+                        @Override
+                        public boolean isSuccessful() {
+                            return false;
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -180,5 +232,76 @@ public class FirestoreClient {
     public void getCurrentUserName(OnCompleteListener onCompleteListener) {
         DocumentReference docRef = users.document(getCurrentUser().getUid());
         docRef.get().addOnCompleteListener(onCompleteListener);
+    }
+
+    private static abstract class SimpleTask<TResult> extends Task<TResult> {
+        @Override
+        public boolean isComplete() {
+            return false;
+        }
+
+        @Override
+        public boolean isSuccessful() {
+            return false;
+        }
+
+        @Override
+        public boolean isCanceled() {
+            return false;
+        }
+
+        @Nullable
+        @Override
+        public TResult getResult() {
+            return null;
+        }
+
+        @Nullable
+        @Override
+        public <X extends Throwable> TResult getResult(@NonNull Class<X> aClass) throws X {
+            return null;
+        }
+
+        @Nullable
+        @Override
+        public Exception getException() {
+            return null;
+        }
+
+        @NonNull
+        @Override
+        public Task<TResult> addOnSuccessListener(@NonNull OnSuccessListener<? super TResult> onSuccessListener) {
+            return null;
+        }
+
+        @NonNull
+        @Override
+        public Task<TResult> addOnSuccessListener(@NonNull Executor executor, @NonNull OnSuccessListener<? super TResult> onSuccessListener) {
+            return null;
+        }
+
+        @NonNull
+        @Override
+        public Task<TResult> addOnSuccessListener(@NonNull Activity activity, @NonNull OnSuccessListener<? super TResult> onSuccessListener) {
+            return null;
+        }
+
+        @NonNull
+        @Override
+        public Task<TResult> addOnFailureListener(@NonNull OnFailureListener onFailureListener) {
+            return null;
+        }
+
+        @NonNull
+        @Override
+        public Task<TResult> addOnFailureListener(@NonNull Executor executor, @NonNull OnFailureListener onFailureListener) {
+            return null;
+        }
+
+        @NonNull
+        @Override
+        public Task<TResult> addOnFailureListener(@NonNull Activity activity, @NonNull OnFailureListener onFailureListener) {
+            return null;
+        }
     }
 }

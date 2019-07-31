@@ -6,64 +6,109 @@
     android:layout_height="match_parent"
     tools:context=".CharityCreateBroadcastActivity">
 
-    <ImageView
-        android:id="@+id/ivProfileImage"
-        android:layout_width="@dimen/profile_image_double_width"
-        android:layout_height="@dimen/profile_image_double_width"
-        android:layout_marginStart="@dimen/medium_small_padding"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
         android:layout_marginLeft="@dimen/small_padding"
-        android:layout_marginTop="@dimen/medium_small_padding"
+        android:layout_marginTop="@dimen/small_padding"
         android:layout_marginEnd="@dimen/small_padding"
         android:layout_marginRight="@dimen/small_padding"
-        app:layout_constraintEnd_toStartOf="@+id/tvCharityName"
+        android:layout_marginBottom="@dimen/small_padding"
+        android:minHeight="200dp"
+        app:layout_constraintBottom_toTopOf="@+id/postBtn"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/colorPrimaryDark" />
+        app:layout_constraintVertical_chainStyle="spread_inside">
 
-    <TextView
-        android:id="@+id/tvCharityName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/no_layout_width_textview"
-        android:layout_marginEnd="@dimen/medium_small_padding"
-        android:layout_marginRight="@dimen/small_padding"
-        android:layout_marginBottom="@dimen/small_padding"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/tvMessagePrompt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivProfileImage"
-        app:layout_constraintTop_toTopOf="@+id/ivProfileImage"
-        app:layout_constraintVertical_bias="0.411" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvMessagePrompt"
-        android:layout_width="0dp"
+             <ImageView
+                android:id="@+id/ivProfileImage"
+                android:layout_width="@dimen/profile_image_double_width"
+                android:layout_height="@dimen/profile_image_double_width"
+                android:layout_marginStart="@dimen/medium_small_padding"
+                android:layout_marginLeft="@dimen/small_padding"
+                android:layout_marginTop="@dimen/medium_small_padding"
+                android:layout_marginEnd="@dimen/small_padding"
+                android:layout_marginRight="@dimen/small_padding"
+                app:layout_constraintEnd_toStartOf="@+id/tvCharityName"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/tvCharityName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/no_layout_width_textview"
+                android:layout_marginEnd="@dimen/medium_small_padding"
+                android:layout_marginRight="@dimen/small_padding"
+                android:layout_marginBottom="@dimen/small_padding"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/tvMessagePrompt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivProfileImage"
+                app:layout_constraintTop_toTopOf="@+id/ivProfileImage"
+                android:textColor="@color/una_charcoal"
+                app:layout_constraintVertical_bias="0.32" />
+
+            <TextView
+                android:id="@+id/tvMessagePrompt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_small_padding"
+                android:layout_marginLeft="@dimen/small_padding"
+                android:layout_marginTop="@dimen/medium_small_padding"
+                android:layout_marginEnd="@dimen/medium_small_padding"
+                android:layout_marginRight="@dimen/small_padding"
+                android:text="TextView"
+                android:textColor="@color/una_charcoal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivProfileImage" />
+
+            <EditText
+                android:id="@+id/etMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_small_padding"
+                android:layout_marginLeft="@dimen/small_padding"
+                android:layout_marginTop="@dimen/medium_small_padding"
+                android:layout_marginEnd="@dimen/medium_small_padding"
+                android:layout_marginRight="@dimen/small_padding"
+                android:layout_marginBottom="8dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:textColor="@color/una_charcoal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvMessagePrompt"
+                app:layout_goneMarginTop="@dimen/medium_small_padding" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <Button
+        android:id="@+id/postBtn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/medium_small_padding"
+        android:layout_marginStart="@dimen/small_padding"
         android:layout_marginLeft="@dimen/small_padding"
-        android:layout_marginEnd="@dimen/medium_small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
         android:layout_marginRight="@dimen/small_padding"
-        android:layout_marginTop="@dimen/medium_small_padding"
-        android:text="TextView"
+        android:layout_marginBottom="@dimen/medium_small_padding"
+        android:text="@string/post_button_text"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivProfileImage" />
-
-    <EditText
-        android:id="@+id/etMessage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/medium_small_padding"
-        android:layout_marginLeft="@dimen/small_padding"
-        android:layout_marginTop="@dimen/medium_small_padding"
-        android:layout_marginEnd="@dimen/medium_small_padding"
-        android:layout_marginRight="@dimen/small_padding"
-        app:layout_goneMarginTop="@dimen/medium_small_padding"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMessagePrompt" />
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat"
     tools:context=".CharityHomeActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -22,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCreate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,10 +32,9 @@
         android:layout_marginEnd="@dimen/small_padding"
         android:layout_marginRight="@dimen/small_padding"
         android:layout_marginBottom="@dimen/small_padding"
-        android:src="@drawable/ic_create_black_24dp.xml"
+        app:srcCompat="@drawable/ic_create_black_24dp"
         app:layout_constraintBottom_toTopOf="@+id/signOutBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:ripple_color="@color/una_gold" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/signOutBtn"

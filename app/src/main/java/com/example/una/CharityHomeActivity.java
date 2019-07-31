@@ -63,6 +63,7 @@ public class CharityHomeActivity extends AppCompatActivity {
     @OnClick(R.id.fabCreate)
     public void createBroadcast() {
         Intent createBroadcastIntent = new Intent(this, CharityCreateBroadcastActivity.class);
+        createBroadcastIntent.putExtra("charity", Parcels.wrap(charity));
         startActivity(createBroadcastIntent);
     }
 
@@ -83,6 +84,7 @@ public class CharityHomeActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    broadcasts.clear();
                     Log.i(TAG, "completed getting broadcasts");
                     QuerySnapshot result = task.getResult();
                     for (QueryDocumentSnapshot broadcastsDoc : result) {
