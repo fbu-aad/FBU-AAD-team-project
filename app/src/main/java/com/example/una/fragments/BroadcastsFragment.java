@@ -12,12 +12,17 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.una.BroadcastsAdapter;
 import com.example.una.FirestoreClient;
 import com.example.una.R;
 import com.example.una.adapters.NotificationsAdapter;
+import com.example.una.models.Broadcast;
 import com.example.una.models.Donation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -26,24 +31,24 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationsFragment extends Fragment {
+public class BroadcastsFragment extends Fragment {
     @BindView(R.id.rvNotifications)
     RecyclerView rvNotifications;
 
-    public final static String TAG = "NotificationsFragment";
+    public final static String TAG = "BroadcastsFragment";
     FirestoreClient client;
-    ArrayList<Donation> notifications;
-    NotificationsAdapter adapter;
+    ArrayList<Broadcast> broadcasts;
+    BroadcastsAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
         ButterKnife.bind(this, view);
-        notifications = new ArrayList<>();
-        adapter = new NotificationsAdapter(notifications);
+        broadcasts = new ArrayList<>();
+        adapter = new BroadcastsAdapter(broadcasts);
         rvNotifications.setAdapter(adapter);
         client = new FirestoreClient();
-        fetchUsers();
+        fetchBroadcasts();
         return view;
     }
 
@@ -52,28 +57,23 @@ public class NotificationsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvNotifications.setLayoutManager(layoutManager);
-        // divides each item within in the recyclerView with a horizontal line
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvNotifications.getContext(), layoutManager.getOrientation());
-        rvNotifications.addItemDecoration(dividerItemDecoration);
     }
 
     // fetch donations for user here
-    private void fetchUsers() {
+    private void fetchBroadcasts() {
         // get donations from current user from Firestore and create a new Donation object for each one
-        client.getDonations(new OnCompleteListener<QuerySnapshot>() {
+        client.getBroadcasts(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot donationDoc : task.getResult()) {
-                        if ((!client.getCurrentUser().getUid().equals(donationDoc.getData().get("donor_id"))) && (client.getCurrentUser().getDisplayName() != null) ) {
-                            notifications.add(new Donation(donationDoc.getData()));
-                            Log.i("Donation ID", donationDoc.getData().get("donor_id").toString());
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Log.d(TAG, "Error getting donor ID", task.getException());
-                        }
+                    broadcasts.clear();
+                    QuerySnapshot result = task.getResult();
+                    for (QueryDocumentSnapshot broadcastsDoc : result) {
+                        broadcasts.add(new Broadcast(broadcastsDoc.getData()));
                     }
-                    Log.i("Current_logged_in_ID", client.getCurrentUser().getUid());
+                    adapter.notifyItemInserted(broadcasts.size() - 1);
+                } else {
+                    Log.d(TAG, "error getting user broadcasts");
                 }
             }
         });

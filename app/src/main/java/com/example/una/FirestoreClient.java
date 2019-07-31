@@ -42,6 +42,11 @@ public class FirestoreClient {
         user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
+    public void getBroadcasts(OnCompleteListener onCompleteListener) {
+        broadcasts.orderBy("time", Query.Direction.DESCENDING).limit(20).get()
+                .addOnCompleteListener(onCompleteListener);
+    }
+
     public void getFavoriteCharity(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener) {
         DocumentReference docRef = users.document(user.getUid());
         docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
@@ -97,6 +102,11 @@ public class FirestoreClient {
                 }
             });
         }
+    }
+
+    public void getCurrentUserName(OnCompleteListener onCompleteListener) {
+        DocumentReference docRef = users.document(getCurrentUser().getUid());
+        docRef.get().addOnCompleteListener(onCompleteListener);
     }
 
     public void getChallengeUserCreator(OnCompleteListener onCompleteListener, String challengeOwner) {
@@ -234,10 +244,7 @@ public class FirestoreClient {
                 .addOnFailureListener(onFailureListener);
     }
 
-    public void getCurrentUserName(OnCompleteListener onCompleteListener) {
-        DocumentReference docRef = users.document(getCurrentUser().getUid());
-        docRef.get().addOnCompleteListener(onCompleteListener);
-    }
+
 
     private static abstract class SimpleTask<TResult> extends Task<TResult> {
         @Override

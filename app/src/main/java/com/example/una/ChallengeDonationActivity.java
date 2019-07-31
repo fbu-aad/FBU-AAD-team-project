@@ -155,7 +155,8 @@ public class ChallengeDonationActivity extends AppCompatActivity {
 
         // spinner to provide option of keeping participation private
         String[] privacyOptions = new String[]{"Public", "Friends", "Private"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, privacyOptions);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, privacyOptions);
         sPrivacy.setAdapter(adapter);
 
         // get donor name

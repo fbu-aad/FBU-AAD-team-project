@@ -14,9 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.una.NavigationDrawerActivities.DonationHistoryActivity;
+import com.example.una.fragments.BroadcastsFragment;
 import com.example.una.fragments.ExplorePageFragment;
 import com.example.una.fragments.ChallengesFragment;
-import com.example.una.fragments.NotificationsFragment;
 import com.example.una.fragments.QuickDonateFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Fragment explorePageFragment = new ExplorePageFragment();
         final Fragment quickDonateFragment = new QuickDonateFragment();
-        final Fragment notificationsFragment = new NotificationsFragment();
+        final Fragment broadcastsFragment = new BroadcastsFragment();
         final Fragment challengesFragment = new ChallengesFragment();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_home);
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = quickDonateFragment;
                         break;
                     case R.id.action_notifications:
-                        fragment = notificationsFragment;
+                        fragment = broadcastsFragment;
                         break;
                     case R.id.action_challenges:
                         fragment = challengesFragment;

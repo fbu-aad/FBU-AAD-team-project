@@ -13,13 +13,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.una.models.Broadcast;
 import com.example.una.models.Charity;
+import com.example.una.models.Donation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.parceler.Parcels;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +53,7 @@ public class DonationActivity extends AppCompatActivity {
     private String currentAmount = "";
     private Double amount;
     private Context context;
+    private String userName;
 
     FirestoreClient firestoreClient = new FirestoreClient();
     private Charity charity;
@@ -72,6 +82,44 @@ public class DonationActivity extends AppCompatActivity {
                     Toast.makeText(context, String.format("You donated $%s!", df.format(amount)),
                             Toast.LENGTH_SHORT).show();
                     Log.i(TAG, "Donation Success!");
+
+                    Map<String, Object> broadcast = new HashMap<>();
+
+                    // get donor name
+                    firestoreClient.getCurrentUserName(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful() ) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    userName = document.get("first_name") + " "
+                                            + document.get("last_name");
+                                } else {
+                                    Log.d(TAG, "using default username in broadcast");
+                                    userName = "Mark Zuckerberg";
+                                }
+                            } else {
+                                Log.d(TAG, "using default username in broadcast");
+                                userName = "Mark Zuckerberg";
+                            }
+
+                            String message = userName + " donated to " + charity.getName();
+                            broadcast.put("message", message);
+                            broadcast.put("username", userName);
+
+                            firestoreClient.createNewBroadcast(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.i(TAG, "success adding donation to broadcasts");
+                                }
+                            }, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, "failure adding donation to broadcasts");
+                                }
+                            }, Broadcast.DONATION, PrivacySetting.PUBLIC, broadcast);
+                        }
+                    });
                 }
             }, new OnFailureListener() {
                 @Override
