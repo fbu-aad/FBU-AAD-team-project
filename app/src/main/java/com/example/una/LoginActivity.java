@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateSharedPreferences() {
-        SharedPreferences sharedPref = context.getSharedPreferences(
+        SharedPreferences sharedPref = getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("user_type", getResources().getBoolean(R.bool.is_user));

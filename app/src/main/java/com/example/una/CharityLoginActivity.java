@@ -58,7 +58,7 @@ public class CharityLoginActivity extends AppCompatActivity {
         if (mAuth.getCurrentUser() != null) {
             pd.show();
 
-            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE);
             if (sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user))) {
                 Intent goToUserSide = new Intent(this, LoginActivity.class);
                 pd.dismiss();
@@ -140,8 +140,8 @@ public class CharityLoginActivity extends AppCompatActivity {
     }
 
     private void updateSharedPreferences(String ein) {
-        SharedPreferences sharedPref = context.getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("user_type", getResources().getBoolean(R.bool.is_charity));
         editor.putString("charity_ein", ein);

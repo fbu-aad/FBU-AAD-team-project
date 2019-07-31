@@ -29,7 +29,7 @@ public class UnaStartupActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key),
+            SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key),
                     Context.MODE_PRIVATE);
             if (sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user))) {
                 startUserLogin();
