@@ -92,4 +92,8 @@
     <string name="_100">$100</string>
     <string name="other_amount">$ Other</string>
     <string name="who_can_see_that_you_donated">Who can see that you donated?</string>
+
+    <string name="notification_item_donated_to">donated to:</string>
+    <string name="notification_item_donated_on">Donated on:</string>
+
 </resources>
