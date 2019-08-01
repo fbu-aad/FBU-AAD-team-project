@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.una.FirestoreClient;
 import com.example.una.CreateChallengeScreenSlideActivity;
@@ -42,6 +43,7 @@ public class ChallengesFragment extends Fragment {
     @BindView(R.id.signOutButton) Button signOutButton;
     @BindView(R.id.rvChallenges) RecyclerView rvChallenges;
     @BindView(R.id.fabCreateChallenge) FloatingActionButton fabCreateChallenge;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
     public final static String TAG = "ChallengesFragment";
     static final int CREATE_CHALLENGE = 111;
@@ -55,6 +57,15 @@ public class ChallengesFragment extends Fragment {
         challengeDescription = getContext().getResources().getString(R.string.challenge_description_dummy_text);
         View view = inflater.inflate(R.layout.fragment_impact, container, false);
         ButterKnife.bind(this, view);
+
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getChallenges();
+            }
+        });
+
         challenges = new ArrayList<>();
         adapter = new StreaksComplexRecyclerViewAdapter(challenges);
         rvChallenges.setAdapter(adapter);
@@ -109,17 +120,20 @@ public class ChallengesFragment extends Fragment {
 
     // place challenges for user here
     private ArrayList<Object> getChallenges() {
-        challenges.add("image");
         // get all challenges from Firestore and create a new Challenge object for each one
         client.getChallenges(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
+                        adapter.clear();
+                        challenges.add("image");
                         for (QueryDocumentSnapshot challengeDoc : task.getResult()) {
                             challenges.add(new Challenge(challengeDoc.getData(), challengeDoc.getId()));
                             Log.d(TAG, challengeDoc.getId() + " => " + challengeDoc.getData());
                         }
+                        adapter.addAll(challenges);
                         adapter.notifyDataSetChanged();
+                        swipeContainer.setRefreshing(false);
                     } else {
                         Log.d(TAG, "Error getting challengeDocs: ", task.getException());
                     }

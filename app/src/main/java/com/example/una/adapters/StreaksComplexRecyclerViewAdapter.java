@@ -120,4 +120,16 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     private void configureStreakViewHolder(StreaksViewHolder vhStreak) {
         vhStreak.getIvCharityImage().setImageResource(R.drawable.ic_streak_black_24dp);
     }
+
+    // Clean all elements of the recycler
+    public void clear() {
+        challenges.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items -- change to type used
+    public void addAll(ArrayList<Object> list) {
+        challenges.addAll(list);
+        notifyDataSetChanged();
+    }
 }
