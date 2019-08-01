@@ -2,6 +2,7 @@ package com.example.una;
 
 import android.app.Activity;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -260,10 +262,23 @@ public class FirestoreClient {
                 .addOnFailureListener(onFailureListener);
     }
 
-
-
     public CollectionReference getDonationsCollection() {
         return donations;
+    }
+
+    public void fetchDonationsAfterFirstTime(String uid, DocumentSnapshot documentSnapshot, int itemsPerPage, OnSuccessListener<QuerySnapshot> onSuccessListener) {
+        donations.whereEqualTo("donor_id", uid)
+                 .orderBy("time", Query.Direction.DESCENDING)
+                 .startAfter(documentSnapshot)
+                 .limit(itemsPerPage)
+                 .get().addOnSuccessListener(onSuccessListener);;
+    }
+
+    public void fetchDonationsFirstTime(String uid, int itemsPerPage, OnSuccessListener<QuerySnapshot> onSuccessListener) {
+        donations.whereEqualTo("donor_id", uid)
+                .orderBy("time", Query.Direction.DESCENDING)
+                .limit(itemsPerPage)
+                .get().addOnSuccessListener(onSuccessListener);
     }
 
     private static abstract class SimpleTask<TResult> extends Task<TResult> {

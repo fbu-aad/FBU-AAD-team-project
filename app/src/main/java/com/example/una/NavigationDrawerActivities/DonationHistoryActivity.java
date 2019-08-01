@@ -1,6 +1,7 @@
 package com.example.una.NavigationDrawerActivities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,6 @@ import com.example.una.adapters.DonationsHistoryAdapter;
 import com.example.una.models.Donation;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -28,19 +28,18 @@ import butterknife.ButterKnife;
 
 public class DonationHistoryActivity extends AppCompatActivity {
 
+    private final static int ITEMS_PER_PAGE_QUERY = 10;
+    private final static String TAG = "DonationHistoryActivity";
+
     @BindView(R.id.rvDonations)
     RecyclerView rvDonations;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     private EndlessRecyclerViewScrollListener scrollListener;
-    private int itemsPerPageQuery = 10;
-    public final static String TAG = "DonationHistoryActivity";
     FirestoreClient client;
     List<Donation> donations; // passes to my adapter class
     DonationsHistoryAdapter adapter; // what handles the item in the RecyclerView
     DocumentSnapshot lastVisible;
-    Query next;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +74,14 @@ public class DonationHistoryActivity extends AppCompatActivity {
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                next.get()
-                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot documentSnapshots) {
-                                loadMoreData(documentSnapshots);
-                            }
-                        });
+                if (lastVisible != null) {
+                    client.fetchDonationsAfterFirstTime(client.getCurrentUser().getUid(), lastVisible, ITEMS_PER_PAGE_QUERY, new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot documentSnapshots) {
+                                    loadMoreData(documentSnapshots);
+                                }
+                            });
+                }
             }
         };
         rvDonations.addOnScrollListener(scrollListener);
@@ -91,30 +91,25 @@ public class DonationHistoryActivity extends AppCompatActivity {
 
     private void loadMoreData(QuerySnapshot documentSnapshots) {
         for (QueryDocumentSnapshot donationDoc : documentSnapshots) {
-            if(donationDoc.get("donor_id").toString().equals(client.getCurrentUser().getUid())) {
-                donations.add(new Donation(donationDoc.getData()));
-            }
+            donations.add(new Donation(donationDoc.getData()));
+            Log.i("client user uid", client.getCurrentUser().getUid());
         }
         adapter.notifyDataSetChanged();
-        // Get the last visible document
-        lastVisible = documentSnapshots.getDocuments()
-                .get(documentSnapshots.size() - 1);
 
-        next = client.getDonationsCollection()
-                .orderBy("time", Query.Direction.DESCENDING)
-                .startAfter(lastVisible)
-                .limit(itemsPerPageQuery);
+        // Get the last visible document
+            Log.i(TAG, String.valueOf(documentSnapshots.size()));
+        if(documentSnapshots.size() > 0) {
+            lastVisible = documentSnapshots.getDocuments()
+                    .get(documentSnapshots.size() - 1);
+        } else {
+            lastVisible = null;
+        }
     }
 
     // fetch donations for user here
     private void fetchDonations() {
-        // Construct query for first 25 cities, ordered by population
-        Query first = client.getDonationsCollection()
-                .orderBy("time", Query.Direction.DESCENDING)
-                .limit(itemsPerPageQuery);
-
-        first.get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        // Construct query for first 10 donations
+        client.fetchDonationsFirstTime(client.getCurrentUser().getUid(), ITEMS_PER_PAGE_QUERY, new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot documentSnapshots) {
                         loadMoreData(documentSnapshots);
