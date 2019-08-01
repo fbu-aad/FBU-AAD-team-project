@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvCreateChallenge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:text="@string/tell_your_story"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:text="@string/give_your_challenge_a_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCreateChallenge" />
+
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:ems="10"
+            android:hint="@string/title"
+            android:inputType="textPersonName"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+        <TextView
+            android:id="@+id/tvAbout"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:text="@string/create_challenge_description_prompt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etTitle" />
+
+        <EditText
+            android:id="@+id/etAbout"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:isScrollContainer="true"
+            android:maxLines="10"
+            android:minLines="10"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAbout" />
+
+        <TextView
+            android:id="@+id/tvPickPhoto"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:text="@string/pick_a_cover_photo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etAbout" />
+
+        <Button
+            android:id="@+id/btnTakePhoto"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/small_padding"
+            android:layout_marginRight="@dimen/small_padding"
+            android:text="@string/take_photo"
+            app:layout_constraintEnd_toStartOf="@+id/btnLibrary"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPickPhoto" />
+
+        <Button
+            android:id="@+id/btnLibrary"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_padding"
+            android:layout_marginLeft="@dimen/small_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:text="@string/library"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnTakePhoto"
+            app:layout_constraintTop_toBottomOf="@+id/tvPickPhoto" />
+
+        <Button
+            android:id="@+id/btnCreateChallenge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/small_padding"
+            android:text="@string/create"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnLibrary" />
+
+        <ImageButton
+            android:id="@+id/ibBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/small_padding"
+            android:rotation="180"
+            android:tint="@color/una_gold"
+            android:src="@drawable/ic_arrow_right"
+            android:backgroundTint="@color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnTakePhoto" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

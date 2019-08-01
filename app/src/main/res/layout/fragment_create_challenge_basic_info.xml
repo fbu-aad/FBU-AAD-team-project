@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--TODO add suggested donation amount-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvCreateChallenge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:text="@string/create_challenge"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvFundraiserFor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:text="@string/fundraiser_for"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCreateChallenge" />
+
+        <EditText
+            android:id="@+id/etAssociatedCharity"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:ems="10"
+            android:hint="@string/charity_ein"
+            android:inputType="number"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvFundraiserFor" />
+
+        <TextView
+            android:id="@+id/tvGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:text="@string/goal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etAssociatedCharity" />
+
+        <EditText
+            android:id="@+id/etGoalAmount"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:ems="10"
+            android:hint="@string/hint_amount"
+            android:inputType="numberDecimal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvGoal" />
+
+        <TextView
+            android:id="@+id/tvEndDate"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:text="@string/end_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etGoalAmount" />
+
+        <TextView
+            android:id="@+id/tvFrequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:text="@string/is_this_a_recurring_challenge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etEndDate" />
+
+        <TextView
+            android:id="@+id/tvMatching"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:text="@string/will_gifts_be_matched"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cgFrequency" />
+
+        <EditText
+            android:id="@+id/etEndDate"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="@string/mm_dd_yyyy"
+            android:inputType="date"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvEndDate" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cgFrequency"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            app:singleSelection="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvFrequency">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cOneTime"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/xxs_padding"
+                android:checked="true"
+                android:text="@string/one_time" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cDaily"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/xxs_padding"
+                android:text="@string/daily" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cWeekly"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/xxs_padding"
+                android:text="@string/weekly" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cMonthly"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/xxs_padding"
+                android:text="@string/monthly" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cYearly"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/xxs_padding"
+                android:text="@string/yearly" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cgMatching"
+            android:layout_width="@dimen/no_layout_width_textview"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            app:singleSelection="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMatching">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cYes"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/xxs_padding"
+                android:text="@string/yes" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cNo"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/xxs_padding"
+                android:checked="true"
+                android:text="@string/no" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <ImageButton
+            android:id="@+id/ibNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/small_padding"
+            android:tint="@color/una_gold"
+            android:src="@drawable/ic_arrow_right"
+            android:backgroundTint="@color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cgMatching" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/small_padding"
+            android:text="@string/cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cgMatching" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

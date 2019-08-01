@@ -210,7 +210,7 @@
         android:layout_marginStart="@dimen/standard_padding"
         android:layout_marginLeft="@dimen/standard_padding"
         android:layout_marginTop="@dimen/small_padding"
-        android:spinnerMode="dropdown"
+        android:spinnerMode="dialog"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPrivacy" />
 

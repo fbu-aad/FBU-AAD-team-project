@@ -8,13 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.una.FirestoreClient;
+import com.example.una.CreateChallengeScreenSlideActivity;
 import com.example.una.UnaStartupActivity;
 import com.example.una.models.Challenge;
 import com.example.una.R;
@@ -22,6 +25,7 @@ import com.example.una.adapters.StreaksComplexRecyclerViewAdapter;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -31,12 +35,16 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+
 public class ChallengesFragment extends Fragment {
     @BindString(R.string.challenge_description_dummy_text) String challengeDescription;
     @BindView(R.id.signOutButton) Button signOutButton;
     @BindView(R.id.rvChallenges) RecyclerView rvChallenges;
+    @BindView(R.id.fabCreateChallenge) FloatingActionButton fabCreateChallenge;
 
     public final static String TAG = "ChallengesFragment";
+    static final int CREATE_CHALLENGE = 111;
     FirestoreClient client;
 
     ArrayList<Object> challenges;
@@ -75,8 +83,28 @@ public class ChallengesFragment extends Fragment {
             }
         });
 
+        fabCreateChallenge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent createChallenge = new Intent(getContext(), CreateChallengeScreenSlideActivity.class);
+                startActivityForResult(createChallenge, CREATE_CHALLENGE);
+            }
+        });
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvChallenges.setLayoutManager(layoutManager);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // check which request we are responding to
+        if (requestCode == CREATE_CHALLENGE) {
+            // make sure request was successful
+            if (resultCode == RESULT_OK) {
+                // user successfully created challenge
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 
     // place challenges for user here
