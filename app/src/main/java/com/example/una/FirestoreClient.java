@@ -186,8 +186,12 @@ public class FirestoreClient {
             // TODO broadcast donation
             // put user, charity recipient
         } else if (type.equals(Broadcast.NEW_CHALLENGE)) {
-            // TODO broadcast new challenge
-            // put user, charity, challenge name
+            // donor-created challenge
+            String message = broadcast.get("user_name") + " created a new challenge " + "\""
+                    + broadcast.get("challenge_name") + ".\" Check it out!";
+            broadcast.put("message", message);
+
+            // TODO charity-created challenge
         } else if (type.equals(Broadcast.POST)) {
             // TODO broadcast post
             // put charity user, message
@@ -220,11 +224,23 @@ public class FirestoreClient {
         donation.put("time", new Timestamp(timeOfDonation));
 
         donations.document().set(donation);
+        // if donation was part of a challenge, add challenge_id field
         if (challengeId != null) {
             donation.put("challenge_id", challengeId);
         }
 
         db.collection("donations").document().set(donation)
+                .addOnSuccessListener(onSuccessListener)
+                .addOnFailureListener(onFailureListener);
+    }
+
+    public void createNewChallenge(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,
+                                   HashMap<String, Object> challenge) {
+        Date timeOfChallengeCreation = new Date();
+        challenge.put("start_date", timeOfChallengeCreation);
+        challenge.put("owner", getCurrentUser().getUid());
+
+        db.collection("challenges").document().set(challenge)
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
     }

@@ -83,6 +83,9 @@ dependencies {
     // Parceler dependencies
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
+
+    // material date/time picker
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

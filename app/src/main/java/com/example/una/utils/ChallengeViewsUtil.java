@@ -155,9 +155,9 @@ public class ChallengeViewsUtil {
     // get string for challenge progress information
     public static String getStrProgress(Challenge challenge) {
         double amountRaised = challenge.getChallengeAmountRaised();
-        long amountTarget = challenge.getChallengeAmountTarget();
+        double amountTarget = challenge.getChallengeAmountTarget();
         String sAmountRaised = formatCurrency((long) amountRaised);
-        String sAmountTarget = formatCurrency(amountTarget);
+        String sAmountTarget = formatCurrency((long) amountTarget);
         String sProgress;
         // check if there is a target goal
         if (amountTarget == 0) {
@@ -171,7 +171,7 @@ public class ChallengeViewsUtil {
     // set progress bar
     public static void setPbProgress(ProgressBar pb, Challenge challenge) {
         double amountRaised = challenge.getChallengeAmountRaised();
-        long amountTarget = challenge.getChallengeAmountTarget();
+        double amountTarget = challenge.getChallengeAmountTarget();
         // check if there is a target goal
         if (amountTarget == 0) {
             // hide progress bar

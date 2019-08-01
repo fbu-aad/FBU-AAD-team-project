@@ -88,10 +88,6 @@ public class ChallengesFragment extends Fragment {
             public void onClick(View v) {
                 Intent createChallenge = new Intent(getContext(), CreateChallengeScreenSlideActivity.class);
                 startActivityForResult(createChallenge, CREATE_CHALLENGE);
-
-
-
-                Toast.makeText(view.getContext(), "Create Challenge -> I am working", Toast.LENGTH_LONG).show();
             }
         });
 

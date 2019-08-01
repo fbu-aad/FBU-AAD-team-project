@@ -23,6 +23,10 @@ public class CreateChallengeScreenSlideActivity extends FragmentActivity impleme
     // pager adapter
     private PagerAdapter pagerAdapter;
 
+    // initialize fragments
+    Fragment fBasicInfo = new CreateChallengeBasicInfoFragment();
+    Fragment fStory = new CreateChallengeStoryFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,10 +71,10 @@ public class CreateChallengeScreenSlideActivity extends FragmentActivity impleme
         public Fragment getItem(int position) {
             if (position == 0) {
                 // basic information fragment
-                return new CreateChallengeBasicInfoFragment();
+                return fBasicInfo;
             } else {
                 // story and upload photo fragment
-                return new CreateChallengeStoryFragment();
+                return fStory;
             }
         }
 
