@@ -171,7 +171,7 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
                     editor.putString("end_date", etEndDate.getText().toString());
                     editor.putString("frequency", frequency);
                     editor.putBoolean("matching", bMatching);
-                    editor.commit();
+                    editor.apply();
                     mOnButtonClickListener.onButtonClicked(v);
                 }
             }
