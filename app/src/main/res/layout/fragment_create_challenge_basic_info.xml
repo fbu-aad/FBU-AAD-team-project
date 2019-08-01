@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--TODO use preset values and extract resources-->
 <!--TODO add suggested donation amount-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,12 +14,12 @@
             android:id="@+id/tvCreateChallenge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Create Challenge"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:text="@string/create_challenge"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,24 +29,24 @@
             android:id="@+id/tvFundraiserFor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Fundraiser for"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:text="@string/fundraiser_for"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCreateChallenge" />
 
         <EditText
             android:id="@+id/etAssociatedCharity"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/no_layout_width_textview"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
             android:ems="10"
-            android:hint="Charity EIN"
+            android:hint="@string/charity_ein"
             android:inputType="number"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,24 +57,24 @@
             android:id="@+id/tvGoal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Goal"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:text="@string/goal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etAssociatedCharity" />
 
         <EditText
             android:id="@+id/etGoalAmount"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/no_layout_width_textview"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
             android:ems="10"
-            android:hint="$ Amount"
+            android:hint="@string/hint_amount"
             android:inputType="numberDecimal"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintEnd_toEndOf="parent"
@@ -84,14 +83,14 @@
 
         <TextView
             android:id="@+id/tvEndDate"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/no_layout_width_textview"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="End Date"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:text="@string/end_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etGoalAmount" />
@@ -100,10 +99,10 @@
             android:id="@+id/tvFrequency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Is this a recurring challenge?"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:text="@string/is_this_a_recurring_challenge"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etEndDate" />
 
@@ -111,25 +110,25 @@
             android:id="@+id/tvMatching"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Will gifts be matched?"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:text="@string/will_gifts_be_matched"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cgFrequency" />
 
         <EditText
             android:id="@+id/etEndDate"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/no_layout_width_textview"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
             android:ems="10"
             android:focusable="false"
-            android:hint="mm/dd/yyyy"
+            android:hint="@string/mm_dd_yyyy"
             android:inputType="date"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintEnd_toEndOf="parent"
@@ -138,13 +137,13 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/cgFrequency"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/no_layout_width_textview"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
             app:singleSelection="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -157,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/xxs_padding"
                 android:checked="true"
-                android:text="one-time" />
+                android:text="@string/one_time" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cDaily"
@@ -165,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/xxs_padding"
-                android:text="daily" />
+                android:text="@string/daily" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cWeekly"
@@ -173,7 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/xxs_padding"
-                android:text="weekly" />
+                android:text="@string/weekly" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cMonthly"
@@ -181,7 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/xxs_padding"
-                android:text="monthly" />
+                android:text="@string/monthly" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cYearly"
@@ -189,18 +188,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/xxs_padding"
-                android:text="yearly" />
+                android:text="@string/yearly" />
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/cgMatching"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/no_layout_width_textview"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
             app:singleSelection="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -212,7 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/xxs_padding"
-                android:text="yes" />
+                android:text="@string/yes" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cNo"
@@ -221,17 +220,17 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/xxs_padding"
                 android:checked="true"
-                android:text="no" />
+                android:text="@string/no" />
         </com.google.android.material.chip.ChipGroup>
 
         <ImageButton
             android:id="@+id/ibNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/small_padding"
             android:tint="@color/una_gold"
             android:src="@drawable/ic_arrow_right"
             android:backgroundTint="@color/transparent"
@@ -243,10 +242,10 @@
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/small_padding"
             android:text="@string/cancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

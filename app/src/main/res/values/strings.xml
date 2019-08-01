@@ -103,4 +103,20 @@
     <string name="firestore_charity_name_field">charity_name</string>
     <string name="firestore_broadcast_message_field">message</string>
     <string name="broadcast_message_hint">Message Body</string>
+    <string name="create_challenge">Create Challenge</string>
+    <string name="fundraiser_for">Fundraiser for</string>
+    <string name="charity_ein">Charity EIN</string>
+    <string name="goal">Goal</string>
+    <string name="hint_amount">$ Amount</string>
+    <string name="end_date">End Date</string>
+    <string name="is_this_a_recurring_challenge">Is this a recurring challenge?</string>
+    <string name="will_gifts_be_matched">Will gifts be matched?</string>
+    <string name="mm_dd_yyyy">mm/dd/yyyy</string>
+    <string name="one_time">one-time</string>
+    <string name="daily">daily</string>
+    <string name="weekly">weekly</string>
+    <string name="monthly">monthly</string>
+    <string name="yearly">yearly</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
 </resources>

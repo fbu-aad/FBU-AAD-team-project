@@ -20,7 +20,6 @@ public class Challenge {
     double amountRaised;
     double amountTarget;
     String associatedCharityEin;
-    // TODO remove after getting charity name from API
     String associatedCharityName;
     String frequency;
     String ownerId;
