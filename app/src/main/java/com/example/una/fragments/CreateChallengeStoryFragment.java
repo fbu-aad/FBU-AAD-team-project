@@ -100,31 +100,6 @@ public class CreateChallengeStoryFragment extends Fragment {
             }
         });
 
-//        SharedPreferences preferences = getContext().getSharedPreferences(CHALLENGE_PREFERENCES, Context.MODE_PRIVATE);
-//        if (preferences != null) {
-//            associatedCharityEin = preferences.getString("associated_charity_ein", null);
-//            goalAmount = preferences.getLong("goal_amount", 0);
-//            endDate = preferences.getString("end_date", null);
-//            frequency = preferences.getString("frequency", null);
-//            matching = preferences.getBoolean("matching", true);
-//        }
-//
-//        // get associated charity name
-//        RequestParams params = new RequestParams();
-//        cnClient = new CharityNavigatorClient(getContext());
-//        cnClient.getCharityInfo(params, associatedCharityEin, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] header, JSONObject response) {
-//            try {
-//                Charity charity = new Charity(response);
-//                associatedCharityName = charity.getName();
-//                challenge.put("associated_charity_name", associatedCharityName);
-//            } catch (JSONException e) {
-//                Log.e("CreateChallengeFragment", "Failed to parse response", e);
-//            }
-//            }
-//        });
-
         return rootView;
     }
 
@@ -237,44 +212,6 @@ public class CreateChallengeStoryFragment extends Fragment {
                         }
                     }
                 });
-
-//                if (validDesc && validTitle) {
-//                    // write to challenges collection
-//                    fsClient.createNewChallenge(new OnSuccessListener() {
-//                        @Override
-//                        public void onSuccess(Object o) {
-//                            Log.i(TAG, "Challenge created successfully!");
-//
-//                            // return result to calling activity
-//                            Intent resultData = new Intent();
-//                            getActivity().setResult(RESULT_OK, resultData);
-//                            getActivity().finish();
-//                        }
-//                    }, new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Log.i(TAG, "Failed to create challenge!");
-//                        }
-//                    }, challenge);
-//
-//                    // write to broadcasts collection
-//                    if (userName != null) {
-//                        broadcast.put("user_name", userName);
-//                    }
-//                    broadcast.put("challenge_name", etTitle.getText().toString());
-//                    broadcast.put("associated_charity_name", associatedCharityName);
-//                    fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
-//                        @Override
-//                        public void onSuccess(Void aVoid) {
-//
-//                        }
-//                    }, new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//
-//                        }
-//                    }, Broadcast.NEW_CHALLENGE, PrivacySetting.PUBLIC, broadcast);
-//                }
             }
         });
     }
