@@ -10,8 +10,6 @@ public class Donation {
     String recipient;
     String frequency;
     String donorId;
-    private int number;
-
 
     public Donation() {
         // Default constructor required for calls to DataSnapshot.getValue(Donation.class)
