@@ -10,6 +10,7 @@ public class Donation {
     String recipient;
     String frequency;
     String donorId;
+    private int number;
 
 
     public Donation() {

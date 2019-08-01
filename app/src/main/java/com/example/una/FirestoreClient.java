@@ -262,6 +262,10 @@ public class FirestoreClient {
 
 
 
+    public CollectionReference getDonationsCollection() {
+        return donations;
+    }
+
     private static abstract class SimpleTask<TResult> extends Task<TResult> {
         @Override
         public boolean isComplete() {
