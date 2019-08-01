@@ -46,7 +46,7 @@ public class CharityLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_charity_login);
 
         ButterKnife.bind(this);
-        client = new FirestoreClient();
+        client = new FirestoreClient(this);
         mAuth = FirebaseAuth.getInstance();
 
         context = this;
@@ -65,7 +65,6 @@ public class CharityLoginActivity extends AppCompatActivity {
                 startActivity(goToUserSide);
                 finish();
             }
-            // TODO: this returns the default value instead of correct ein
             String ein = sharedPref.getString("charity_ein", "530196605");
             getCharity(ein);
         }

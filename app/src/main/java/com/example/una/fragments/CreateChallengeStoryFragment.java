@@ -38,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +66,7 @@ public class CreateChallengeStoryFragment extends Fragment {
     private final String TAG = "CreateChallenge";
     private String userName;
     private String associatedCharityEin;
+    private String associatedCharityName;
     private double goalAmount;
     private String endDate;
     private String frequency;
@@ -80,7 +82,7 @@ public class CreateChallengeStoryFragment extends Fragment {
                 R.layout.fragment_create_challenge_story, container, false);
         mOnButtonClickListener = (OnButtonClickListener) getContext();
         ButterKnife.bind(this, rootView);
-        fsClient = new FirestoreClient();
+        fsClient = new FirestoreClient(getContext());
         // get donor name
         fsClient.getCurrentUserName(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -88,14 +90,15 @@ public class CreateChallengeStoryFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        userName = document.get("first_name") + " " + document.get("last_name");
+                        if (document.contains("first_name")) {
+                            userName = document.get("first_name") + " " + document.get("last_name");
+                        }
                     }
                 }
             }
         });
 
         SharedPreferences preferences = getContext().getSharedPreferences(CHALLENGE_PREFERENCES, Context.MODE_PRIVATE);
-
         if (preferences != null) {
             associatedCharityEin = preferences.getString("associated_charity_ein", null);
             goalAmount = preferences.getLong("goal_amount", 0);
@@ -110,12 +113,13 @@ public class CreateChallengeStoryFragment extends Fragment {
         cnClient.getCharityInfo(params, associatedCharityEin, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] header, JSONObject response) {
-                try {
-                    Charity charity = new Charity(response);
-                    challenge.put("associated_charity_name", charity.getName());
-                } catch (JSONException e) {
-                    Log.e("CreateChallengeFragment", "Failed to parse response", e);
-                }
+            try {
+                Charity charity = new Charity(response);
+                associatedCharityName = charity.getName();
+                challenge.put("associated_charity_name", associatedCharityName);
+            } catch (JSONException e) {
+                Log.e("CreateChallengeFragment", "Failed to parse response", e);
+            }
             }
         });
 
@@ -190,8 +194,11 @@ public class CreateChallengeStoryFragment extends Fragment {
                     }, challenge);
 
                     // write to broadcasts collection
-                    broadcast.put("user_name", userName);
+                    if (userName != null) {
+                        broadcast.put("user_name", userName);
+                    }
                     broadcast.put("challenge_name", etTitle.getText().toString());
+                    broadcast.put("associated_charity_name", associatedCharityName);
                     fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -209,7 +216,7 @@ public class CreateChallengeStoryFragment extends Fragment {
     }
 
     public Date getEndDate(String endDate) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         Date date = dateFormat.parse(endDate);
         return date;
     }

@@ -28,6 +28,8 @@
         android:layout_marginRight="@dimen/standard_padding"
         android:layout_marginBottom="@dimen/standard_padding"
         android:backgroundTint="@color/una_gold"
+        android:tint="@color/white"
+        app:borderWidth="0dp"
         app:layout_constraintBottom_toTopOf="@+id/signOutButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />

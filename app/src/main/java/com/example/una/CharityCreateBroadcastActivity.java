@@ -56,7 +56,7 @@ public class CharityCreateBroadcastActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        client = new FirestoreClient();
+        client = new FirestoreClient(this);
         charity = Parcels.unwrap(getIntent().getParcelableExtra("charity"));
         context = this;
 

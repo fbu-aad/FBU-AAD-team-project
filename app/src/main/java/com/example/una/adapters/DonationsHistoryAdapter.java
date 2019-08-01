@@ -49,7 +49,7 @@ public class DonationsHistoryAdapter extends RecyclerView.Adapter<DonationsHisto
     public DonationsHistoryAdapter(List<Donation> donations) {
         // passing in donations array from DonationHistoryActivity
         mDonations = donations;
-        client = new FirestoreClient();
+        client = new FirestoreClient(context);
     }
 
     // for each row, inflate the layout and cache references into ViewHolder

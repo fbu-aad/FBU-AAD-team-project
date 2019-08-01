@@ -56,7 +56,7 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         context = viewGroup.getContext();
-        client = new FirestoreClient();
+        client = new FirestoreClient(context);
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         if (viewType == CHALLENGE) {
@@ -87,7 +87,7 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
             // set challenge title text view
             vhChallenge.getTvChallengeTitle().setText(challenge.getChallengeName());
             // set challenge owner and associated charity text view
-            setTvOwnerRecipientInfo(vhChallenge.getTvChallengeOwnerRecipientInfo(), challenge);
+            setTvOwnerRecipientInfo(client, vhChallenge.getTvChallengeOwnerRecipientInfo(), challenge);
 
             // set participants text view
             vhChallenge.getTvNumParticipants().setText(getStrNumParticipants(challenge));
@@ -111,9 +111,9 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
 
             // set join button depending on whether user already accepted challenge
             ToggleButton btnJoin = vhChallenge.getBtnJoin();
-            setJoinBtn(btnJoin, null, challenge);
+            setJoinBtn(client, btnJoin, null, challenge);
 
-            handleClickJoinBtn(btnJoin, null, challenge, context);
+            handleClickJoinBtn(client, btnJoin, null, challenge, context);
         }
     }
 

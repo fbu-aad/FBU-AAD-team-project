@@ -38,10 +38,9 @@ import static android.view.View.GONE;
 
 public class ChallengeViewsUtil {
     public static final String TAG = "ChallengeViewsUtil";
-    static FirestoreClient client = new FirestoreClient();
 
     // set text view with donor-recipient information
-    public static void setTvOwnerRecipientInfo(TextView tvChallengeOwnerRecipientInfo, Challenge challenge) {
+    public static void setTvOwnerRecipientInfo(FirestoreClient client, TextView tvChallengeOwnerRecipientInfo, Challenge challenge) {
         String associatedCharity = challenge.getChallengeAssociatedCharityEin();
         String associatedCharityName = challenge.getChallengeAssociatedCharityName();
         String challengeOwner = challenge.getChallengeOwnerId();
@@ -73,7 +72,7 @@ public class ChallengeViewsUtil {
     }
 
     // set join button depending on whether user already accepted challenge
-    public static void setJoinBtn(ToggleButton btnJoin, ToggleButton btnDonate, Challenge challenge) {
+    public static void setJoinBtn(FirestoreClient client, ToggleButton btnJoin, ToggleButton btnDonate, Challenge challenge) {
         String userId = client.getCurrentUser().getUid();
         String challengeId = challenge.getUid();
         client.getChallengeParticipants(new OnSuccessListener<DocumentSnapshot>() {
@@ -98,7 +97,7 @@ public class ChallengeViewsUtil {
     }
 
     // set on click listener for join button
-    public static void handleClickJoinBtn(ToggleButton btnJoin, ToggleButton btnDonate, Challenge challenge, Context context) {
+    public static void handleClickJoinBtn(FirestoreClient client, ToggleButton btnJoin, ToggleButton btnDonate, Challenge challenge, Context context) {
         String challengeId = challenge.getUid();
         btnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
