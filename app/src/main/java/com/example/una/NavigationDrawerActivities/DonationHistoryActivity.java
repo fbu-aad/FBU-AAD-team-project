@@ -33,12 +33,14 @@ public class DonationHistoryActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     private EndlessRecyclerViewScrollListener scrollListener;
+    private int itemsPerPageQuery = 10;
     public final static String TAG = "DonationHistoryActivity";
     FirestoreClient client;
     List<Donation> donations; // passes to my adapter class
     DonationsHistoryAdapter adapter; // what handles the item in the RecyclerView
     DocumentSnapshot lastVisible;
     Query next;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +103,7 @@ public class DonationHistoryActivity extends AppCompatActivity {
         next = client.getDonationsCollection()
                 .orderBy("time", Query.Direction.DESCENDING)
                 .startAfter(lastVisible)
-                .limit(10);
+                .limit(itemsPerPageQuery);
     }
 
     // fetch donations for user here
@@ -109,7 +111,7 @@ public class DonationHistoryActivity extends AppCompatActivity {
         // Construct query for first 25 cities, ordered by population
         Query first = client.getDonationsCollection()
                 .orderBy("time", Query.Direction.DESCENDING)
-                .limit(10);
+                .limit(itemsPerPageQuery);
 
         first.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
