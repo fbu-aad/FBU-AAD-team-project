@@ -38,7 +38,7 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
     private String currentAmount = "";
     private CharityNavigatorClient cn_client;
     private boolean validEin = true;
-    public static final String PREFERENCES = "ChallengePreferences";
+    public static final String CHALLENGE_PREFERENCES = "ChallengePreferences";
 
     public interface OnButtonClickListener{
         void onButtonClicked(View view);
@@ -132,7 +132,7 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
                 }
 
                 boolean validDate = true;
-                if (etEndDate.getText().toString().equals("mm/dd/yyyy")) {
+                if (etEndDate.getText().toString().isEmpty()) {
                     etEndDate.setError("Select an end date");
                     validDate = false;
                 }
@@ -152,7 +152,7 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
                 }
 
                 if (validGoalAmount && validEin && validDate) {
-                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(CHALLENGE_PREFERENCES, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("associated_charity_ein", ein);
                     editor.putLong("goal_amount", (long) goalAmount);
@@ -160,14 +160,6 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
                     editor.putString("frequency", frequency);
                     editor.putBoolean("matching", bMatching);
                     editor.commit();
-
-                    Bundle bundle = new Bundle();
-                    bundle.putString("associated_charity_ein", ein);
-                    bundle.putDouble("goal_amount", goalAmount);
-                    bundle.putString("end_date", etEndDate.getText().toString());
-                    bundle.putString("frequency", frequency);
-                    bundle.putBoolean("matching", bMatching);
-                    setArguments(bundle);
                     mOnButtonClickListener.onButtonClicked(v);
                 }
             }

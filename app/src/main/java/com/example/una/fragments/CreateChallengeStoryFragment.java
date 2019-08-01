@@ -17,14 +17,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.una.Broadcast;
+import com.example.una.CharityNavigatorClient;
 import com.example.una.FirestoreClient;
 import com.example.una.PrivacySetting;
 import com.example.una.R;
+import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -34,6 +41,7 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -52,10 +60,18 @@ public class CreateChallengeStoryFragment extends Fragment {
 
     HashMap<String, Object> challenge = new HashMap<>();
     HashMap<String, Object> broadcast = new HashMap<>();
-    private FirestoreClient client;
+    private FirestoreClient fsClient;
+    private CharityNavigatorClient cnClient;
     private final String TAG = "CreateChallenge";
     private String userName;
-    public static final String PREFERENCES = "ChallengePreferences";
+    private String associatedCharityEin;
+    private double goalAmount;
+    private String endDate;
+    private String frequency;
+    private boolean matching;
+
+
+    public static final String CHALLENGE_PREFERENCES = "ChallengePreferences";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +80,44 @@ public class CreateChallengeStoryFragment extends Fragment {
                 R.layout.fragment_create_challenge_story, container, false);
         mOnButtonClickListener = (OnButtonClickListener) getContext();
         ButterKnife.bind(this, rootView);
-        client = new FirestoreClient();
+        fsClient = new FirestoreClient();
+        // get donor name
+        fsClient.getCurrentUserName(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        userName = document.get("first_name") + " " + document.get("last_name");
+                    }
+                }
+            }
+        });
+
+        SharedPreferences preferences = getContext().getSharedPreferences(CHALLENGE_PREFERENCES, Context.MODE_PRIVATE);
+
+        if (preferences != null) {
+            associatedCharityEin = preferences.getString("associated_charity_ein", null);
+            goalAmount = preferences.getLong("goal_amount", 0);
+            endDate = preferences.getString("end_date", null);
+            frequency = preferences.getString("frequency", null);
+            matching = preferences.getBoolean("matching", true);
+        }
+
+        // get associated charity name
+        RequestParams params = new RequestParams();
+        cnClient = new CharityNavigatorClient(getContext());
+        cnClient.getCharityInfo(params, associatedCharityEin, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] header, JSONObject response) {
+                try {
+                    Charity charity = new Charity(response);
+                    challenge.put("associated_charity_name", charity.getName());
+                } catch (JSONException e) {
+                    Log.e("CreateChallengeFragment", "Failed to parse response", e);
+                }
+            }
+        });
 
         return rootView;
     }
@@ -84,51 +137,22 @@ public class CreateChallengeStoryFragment extends Fragment {
         btnCreateChallenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //        Bundle bundle = getArguments();
-                SharedPreferences preferences = getContext().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+                // get end date object
+                Date date = null;
+                try {
+                    date = getEndDate(endDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-//        if (bundle != null) {
-                if (preferences != null) {
-//            String associated_charity_ein = bundle.getString("associated_charity_ein");
-//            double goalAmount = bundle.getDouble("goal_amount");
-//            String endDate = bundle.getString("end_date");
-//            String frequency = bundle.getString("frequency");
-//            boolean matching = bundle.getBoolean("matching");
-
-                    String associated_charity_ein = preferences.getString("associated_charity_ein", null);
-                    double goalAmount = preferences.getLong("goal_amount", 0);
-                    String endDate = preferences.getString("end_date", null);
-                    String frequency = preferences.getString("frequency", null);
-                    boolean matching = preferences.getBoolean("matching", true);
-
-                    // get end date object
-                    Date date = null;
-                    try {
-                        date = getEndDate(endDate);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    challenge.put("associated_charity", associated_charity_ein);
+                challenge.put("associated_charity", associatedCharityEin);
+                if (goalAmount != 0) {
                     challenge.put("target", goalAmount);
-                    challenge.put("end_date", date);
-                    challenge.put("frequency", frequency);
-                    if (matching) {
-                        challenge.put("type", "matching");
-                    }
-
-                    // get donor name
-                    client.getCurrentUserName(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    userName = document.get("first_name") + " " + document.get("last_name");
-                                }
-                            }
-                        }
-                    });
+                }
+                challenge.put("end_date", date);
+                challenge.put("frequency", frequency);
+                if (matching) {
+                    challenge.put("type", "matching");
                 }
 
                 challenge.put("name", etTitle.getText().toString());
@@ -148,7 +172,7 @@ public class CreateChallengeStoryFragment extends Fragment {
 
                 if (validDesc && validTitle) {
                     // write to challenges collection
-                    client.createNewChallenge(new OnSuccessListener() {
+                    fsClient.createNewChallenge(new OnSuccessListener() {
                         @Override
                         public void onSuccess(Object o) {
                             Log.i(TAG, "Challenge created successfully!");
@@ -168,7 +192,7 @@ public class CreateChallengeStoryFragment extends Fragment {
                     // write to broadcasts collection
                     broadcast.put("user_name", userName);
                     broadcast.put("challenge_name", etTitle.getText().toString());
-                    client.createNewBroadcast(new OnSuccessListener<Void>() {
+                    fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
 
