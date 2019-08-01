@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.una.CharityDetailsActivity;
 import com.example.una.CharityNavigatorClient;
 import com.example.una.R;
@@ -44,6 +47,10 @@ public class CharityAdapter extends RecyclerView.Adapter<CharityAdapter.ViewHold
         // get the charity data at the specified position
         Charity charity = (Charity) charities.get(i);
         viewHolder.tvCharityName.setText(charity.getName());
+
+        Glide.with(context)
+                .load("https://picsum.photos" + "/200")
+                .into(viewHolder.ivProfileImage);
     }
 
     @Override
@@ -53,10 +60,13 @@ public class CharityAdapter extends RecyclerView.Adapter<CharityAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvCharityName;
+        ImageView ivProfileImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCharityName = (TextView) itemView.findViewById(R.id.charityName);
+            ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+
             itemView.setOnClickListener(new CharityClickListener());
         }
 

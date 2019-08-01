@@ -57,7 +57,7 @@ public class ExplorePageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         verticalRecyclerView = view.findViewById(R.id.homeRecyclerView);
         // makes verticalRecyclerView's height and width immutable no matter what is inserted or removed inside the recyclerView
-        verticalRecyclerView.setHasFixedSize(true);
+        verticalRecyclerView.setHasFixedSize(false);
         verticalRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         arrayListVertical = new ArrayList<>();
         adapter = new VerticalRecyclerViewAdapter(getContext(), arrayListVertical);

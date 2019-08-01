@@ -9,14 +9,15 @@
         android:id="@+id/homeRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/small_padding"
-        android:layout_marginLeft="@dimen/small_padding"
-        android:layout_marginTop="@dimen/small_padding"
-        android:layout_marginEnd="@dimen/small_padding"
-        android:layout_marginRight="@dimen/small_padding"
-        android:layout_marginBottom="@dimen/small_padding"
+        android:layout_marginStart="@dimen/no_layout_width_textview"
+        android:layout_marginLeft="@dimen/no_layout_width_textview"
+        android:layout_marginTop="@dimen/no_layout_width_textview"
+        android:layout_marginEnd="@dimen/no_layout_width_textview"
+        android:layout_marginRight="@dimen/no_layout_width_textview"
+        android:layout_marginBottom="@dimen/no_layout_width_textview"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/una_paper"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

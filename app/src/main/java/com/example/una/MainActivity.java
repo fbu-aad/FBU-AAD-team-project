@@ -6,20 +6,28 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.una.NavigationDrawerActivities.DonationHistoryActivity;
 import com.example.una.fragments.BroadcastsFragment;
+import com.example.una.fragments.DonationNotificationsFragment;
 import com.example.una.fragments.ExplorePageFragment;
 import com.example.una.fragments.ChallengesFragment;
 import com.example.una.fragments.QuickDonateFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = challengesFragment;
                         break;
                     default:
-                        fragment = explorePageFragment;
+                        fragment = quickDonateFragment;
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flMainFragments, fragment).commit();
@@ -100,17 +108,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = new DonationNotificationsFragment();
+
         switch(menuItem.getItemId()) {
             case R.id.profile_item:
-                Toast.makeText(this, "Profile Item is working", Toast.LENGTH_LONG).show();
                 break;
             case R.id.donation_history_item:
-                Toast.makeText(this, "Donation History Item is working", Toast.LENGTH_LONG).show();
                 Intent donationIntent = new Intent(MainActivity.this, DonationHistoryActivity.class);
                 startActivity(donationIntent);
                 break;
             case R.id.notification_item:
-                Toast.makeText(this, "Notifications Item is working", Toast.LENGTH_LONG).show();
+                fragmentManager.beginTransaction().replace(R.id.flMainFragments, fragment).commit();
                 break;
             default:
                 Toast.makeText(this, "Default Item", Toast.LENGTH_LONG).show();
