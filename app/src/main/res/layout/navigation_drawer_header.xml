@@ -9,10 +9,12 @@
     android:gravity="bottom">
 
     <TextView
+        android:id="@+id/tvCurrentUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/navigation_drawer_header"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:textSize="@dimen/medium_font_size"/>
 
 </LinearLayout>
