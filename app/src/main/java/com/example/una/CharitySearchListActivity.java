@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.una.ScrollListener.EndlessRecyclerViewScrollListener;
 import com.example.una.models.Charity;
@@ -21,6 +23,8 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class CharitySearchListActivity extends AppCompatActivity {
@@ -40,11 +44,14 @@ public class CharitySearchListActivity extends AppCompatActivity {
     public final static String API_SEARCH_PARAM = "search";
     public final static String TAG = "CharitySearchList";
 
+    @BindView(R.id.pbLoading) ProgressBar pbLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = new CharityNavigatorClient(this);
         setContentView(R.layout.activity_charity_search_list);
+        ButterKnife.bind(this);
 
         charitySearchAdapter = new CharitySearchAdapter(this, charities);
 
@@ -81,6 +88,9 @@ public class CharitySearchListActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                rvCharities.setVisibility(View.GONE);
+                pbLoading.setVisibility(ProgressBar.VISIBLE);
+
                 sQuery = query;
                 charities.clear();
                 charitySearchAdapter.notifyDataSetChanged();
@@ -123,22 +133,24 @@ public class CharitySearchListActivity extends AppCompatActivity {
         if (page != 1) {
             params.put(API_PAGE_NUM_PARAM, page);
         }
-        // TODO stretch - add search filter and more params
         client.getOrganizations(params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                try {
-                    if (response != null) {
-                        for (int i = 0; i < response.length(); i++) {
-                            Charity charity = new Charity(response.getJSONObject(i));
-                            charities.add(charity);
-                            Log.i(TAG, String.format("Loaded %s charities", charities.size()));
-                        }
-                        charitySearchAdapter.notifyDataSetChanged();
+            try {
+                if (response != null) {
+                    for (int i = 0; i < response.length(); i++) {
+                        Charity charity = new Charity(response.getJSONObject(i));
+                        charities.add(charity);
+                        Log.i(TAG, String.format("Loaded %s charities", charities.size()));
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    charitySearchAdapter.notifyDataSetChanged();
+
+                    rvCharities.setVisibility(View.VISIBLE);
+                    pbLoading.setVisibility(ProgressBar.GONE);
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             }
         });
     }
