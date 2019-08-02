@@ -64,6 +64,7 @@ public class CharitySearchListActivity extends AppCompatActivity {
         };
         // Adds the scroll listener to RecyclerView
         rvCharities.addOnScrollListener(scrollListener);
+        setSupportActionBar(findViewById(R.id.toolbar));
 
         fetchCharities(sQuery, 1);
         setTitle(sQuery);
