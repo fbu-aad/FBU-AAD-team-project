@@ -4,49 +4,50 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.una.NavigationDrawerActivities.DonationHistoryActivity;
 import com.example.una.fragments.BroadcastsFragment;
+import com.example.una.fragments.ChallengesFragment;
 import com.example.una.fragments.DonationNotificationsFragment;
 import com.example.una.fragments.ExplorePageFragment;
-import com.example.una.fragments.ChallengesFragment;
 import com.example.una.fragments.QuickDonateFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+    private String fullName;
+    private ActionBarDrawerToggle drawerToggle;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
     @BindView(R.id.nvDrawer) NavigationView nvDrawer;
-    private ActionBarDrawerToggle drawerToggle;
+    FirestoreClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        // instantiate a new Firestore client
+        client = new FirestoreClient(this);
+        View header = nvDrawer.getHeaderView(0);
+        TextView navDrawerHeaderName = header.findViewById(R.id.tvCurrentUsername);
+        fullName = client.getCurrentUser().getDisplayName();
+        navDrawerHeaderName.setText(fullName);
         // telling android to use the toolbar as the actionbar
         setSupportActionBar(toolbar);
-
         setupDrawerContent(nvDrawer);
         drawerToggle = setupDrawerToggle();
         drawerLayout.addDrawerListener(drawerToggle);
