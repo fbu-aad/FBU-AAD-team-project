@@ -1,27 +1,20 @@
 package com.example.una.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.una.BroadcastsAdapter;
 import com.example.una.FirestoreClient;
 import com.example.una.R;
-import com.example.una.adapters.NotificationsAdapter;
+import com.example.una.ScrollListener.EndlessRecyclerViewScrollListener;
 import com.example.una.models.Broadcast;
-import com.example.una.models.Donation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -32,10 +25,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BroadcastsFragment extends Fragment {
+    private final static String TAG = "BroadcastsFragment";
+    private final static int BROADCASTS_PER_PAGE_QUERY = 10;
+
+    private EndlessRecyclerViewScrollListener scrollListener;
+
     @BindView(R.id.rvNotifications)
     RecyclerView rvNotifications;
-
-    public final static String TAG = "BroadcastsFragment";
+    DocumentSnapshot lastVisibleBroadcast;
     FirestoreClient client;
     ArrayList<Broadcast> broadcasts;
     BroadcastsAdapter adapter;
@@ -57,25 +54,44 @@ public class BroadcastsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvNotifications.setLayoutManager(layoutManager);
-    }
 
-    // fetch donations for user here
-    private void fetchBroadcasts() {
-        // get donations from current user from Firestore and create a new Donation object for each one
-        client.getBroadcasts(new OnCompleteListener<QuerySnapshot>() {
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    broadcasts.clear();
-                    QuerySnapshot result = task.getResult();
-                    for (QueryDocumentSnapshot broadcastsDoc : result) {
-                        broadcasts.add(new Broadcast(broadcastsDoc.getData()));
-                    }
-                    adapter.notifyItemInserted(broadcasts.size() - 1);
-                } else {
-                    Log.d(TAG, "error getting user broadcasts");
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if(lastVisibleBroadcast != null) {
+                    client.getBroadcastsAfterFirstTime(lastVisibleBroadcast, BROADCASTS_PER_PAGE_QUERY, new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot documentSnapshots) {
+                            loadMoreData(documentSnapshots);
+                        }
+                    });
                 }
             }
+        };
+        rvNotifications.addOnScrollListener(scrollListener);
+    }
+
+    // fetch broadcasts for user here
+    private void fetchBroadcasts() {
+        // get broadcasts from Firestore and create a new Broadcast object for each one
+        client.getBroadcastsFirstTime(BROADCASTS_PER_PAGE_QUERY, new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                loadMoreData(queryDocumentSnapshots);
+            }
         });
+    }
+
+    private void loadMoreData(QuerySnapshot documentSnapshots) {
+        for(QueryDocumentSnapshot broadcastDoc : documentSnapshots) {
+            broadcasts.add(new Broadcast(broadcastDoc.getData()));
+        }
+        adapter.notifyDataSetChanged();
+        if(documentSnapshots.size() > 0) {
+            lastVisibleBroadcast = documentSnapshots.getDocuments().get(documentSnapshots.size() - 1);
+        }
+        else {
+            lastVisibleBroadcast = null;
+        }
     }
 }
