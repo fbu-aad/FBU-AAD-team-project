@@ -1,6 +1,7 @@
 package com.example.una;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class CharitySearchAdapter extends RecyclerView.Adapter<CharitySearchAdap
         return charities.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivCharityImage;
         TextView tvCharityName;
@@ -63,12 +64,19 @@ public class CharitySearchAdapter extends RecyclerView.Adapter<CharitySearchAdap
             super(itemView);
             ivCharityImage = (ImageView) itemView.findViewById(R.id.ivCharityImage);
             tvCharityName = (TextView) itemView.findViewById(R.id.charityName);
-            itemView.setOnClickListener(this);
-        }
 
-        @Override
-        public void onClick(View v) {
-            // TODO display detailed charity view
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Charity charity = charities.get(position);
+                        Intent charityDetail = new Intent(context, CharityDetailsActivity.class);
+                        charityDetail.putExtra("ein", charity.getEin());
+                        context.startActivity(charityDetail);
+                    }
+                }
+            });
         }
     }
 }
