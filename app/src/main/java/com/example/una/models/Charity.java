@@ -67,29 +67,29 @@ public class Charity {
 
     public String getName() { return name; }
 
-    public boolean hasDescription() { return description == null; }
+    public boolean hasDescription() { return description != null; }
 
     public String getDescription() { return description; }
 
-    public boolean hasMission() { return mission == null; }
+    public boolean hasMission() { return mission != null; }
 
     public String getMission() { return mission; }
 
-    public boolean hasCategory() { return category == null; }
+    public boolean hasCategory() { return category != null; }
 
     public String getCategory() { return category; }
 
-    public boolean hasCause() { return cause == null; }
+    public boolean hasCause() { return cause != null; }
 
     public String getCause() { return cause; }
 
-    public boolean hasDonationAddress() { return donationAddress == null; }
+    public boolean hasDonationAddress() { return donationAddress != null; }
 
     public Address getDonationAddress() { return donationAddress; }
 
     public boolean isFeatured() { return isFeatured; }
 
-    public boolean hasLink() { return link == null; }
+    public boolean hasLink() { return link != null; }
 
     public String getLink() { return link; }
 

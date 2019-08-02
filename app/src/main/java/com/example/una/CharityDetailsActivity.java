@@ -25,8 +25,9 @@ import cz.msebera.android.httpclient.Header;
 public class CharityDetailsActivity extends AppCompatActivity {
     @BindView(R.id.ivCharityImage) ImageView ivCharityImage;
     @BindView(R.id.tvCharityName) TextView tvCharityName;
+    @BindView(R.id.tvTagline) TextView tvTagline;
     @BindView(R.id.tvCharityDescription) TextView tvCharityDescription;
-    @BindView(R.id.fabDonateOption) FloatingActionButton fabDonateOption;
+    @BindView(R.id.fabEmail) FloatingActionButton fabEmail;
     @BindView(R.id.tvCharityLink) TextView tvCharityLink;
     @BindView(R.id.tvMoreInfo) TextView tvMoreInfo;
     @BindView(R.id.pbLoadingCharity) ProgressBar pbLoadingCharity;
@@ -41,14 +42,13 @@ public class CharityDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         ein = getIntent().getStringExtra("ein");
         getCharityInfo(ein);
-        fabDonateOption.setOnClickListener(new DonateBtnClickListener());
-    }
 
-    static class DonateBtnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            Toast.makeText(view.getContext(), "CharityDetailsActivity -> I am working", Toast.LENGTH_LONG).show();
-        }
+        fabEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "CharityDetailsActivity -> I am working", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     // gets current charity's info based on eid value
@@ -61,15 +61,18 @@ public class CharityDetailsActivity extends AppCompatActivity {
                 try {
                     Charity charity = new Charity(response);
                     tvCharityName.setText(charity.getName());
-                    tvCharityDescription.setText(charity.getDescription());
+                    tvTagline.setText(charity.getDescription());
                     tvCharityLink.setText(charity.getLink());
+
+
+
                     ivCharityImage.setVisibility(View.VISIBLE);
                     tvCharityName.setVisibility(View.VISIBLE);
-                    tvCharityDescription.setVisibility(View.VISIBLE);
+                    tvTagline.setVisibility(View.VISIBLE);
                     tvCharityLink.setVisibility(View.VISIBLE);
                     tvMoreInfo.setVisibility(View.VISIBLE);
                     tvAboutUs.setVisibility(View.VISIBLE);
-                    fabDonateOption.setVisibility(View.VISIBLE);
+                    fabEmail.setVisibility(View.VISIBLE);
                     pbLoadingCharity.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.e("CharityDetailsActivity", "Failed to parse response", e);
