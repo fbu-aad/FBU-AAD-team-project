@@ -293,6 +293,19 @@ public class FirestoreClient {
                 .get().addOnSuccessListener(onSuccessListener);
     }
 
+    public void getBroadcastsFirstTime(int loadedBroadcastsPerPage, OnSuccessListener<QuerySnapshot> onSuccessListener) {
+        broadcasts.orderBy("time", Query.Direction.DESCENDING)
+                .limit(loadedBroadcastsPerPage)
+                .get().addOnSuccessListener(onSuccessListener);
+    }
+
+    public void getBroadcastsAfterFirstTime(DocumentSnapshot documentSnapshot, int loadedBroadcastsPerPage, OnSuccessListener<QuerySnapshot> onSuccessListener) {
+        broadcasts.orderBy("time", Query.Direction.DESCENDING)
+                .limit(loadedBroadcastsPerPage)
+                .startAfter(documentSnapshot)
+                .get().addOnSuccessListener(onSuccessListener);
+    }
+
     private static abstract class SimpleTask<TResult> extends Task<TResult> {
         @Override
         public boolean isComplete() {
