@@ -174,13 +174,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCharityName" />
 
-        <Button
+        <ToggleButton
             android:id="@+id/btnFollow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:text="Follow"
+            android:textOff="Follow"
+            android:textOn="Following"
             app:layout_constraintBottom_toBottomOf="@+id/fabCall"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/fabCall" />
@@ -201,18 +202,15 @@
             app:layout_constraintTop_toTopOf="@+id/ivCategory" />
 
         <TextView
-            android:id="@+id/tvCategoryAndCause"
+            android:id="@+id/tvCategoryLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Category and Cause"
+            android:text="Category"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="@dimen/charity_about_us_font_size"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCharityDescription" />
 
@@ -227,6 +225,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:text="TextView"
+            android:linksClickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -257,7 +256,7 @@
             app:layout_constraintEnd_toStartOf="@+id/tvCategory"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCategoryAndCause"
+            app:layout_constraintTop_toBottomOf="@+id/tvCategoryLabel"
             app:srcCompat="@android:color/darker_gray" />
 
         <ImageView
@@ -268,7 +267,21 @@
             app:layout_constraintEnd_toStartOf="@+id/tvCause"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/tvCategory"
-            app:layout_constraintTop_toBottomOf="@+id/tvCategoryAndCause"
+            app:layout_constraintTop_toBottomOf="@+id/tvCauseLabel"
             app:srcCompat="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/tvCauseLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Cause"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="@dimen/charity_about_us_font_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ivCause"
+            app:layout_constraintTop_toBottomOf="@+id/tvCharityDescription" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

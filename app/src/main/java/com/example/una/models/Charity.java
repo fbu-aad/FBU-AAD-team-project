@@ -17,6 +17,9 @@ public class Charity {
     String category;
     String cause;
     String link;
+    String charityNavigatorURL;
+    String categoryImageURL;
+    String causeImageURL;
     Address donationAddress;
     boolean isFeatured;
 
@@ -36,12 +39,17 @@ public class Charity {
         }
         if (jsonObject.has("category")) {
             category = jsonObject.getJSONObject("category").getString("categoryName");
+            categoryImageURL = jsonObject.getJSONObject("category").getString("image");
         }
         if (jsonObject.has("cause")) {
             cause = jsonObject.getJSONObject("cause").getString("causeName");
+            causeImageURL = jsonObject.getJSONObject("cause").getString("image");
         }
         if (jsonObject.has("websiteURL")) {
             link = jsonObject.getString("websiteURL");
+        }
+        if (jsonObject.has("charityNavigatorURL")) {
+            charityNavigatorURL = jsonObject.getString("charityNavigatorURL");
         }
         isFeatured = false;
 
@@ -93,4 +101,15 @@ public class Charity {
 
     public String getLink() { return link; }
 
+    public String getCharityNavigatorURL() {
+        return charityNavigatorURL;
+    }
+
+    public String getCategoryImageURL() {
+        return categoryImageURL;
+    }
+
+    public String getCauseImageURL() {
+        return causeImageURL;
+    }
 }

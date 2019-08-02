@@ -1,6 +1,9 @@
 package com.example.una;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.una.models.Charity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -32,6 +36,11 @@ public class CharityDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tvMoreInfo) TextView tvMoreInfo;
     @BindView(R.id.pbLoadingCharity) ProgressBar pbLoadingCharity;
     @BindView(R.id.tvAboutUs) TextView tvAboutUs;
+    @BindView(R.id.tvCategory) TextView tvCategory;
+    @BindView(R.id.tvCause) TextView tvCause;
+    @BindView(R.id.tvCNLink) TextView tvCNLink;
+    @BindView(R.id.ivCategory) ImageView ivCategory;
+    @BindView(R.id.ivCause) ImageView ivCause;
     String ein;
     CharityNavigatorClient client;
 
@@ -59,12 +68,37 @@ public class CharityDetailsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] header, JSONObject response) {
                 try {
+                    // TODO check if these fields exist
                     Charity charity = new Charity(response);
                     tvCharityName.setText(charity.getName());
                     tvTagline.setText(charity.getDescription());
                     tvCharityLink.setText(charity.getLink());
+                    tvCharityDescription.setText(charity.getDescription());
+                    tvCategory.setText(charity.getCategory());
+                    tvCause.setText(charity.getCause());
+                    tvCharityDescription.setText(charity.getMission());
 
+                    // link to Charity Navigator URL
+                    tvCNLink.setClickable(true);
+                    tvCNLink.setMovementMethod(LinkMovementMethod.getInstance());
+                    String cnLink = "<a href='" + charity.getCharityNavigatorURL()
+                            + "'> Charity Navigator's nonprofit profile</a>";
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        tvCNLink.setText(Html.fromHtml(cnLink, Html.FROM_HTML_MODE_LEGACY));
+                    } else {
+                        tvCNLink.setText(Html.fromHtml(cnLink));
+                    }
 
+                    // set category and cause images
+                    String categoryImage = charity.getCategoryImageURL();
+                    Glide.with(getApplicationContext())
+                            .load(categoryImage)
+                            .into(ivCategory);
+
+                    String causeImage = charity.getCauseImageURL();
+                    Glide.with(getApplicationContext())
+                            .load(causeImage)
+                            .into(ivCause);
 
                     ivCharityImage.setVisibility(View.VISIBLE);
                     tvCharityName.setVisibility(View.VISIBLE);
