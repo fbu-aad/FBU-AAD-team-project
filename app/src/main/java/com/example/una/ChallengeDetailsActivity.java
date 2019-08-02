@@ -66,12 +66,12 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         context = ChallengeDetailsActivity.this;
 
-        client = new FirestoreClient();
+        client = new FirestoreClient(this);
         challenge = Parcels.unwrap(getIntent().getParcelableExtra(Challenge.class.getSimpleName()));
 
         // populate the views
         tvChallengeTitle.setText(challenge.getChallengeName());
-        setTvOwnerRecipientInfo(tvChallengeOwnerRecipientInfo, challenge);
+        setTvOwnerRecipientInfo(client, tvChallengeOwnerRecipientInfo, challenge);
 
         tvNumParticipants.setText(getStrNumParticipants(challenge));
 
@@ -95,9 +95,9 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
         setDonateBtn(btnDonate, challenge);
 
         // toggle join button and enable donate button depending on user's acceptance of challenge
-        setJoinBtn(btnJoin, btnDonate, challenge);
+        setJoinBtn(client, btnJoin, btnDonate, challenge);
 
-        handleClickJoinBtn(btnJoin, btnDonate, challenge, context);
+        handleClickJoinBtn(client, btnJoin, btnDonate, challenge, context);
 
         // set on click listener for donate button
         btnDonate.setOnClickListener(new View.OnClickListener() {

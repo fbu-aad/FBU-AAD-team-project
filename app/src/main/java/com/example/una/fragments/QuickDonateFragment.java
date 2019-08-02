@@ -39,7 +39,7 @@ public class QuickDonateFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_quick_donate, container, false);
         ButterKnife.bind(this, view);
 
-        client = new FirestoreClient();
+        client = new FirestoreClient(getContext());
 
         return view;
     }

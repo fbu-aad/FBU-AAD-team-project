@@ -42,7 +42,7 @@ public class DonationNotificationsFragment extends Fragment {
         notifications = new ArrayList<>();
         adapter = new NotificationsAdapter(notifications);
         rvNotifications.setAdapter(adapter);
-        client = new FirestoreClient();
+        client = new FirestoreClient(getContext());
         fetchUsers();
         return view;
     }

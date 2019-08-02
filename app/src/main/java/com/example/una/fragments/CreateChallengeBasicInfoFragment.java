@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.una.CharityNavigatorClient;
 import com.example.una.CurrencyTextWatcher;
+import com.example.una.FirestoreClient;
 import com.example.una.R;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -36,7 +37,8 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
 
     private OnButtonClickListener mOnButtonClickListener;
     private String currentAmount = "";
-    private CharityNavigatorClient cn_client;
+    private CharityNavigatorClient cnClient;
+    private FirestoreClient fsClient;
     private boolean validEin = true;
     public static final String CHALLENGE_PREFERENCES = "ChallengePreferences";
 
@@ -68,7 +70,8 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_create_challenge_basic_info, container, false);
         mOnButtonClickListener = (OnButtonClickListener) getContext();
-        cn_client = new CharityNavigatorClient(this.getContext());
+        cnClient = new CharityNavigatorClient(this.getContext());
+        fsClient = new FirestoreClient(getContext());
         ButterKnife.bind(this, rootView);
 
         CurrencyTextWatcher watcher = new CurrencyTextWatcher(etGoalAmount, currentAmount);
@@ -80,6 +83,15 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // if logged in user is a charity, set and disable EIN edit text
+        SharedPreferences sharedPref = getContext().getSharedPreferences(getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
+        if (!sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user))) {
+            etAssociatedCharity.setText(sharedPref.getString("charity_ein", fsClient.getCurrentUser().getUid()));
+            etAssociatedCharity.setEnabled(false);
+            etAssociatedCharity.setFocusable(false);
+        }
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +171,7 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
                     editor.putString("end_date", etEndDate.getText().toString());
                     editor.putString("frequency", frequency);
                     editor.putBoolean("matching", bMatching);
-                    editor.commit();
+                    editor.apply();
                     mOnButtonClickListener.onButtonClicked(v);
                 }
             }
@@ -168,7 +180,7 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
 
     private void charityExists(String ein, EditText etAssociatedCharity) {
         RequestParams params = new RequestParams();
-        cn_client.getCharityInfo(params, ein, new JsonHttpResponseHandler() {
+        cnClient.getCharityInfo(params, ein, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] header, JSONObject response) {
                 if (statusCode != 200) {

@@ -1,6 +1,7 @@
 package com.example.una;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,8 +33,10 @@ public class CharityHomeActivity extends AppCompatActivity {
     @BindView(R.id.rvBroadcasts) RecyclerView rvBroadcasts;
     @BindView(R.id.signOutBtn) Button signOutBtn;
     @BindView(R.id.fabCreate) FloatingActionButton fabCreate;
+    @BindView(R.id.fabCreateChallenge) FloatingActionButton fabCreateChallenge;
 
     private final String TAG = "CharityHomeActivity";
+    static final int CREATE_CHALLENGE = 111;
     FirestoreClient client;
 
     ArrayList<Broadcast> broadcasts;
@@ -50,7 +53,7 @@ public class CharityHomeActivity extends AppCompatActivity {
         adapter = new BroadcastsAdapter(broadcasts);
 
         rvBroadcasts.setAdapter(adapter);
-        client = new FirestoreClient();
+        client = new FirestoreClient(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvBroadcasts.setLayoutManager(layoutManager);
@@ -66,11 +69,30 @@ public class CharityHomeActivity extends AppCompatActivity {
         startActivity(createBroadcastIntent);
     }
 
+    @OnClick(R.id.fabCreateChallenge)
+    public void createChallenge() {
+        Intent createChallengeIntent = new Intent(this, CreateChallengeScreenSlideActivity.class);
+        startActivityForResult(createChallengeIntent, CREATE_CHALLENGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // check which request we are responding to
+        if (requestCode == CREATE_CHALLENGE) {
+            // make sure request was successful
+            if (resultCode == RESULT_OK) {
+                // user successfully created challenge
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
     @OnClick(R.id.signOutBtn)
     public void signOutCharity() {
         FirebaseAuth.getInstance().signOut();
         Intent goToStartupPage = new Intent(this, UnaStartupActivity.class);
         startActivity(goToStartupPage);
+        finish();
     }
 
     // TODO create tab view with two screens for the challenges and donations

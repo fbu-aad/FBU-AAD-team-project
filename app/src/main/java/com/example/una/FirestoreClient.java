@@ -1,6 +1,8 @@
 package com.example.una;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -39,9 +41,11 @@ public class FirestoreClient {
     private CollectionReference charityUsers = db.collection("charity_users");
     private FirebaseUser user;
     private final String TAG = "FirestoreClient";
+    private Context context;
 
-    public FirestoreClient() {
+    public FirestoreClient(Context context) {
         user = FirebaseAuth.getInstance().getCurrentUser();
+        this.context = context;
     }
 
     public void getBroadcasts(OnCompleteListener onCompleteListener) {
@@ -188,12 +192,20 @@ public class FirestoreClient {
             // TODO broadcast donation
             // put user, charity recipient
         } else if (type.equals(Broadcast.NEW_CHALLENGE)) {
-            // donor-created challenge
-            String message = broadcast.get("user_name") + " created a new challenge " + "\""
-                    + broadcast.get("challenge_name") + ".\" Check it out!";
-            broadcast.put("message", message);
-
-            // TODO charity-created challenge
+            String message;
+            SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_key),
+                    Context.MODE_PRIVATE);
+            if (sharedPref.getBoolean("user_type", context.getResources().getBoolean(R.bool.is_user))) {
+                // donor-created challenge
+                message = broadcast.get("user_name") + " created a new challenge " + "\""
+                        + broadcast.get("challenge_name") + ".\" Check it out!";
+                broadcast.put("message", message);
+            } else {
+                // charity-created challenge
+                message = broadcast.get("associated_charity_name") + " created a new challenge " + "\""
+                        + broadcast.get("challenge_name") + ".\" Check it out!";
+                broadcast.put("message", message);
+            }
         } else if (type.equals(Broadcast.POST)) {
             // TODO broadcast post
             // put charity user, message
