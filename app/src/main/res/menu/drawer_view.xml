@@ -13,6 +13,10 @@
             android:id="@+id/notification_item"
             android:icon="@drawable/ic_three"
             android:title="@string/navigation_drawer_notifications" />
+        <item
+            android:id="@+id/sign_out_item"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="@string/sign_out" />
     </group>
 
 </menu>

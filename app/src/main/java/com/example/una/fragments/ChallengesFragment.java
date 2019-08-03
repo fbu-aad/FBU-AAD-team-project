@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,13 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.una.FirestoreClient;
 import com.example.una.CreateChallengeScreenSlideActivity;
-import com.example.una.UnaStartupActivity;
-import com.example.una.models.Challenge;
+import com.example.una.FirestoreClient;
 import com.example.una.R;
 import com.example.una.adapters.StreaksComplexRecyclerViewAdapter;
-import com.firebase.ui.auth.AuthUI;
+import com.example.una.models.Challenge;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -40,7 +36,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class ChallengesFragment extends Fragment {
     @BindString(R.string.challenge_description_dummy_text) String challengeDescription;
-    @BindView(R.id.signOutButton) Button signOutButton;
     @BindView(R.id.rvChallenges) RecyclerView rvChallenges;
     @BindView(R.id.fabCreateChallenge) FloatingActionButton fabCreateChallenge;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
@@ -77,23 +72,6 @@ public class ChallengesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AuthUI.getInstance()
-                        .signOut(getContext())
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Intent signOutIntent = new Intent(getContext(), UnaStartupActivity.class);
-                                startActivity(signOutIntent);
-                                getActivity().finish();
-                            }
-                        });
-            }
-        });
-
         fabCreateChallenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

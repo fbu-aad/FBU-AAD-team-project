@@ -16,16 +16,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvChallenges"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/signOutButton"
+            android:layout_width="@dimen/fragment_impact_textview_no_width"
+            android:layout_height="@dimen/fragment_impact_textview_no_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_conversion_absoluteHeight="611dp"
-            tools:layout_conversion_absoluteWidth="411dp"
-            tools:layout_conversion_wrapHeight="500"
-            tools:layout_conversion_wrapWidth="106" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -37,21 +32,9 @@
         android:layout_marginBottom="@dimen/standard_padding"
         android:backgroundTint="@color/una_gold"
         android:tint="@color/white"
-        app:borderWidth="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/signOutButton"
+        app:borderWidth="@dimen/fragment_impact_no_border_width"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <Button
-        android:id="@+id/signOutButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Sign Out"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_conversion_absoluteHeight="48dp"
-        tools:layout_conversion_absoluteWidth="411dp"
-        tools:layout_conversion_wrapHeight="126"
-        tools:layout_conversion_wrapWidth="250" />
 </androidx.constraintlayout.widget.ConstraintLayout>

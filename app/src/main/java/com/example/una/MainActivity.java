@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +22,9 @@ import com.example.una.fragments.ChallengesFragment;
 import com.example.una.fragments.DonationNotificationsFragment;
 import com.example.una.fragments.ExplorePageFragment;
 import com.example.una.fragments.QuickDonateFragment;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -53,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-
         final Fragment explorePageFragment = new ExplorePageFragment();
         final Fragment quickDonateFragment = new QuickDonateFragment();
         final Fragment broadcastsFragment = new BroadcastsFragment();
@@ -122,6 +125,17 @@ public class MainActivity extends AppCompatActivity {
             case R.id.notification_item:
                 fragmentManager.beginTransaction().replace(R.id.flMainFragments, fragment).commit();
                 break;
+            case R.id.sign_out_item:
+                AuthUI.getInstance()
+                        .signOut(MainActivity.this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent signOutIntent = new Intent(MainActivity.this, UnaStartupActivity.class);
+                                startActivity(signOutIntent);
+                                finish();
+                            }
+                        });
             default:
                 Toast.makeText(this, "Default Item", Toast.LENGTH_LONG).show();
         }
