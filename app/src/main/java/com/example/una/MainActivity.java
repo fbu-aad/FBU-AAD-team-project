@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
     @BindView(R.id.nvDrawer) NavigationView nvDrawer;
-    @BindView(R.id.btnLogout) Button btnLogout;
     FirestoreClient client;
 
     @Override
@@ -58,24 +56,7 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle = setupDrawerToggle();
         drawerLayout.addDrawerListener(drawerToggle);
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AuthUI.getInstance()
-                        .signOut(MainActivity.this)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Intent signOutIntent = new Intent(MainActivity.this, UnaStartupActivity.class);
-                                startActivity(signOutIntent);
-                                finish();
-                            }
-                        });
-            }
-        });
-
         final FragmentManager fragmentManager = getSupportFragmentManager();
-
         final Fragment explorePageFragment = new ExplorePageFragment();
         final Fragment quickDonateFragment = new QuickDonateFragment();
         final Fragment broadcastsFragment = new BroadcastsFragment();
@@ -144,6 +125,17 @@ public class MainActivity extends AppCompatActivity {
             case R.id.notification_item:
                 fragmentManager.beginTransaction().replace(R.id.flMainFragments, fragment).commit();
                 break;
+            case R.id.sign_out_item:
+                AuthUI.getInstance()
+                        .signOut(MainActivity.this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent signOutIntent = new Intent(MainActivity.this, UnaStartupActivity.class);
+                                startActivity(signOutIntent);
+                                finish();
+                            }
+                        });
             default:
                 Toast.makeText(this, "Default Item", Toast.LENGTH_LONG).show();
         }
