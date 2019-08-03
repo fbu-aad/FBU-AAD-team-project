@@ -230,7 +230,8 @@ public class ChallengeDonationActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         Log.i(TAG, "Donation challenge failure :(");
                     }
-                }, amount, Frequency.SINGLE_DONATION, charityEin, challengeId);
+                }, amount, Frequency.SINGLE_DONATION, privacy, charityEin, challengeId, challengeName,
+                        userName, charityName);
 
                 client.addDonorToChallenge(challengeId);
 

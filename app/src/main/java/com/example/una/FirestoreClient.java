@@ -177,20 +177,36 @@ public class FirestoreClient {
     }
 
     public void createNewBroadcast(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener,
-                                   String type, String privacy, Map<String, Object> broadcast) {
+                                   Double amount, String frequency, String privacy, String recipientEin,
+                                   String challengeId, String challengeName,
+                                   String userName, String charityName, String type) {
+        Map<String, Object> broadcast = new HashMap<>();
+
         Date timeOfBroadcast = new Date();
         broadcast.put("time", new Timestamp(timeOfBroadcast));
         broadcast.put("type", type);
         broadcast.put("privacy", privacy);
 
+
         if (type.equals(Broadcast.CHALLENGE_DONATION)) {
             broadcast.put("donor", user.getUid());
-            String message = broadcast.get("user_name") + " participated in " + broadcast.get("charity_name")
-                    + "'s \"" + broadcast.get("challenge_name") + "\" challenge.";
+            broadcast.put("user_name", userName);
+            broadcast.put("charity_name", charityName);
+            broadcast.put("challenge_name", challengeName);
+            broadcast.put("challenge_id", challengeId);
+
+            String message = String.format("%s participated in %s\'s %s challenge", userName,
+                    charityName, challengeName);
             broadcast.put("message", message);
+
         } else if (type.equals(Broadcast.DONATION)) {
-            // TODO broadcast donation
-            // put user, charity recipient
+            broadcast.put("donor", user.getUid());
+            broadcast.put("charity_ein", recipientEin);
+            broadcast.put("user_name", userName);
+            broadcast.put("charity_name", charityName);
+            String message = String.format("%s donated to %s.", userName,
+                    charityName);
+
         } else if (type.equals(Broadcast.NEW_CHALLENGE)) {
             String message;
             SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_key),
@@ -211,7 +227,7 @@ public class FirestoreClient {
             // put charity user, message
         }
 
-        db.collection("broadcasts").document().set(broadcast)
+        broadcasts.document().set(broadcast)
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
 
@@ -228,7 +244,9 @@ public class FirestoreClient {
     }
 
     public void createNewDonation(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener,
-                                  Double amount, String frequency, String recipientEin, String challengeId) {
+                                  Double amount, String frequency, String privacy, String recipientEin,
+                                  String challengeId, String challengeName,
+                                  String userName, String charityName) {
         Date timeOfDonation = new Date();
         Map<String, Object> donation = new HashMap<>();
         donation.put("amount", amount);
@@ -237,15 +255,37 @@ public class FirestoreClient {
         donation.put("recipient", recipientEin);
         donation.put("time", new Timestamp(timeOfDonation));
 
-        donations.document().set(donation);
         // if donation was part of a challenge, add challenge_id field
         if (challengeId != null) {
             donation.put("challenge_id", challengeId);
-        }
 
-        db.collection("donations").document().set(donation)
-                .addOnSuccessListener(onSuccessListener)
-                .addOnFailureListener(onFailureListener);
+            donations.document().set(donation)
+                    .addOnSuccessListener(onSuccessListener)
+                    .addOnFailureListener(onFailureListener);
+        } else {
+            // the donation is not a challenge and can be created automatically
+            donations.document().set(donation)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                            if (privacy != PrivacySetting.PRIVATE) {
+                                createNewBroadcast(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        onSuccessListener.onSuccess(aVoid);
+                                    }
+                                }, new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        onFailureListener.onFailure(e);
+                                    }
+                                }, Broadcast.DONATION, PrivacySetting.PUBLIC, );
+                            }
+                        }
+                    })
+                    .addOnFailureListener(onFailureListener);
+        }
     }
 
     public void createNewChallenge(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,

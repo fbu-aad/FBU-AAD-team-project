@@ -1,62 +1,342 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/charityName"
-        android:layout_width="@dimen/small_textView_width"
-        android:layout_height="@dimen/extra_small_textView_height"
-        android:layout_marginTop="@dimen/small_padding"
-        android:fontFamily="@font/lato"
-        android:gravity="center"
-        android:text="TextView"
+    <!-- the constraint layout for the top content -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/charityContentConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/donationConstraintLayout"
+        app:layout_anchorGravity="end|top"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ibQuickDonate" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/tvCharityDescription"
-        android:layout_width="@dimen/large_textView_width"
-        android:layout_height="@dimen/extra_small_textView_height"
-        android:layout_marginTop="@dimen/small_padding"
-        android:layout_marginBottom="@dimen/small_padding"
-        android:fontFamily="@font/lato"
-        android:gravity="center"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/charityName"
-        app:layout_constraintVertical_bias="0.0" />
+        <!-- the constraint layout for the streaks information -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/streaksConstraintLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivCharityPicture">
 
-    <ImageButton
-        android:id="@+id/ibQuickDonate"
-        android:layout_width="@dimen/medium_button_width"
-        android:layout_height="@dimen/small_button_height"
-        android:layout_marginTop="@dimen/medium_button_width"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvQuickDonate"
-        app:srcCompat="@drawable/ic_cuppa_24dp"
-        android:background="@color/bumbleYellow"
-        tools:ignore="VectorDrawableCompat" />
+            <TextView
+                android:id="@+id/tvStatsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/quick_donate_stats_title"
+                android:textColor="@color/una_charcoal"
+                app:layout_constraintBottom_toTopOf="@+id/tvTimesDonated"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-    <TextView
-        android:id="@+id/tvQuickDonate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_textView_height"
-        android:fontFamily="@font/lato"
-        android:gravity="center"
-        android:text="@string/text_donate_quickly"
-        android:textSize="40sp"
+            <TextView
+                android:id="@+id/tvTimesDonated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/roboto"
+                android:text="TextView"
+                android:textColor="@color/una_charcoal"
+                app:layout_constraintBottom_toTopOf="@+id/tvTimesDonatedDesc"
+                app:layout_constraintEnd_toStartOf="@+id/tvNumChallengesCreated"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvAmountDonated"
+                app:layout_constraintTop_toBottomOf="@+id/tvStatsTitle" />
+
+            <TextView
+                android:id="@+id/tvTimesDonatedDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/roboto"
+                android:text="TextView"
+                android:textColor="@color/una_charcoal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvNumChallengesDesc"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvAmountDonatedDesc"
+                app:layout_constraintTop_toBottomOf="@+id/tvTimesDonated" />
+
+            <TextView
+                android:id="@+id/tvAmountDonated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:fontFamily="@font/roboto"
+                android:text="TextView"
+                android:textColor="@color/una_charcoal"
+                app:layout_constraintEnd_toStartOf="@+id/tvTimesDonated"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvTimesDonated" />
+
+            <TextView
+                android:id="@+id/tvAmountDonatedDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:fontFamily="@font/roboto"
+                android:text="TextView"
+                android:textColor="@color/una_charcoal"
+                app:layout_constraintEnd_toStartOf="@+id/tvTimesDonatedDesc"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvTimesDonatedDesc" />
+
+            <TextView
+                android:id="@+id/tvNumChallengesCreated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:fontFamily="@font/roboto"
+                android:text="TextView"
+                android:textColor="@color/una_charcoal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvTimesDonated"
+                app:layout_constraintTop_toTopOf="@+id/tvTimesDonated" />
+
+            <TextView
+                android:id="@+id/tvNumChallengesDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:fontFamily="@font/roboto"
+                android:text="TextView"
+                android:textColor="@color/una_charcoal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvTimesDonatedDesc"
+                app:layout_constraintTop_toTopOf="@+id/tvTimesDonatedDesc" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/ivCharityPicture"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/streaksConstraintLayout"
+            app:layout_constraintDimensionRatio="4:3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/charityName"
+            app:srcCompat="@color/com_facebook_blue" />
+
+        <TextView
+            android:id="@+id/charityName"
+            android:layout_width="111dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/scrim"
+            android:fontFamily="@font/roboto"
+            android:gravity="bottom|start"
+            android:text="TextView"
+            android:textColor="@color/una_white"
+            app:layout_constraintBottom_toTopOf="@+id/ivCharityPicture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!-- the constraint layout for the bottom sheet fragment -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/donationConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="305dp"
+        app:behavior_peekHeight="48dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <RadioGroup
+            android:id="@+id/rgSuggestedDonations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:gravity=""
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/etCustomAmount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDonationTitle">
+
+            <RadioButton
+                android:id="@+id/radio1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/tiny_padding"
+                android:layout_weight="1"
+                android:width="0dp"
+                android:background="@drawable/quick_donate_radio_flat_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:text="Ramen"
+                android:textColor="@color/radio_flat_text_selector" />
+
+            <RadioButton
+                android:id="@+id/radio3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/tiny_padding"
+                android:layout_weight="1"
+                android:width="0dp"
+                android:background="@drawable/quick_donate_radio_flat_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:text="Coffee"
+                android:textColor="@color/radio_flat_text_selector" />
+
+            <RadioButton
+                android:id="@+id/radio5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/tiny_padding"
+                android:layout_weight="1"
+                android:width="0dp"
+                android:background="@drawable/quick_donate_radio_flat_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:text="Gelato"
+                android:textColor="@color/radio_flat_text_selector" />
+
+            <RadioButton
+                android:id="@+id/radio10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/tiny_padding"
+                android:layout_weight="1"
+                android:width="0dp"
+                android:background="@drawable/quick_donate_radio_flat_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:text="Sushi"
+                android:textColor="@color/radio_flat_text_selector" />
+
+            <RadioButton
+                android:id="@+id/radioTuition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/tiny_padding"
+                android:layout_weight="1"
+                android:width="0dp"
+                android:background="@drawable/quick_donate_radio_flat_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:text="Tuition"
+                android:textColor="@color/radio_flat_text_selector" />
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/etCustomAmount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/donation_hint"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toStartOf="@+id/valueOK"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rgSuggestedDonations" />
+
+        <TextView
+            android:id="@+id/tvDonationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/quick_donate_donation_sheet_title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toTopOf="@+id/rgSuggestedDonations"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Button
+            android:id="@+id/donateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:text="@string/donate_value_accept"
+            app:layout_constraintBottom_toBottomOf="@+id/etCustomAmount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/etCustomAmount"
+            app:layout_constraintTop_toBottomOf="@+id/rgSuggestedDonations" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

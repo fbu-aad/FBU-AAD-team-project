@@ -127,5 +127,12 @@
     <string name="take_photo">Take Photo</string>
     <string name="library">Library</string>
     <string name="create">Create</string>
+
     <string name="sign_out">Sign Out</string>
-</resources>
+
+    <string name="quick_donate_description">Instead of drinking coffee this morning, decide to donate to your favorite charity. A little bit goes a long way :) We gave you a default charity to start, but feel free to set a new one!</string>
+    <string name="quick_donate_stats_title">Your Stats</string>
+
+    <string name="quick_donate_donation_sheet_title">Give Today</string>
+    <string name="quick_donate_donation_button">Give</string>
+git</resources>
