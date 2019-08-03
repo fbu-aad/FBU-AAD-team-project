@@ -5,9 +5,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +23,9 @@ import com.example.una.fragments.ChallengesFragment;
 import com.example.una.fragments.DonationNotificationsFragment;
 import com.example.una.fragments.ExplorePageFragment;
 import com.example.una.fragments.QuickDonateFragment;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
     @BindView(R.id.nvDrawer) NavigationView nvDrawer;
+    @BindView(R.id.btnLogout) Button btnLogout;
     FirestoreClient client;
 
     @Override
@@ -51,6 +57,22 @@ public class MainActivity extends AppCompatActivity {
         setupDrawerContent(nvDrawer);
         drawerToggle = setupDrawerToggle();
         drawerLayout.addDrawerListener(drawerToggle);
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuthUI.getInstance()
+                        .signOut(MainActivity.this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent signOutIntent = new Intent(MainActivity.this, UnaStartupActivity.class);
+                                startActivity(signOutIntent);
+                                finish();
+                            }
+                        });
+            }
+        });
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
