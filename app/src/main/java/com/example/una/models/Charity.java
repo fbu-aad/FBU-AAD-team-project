@@ -75,11 +75,11 @@ public class Charity {
 
     public String getName() { return name; }
 
-    public boolean hasDescription() { return description != null; }
+    public boolean hasDescription() { return description != null && !description.equals("null"); }
 
     public String getDescription() { return description; }
 
-    public boolean hasMission() { return mission != null; }
+    public boolean hasMission() { return mission != null && !mission.equals("null"); }
 
     public String getMission() { return mission; }
 
@@ -97,7 +97,7 @@ public class Charity {
 
     public boolean isFeatured() { return isFeatured; }
 
-    public boolean hasLink() { return link != null; }
+    public boolean hasLink() { return link != null && !link.equals("null"); }
 
     public String getLink() { return link; }
 
