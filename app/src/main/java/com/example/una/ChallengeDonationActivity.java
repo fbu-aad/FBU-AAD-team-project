@@ -30,6 +30,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.conn.routing.BasicRouteDirector;
 
 import static com.example.una.utils.ChallengeViewsUtil.formatCurrency;
 
@@ -197,27 +198,6 @@ public class ChallengeDonationActivity extends AppCompatActivity {
 
                 // update challenge progress
                 client.updateChallengeProgress(challengeId, amount);
-
-                // write to broadcast collection regarding challenge participation if not private
-                if (!privacy.equals(PrivacySetting.PRIVATE)) {
-                    Map<String, Object> broadcast = new HashMap<>();
-                    broadcast.put("challenge_id", challengeId);
-                    broadcast.put("challenge_name", challengeName);
-                    broadcast.put("charity_name", charityName);
-                    broadcast.put("charity_ein", charityEin);
-                    broadcast.put("user_name", userName);
-                    client.createNewBroadcast(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.i(TAG, "Broadcast challenge donation success :)");
-                        }
-                    }, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.i(TAG, "Broadcast challenge donation failure :(");
-                        }
-                    }, Broadcast.CHALLENGE_DONATION, privacy, broadcast);
-                }
 
                 // write to donations collection, including a challenge id
                 client.createNewDonation(new OnSuccessListener<Void>() {

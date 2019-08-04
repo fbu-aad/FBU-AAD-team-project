@@ -177,6 +177,19 @@ public class CreateChallengeStoryFragment extends Fragment {
                                     public void onSuccess(Object o) {
                                         Log.i(TAG, "Challenge created successfully!");
 
+                                        fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void aVoid) {
+
+                                                                        }
+                                                                    }, new OnFailureListener() {
+                                                                        @Override
+                                                                        public void onFailure(@NonNull Exception e) {
+
+                                                                        }
+                                                                    }, frequency, PrivacySetting.PUBLIC, associatedCharityEin, null,
+                                                );
+
                                         // return result to calling activity
                                         Intent resultData = new Intent();
                                         getActivity().setResult(RESULT_OK, resultData);
@@ -188,24 +201,6 @@ public class CreateChallengeStoryFragment extends Fragment {
                                         Log.i(TAG, "Failed to create challenge!");
                                     }
                                 }, challenge);
-
-                                // write to broadcasts collection
-                                if (userName != null) {
-                                    broadcast.put("user_name", userName);
-                                }
-                                broadcast.put("challenge_name", etTitle.getText().toString());
-                                broadcast.put("associated_charity_name", associatedCharityName);
-                                fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-
-                                    }
-                                }, new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-
-                                    }
-                                }, Broadcast.NEW_CHALLENGE, PrivacySetting.PUBLIC, broadcast);
                             }
                         } catch (JSONException e) {
                             Log.e("CreateChallengeFragment", "Failed to parse response", e);

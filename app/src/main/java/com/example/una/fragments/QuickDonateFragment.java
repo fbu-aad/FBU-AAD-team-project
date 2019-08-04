@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.una.FirestoreClient;
 import com.example.una.Frequency;
+import com.example.una.PrivacySetting;
 import com.example.una.R;
 import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -133,7 +134,8 @@ public class QuickDonateFragment extends Fragment {
                                 Toast.makeText(getContext(), "Your donation was not received :(",
                                         Toast.LENGTH_SHORT).show();
                             }
-                        }, amount, Frequency.SINGLE_DONATION, charityEin, null,
+                        }, amount, Frequency.SINGLE_DONATION, PrivacySetting.PUBLIC, charityEin,
+                                null, null,
                                 client.getCurrentUser().getDisplayName(), charityName);
                     }
                 });

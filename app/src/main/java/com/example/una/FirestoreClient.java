@@ -177,7 +177,7 @@ public class FirestoreClient {
     }
 
     public void createNewBroadcast(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener,
-                                   Double amount, String frequency, String privacy, String recipientEin,
+                                   String frequency, String privacy, String recipientEin,
                                    String challengeId, String challengeName,
                                    String userName, String charityName, String type) {
         Map<String, Object> broadcast = new HashMap<>();
@@ -204,8 +204,14 @@ public class FirestoreClient {
             broadcast.put("charity_ein", recipientEin);
             broadcast.put("user_name", userName);
             broadcast.put("charity_name", charityName);
-            String message = String.format("%s donated to %s.", userName,
-                    charityName);
+            String message = "";
+
+            if (frequency.equals(Frequency.SINGLE_DONATION)) {
+                message = String.format("%s donated to %s.", userName,
+                        charityName);
+            } else {
+                message = String.format("%s will donate to %s %s", userName, charityName, frequency);
+            }
 
         } else if (type.equals(Broadcast.NEW_CHALLENGE)) {
             String message;
@@ -255,37 +261,34 @@ public class FirestoreClient {
         donation.put("recipient", recipientEin);
         donation.put("time", new Timestamp(timeOfDonation));
 
+        String type;
         // if donation was part of a challenge, add challenge_id field
         if (challengeId != null) {
             donation.put("challenge_id", challengeId);
-
-            donations.document().set(donation)
-                    .addOnSuccessListener(onSuccessListener)
-                    .addOnFailureListener(onFailureListener);
+            type = Broadcast.CHALLENGE_DONATION;
         } else {
-            // the donation is not a challenge and can be created automatically
-            donations.document().set(donation)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-
-                            if (privacy != PrivacySetting.PRIVATE) {
-                                createNewBroadcast(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        onSuccessListener.onSuccess(aVoid);
-                                    }
-                                }, new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        onFailureListener.onFailure(e);
-                                    }
-                                }, Broadcast.DONATION, PrivacySetting.PUBLIC, );
-                            }
-                        }
-                    })
-                    .addOnFailureListener(onFailureListener);
+            type = Broadcast.DONATION;
         }
+        // the donation is not a challenge and can be created automatically
+        donations.document().set(donation)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (privacy != PrivacySetting.PRIVATE) {
+                            createNewBroadcast(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    onSuccessListener.onSuccess(aVoid);
+                                }}, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    onFailureListener.onFailure(e);
+                                }}, frequency, PrivacySetting.PUBLIC, recipientEin, challengeId,
+                                    challengeName, userName, charityName, type);
+                        }
+                    }
+                })
+                .addOnFailureListener(onFailureListener);
     }
 
     public void createNewChallenge(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,
