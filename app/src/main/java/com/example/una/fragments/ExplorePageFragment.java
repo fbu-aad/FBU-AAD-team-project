@@ -144,7 +144,7 @@ public class ExplorePageFragment extends Fragment {
                     String prevName = "";
                     for (int i = 0; i < organizations.length(); i++) {
                         JSONObject rankedCharity = organizations.getJSONObject(i);
-                        Charity charity = new Charity(rankedCharity.getJSONObject("organization"));
+                        Charity charity = new Charity(rankedCharity.getJSONObject("organization"), getContext());
 
                         // make sure there are no duplicates in the data
                         String newName = charity.getName();

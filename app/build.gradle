@@ -29,6 +29,9 @@ android {
     }
 }
 
+ext {
+    googlePlayVersion = "15.0.0"
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -89,6 +92,10 @@ dependencies {
 
     // swipe to refresh
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+
+    // Google Maps
+    implementation "com.google.android.gms:play-services-maps:$googlePlayVersion"
+    implementation "com.google.android.gms:play-services-location:$googlePlayVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

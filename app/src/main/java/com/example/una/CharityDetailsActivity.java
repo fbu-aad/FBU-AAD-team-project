@@ -1,5 +1,6 @@
 package com.example.una;
 
+import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -12,10 +13,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.una.models.Charity;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -23,12 +30,13 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
-public class CharityDetailsActivity extends AppCompatActivity {
-    @BindView(R.id.ivCharityImage) ImageView ivCharityImage;
+public class CharityDetailsActivity extends FragmentActivity implements OnMapReadyCallback {
     @BindView(R.id.tvCharityName) TextView tvCharityName;
     @BindView(R.id.tvTagline) TextView tvTagline;
     @BindView(R.id.tvCharityDescription) TextView tvMission;
@@ -46,8 +54,11 @@ public class CharityDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tvCauseLabel) TextView tvCauseLabel;
     @BindView(R.id.fabCall) FloatingActionButton fabCall;
     @BindView(R.id.btnFollow) ToggleButton btnFollow;
+
     String ein;
     CharityNavigatorClient client;
+    private GoogleMap mMap;
+    private ArrayList<Address> addresses = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +66,11 @@ public class CharityDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_charity_details);
         ButterKnife.bind(this);
         ein = getIntent().getStringExtra("ein");
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         getCharityInfo(ein);
 
         fabEmail.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +81,20 @@ public class CharityDetailsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+    }
+
+    public void setMap() {
+        for (Address address : addresses) {
+            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latLng)
+                    .title(address.getFeatureName()));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        }
+    }
+
     // gets current charity's info based on eid value
     private void getCharityInfo(String ein) {
         RequestParams params = new RequestParams();
@@ -73,7 +103,7 @@ public class CharityDetailsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] header, JSONObject response) {
                 try {
-                    Charity charity = new Charity(response);
+                    Charity charity = new Charity(response, getApplicationContext());
                     tvCharityName.setText(charity.getName());
                     tvCharityName.setVisibility(View.VISIBLE);
 
@@ -128,14 +158,11 @@ public class CharityDetailsActivity extends AppCompatActivity {
                         tvAboutUs.setVisibility(View.GONE);
                     }
                     tvMoreInfo.setVisibility(View.VISIBLE);
-                    ivCharityImage.setVisibility(View.VISIBLE);
                     fabEmail.setVisibility(View.VISIBLE);
                     fabCall.setVisibility(View.VISIBLE);
                     btnFollow.setVisibility(View.VISIBLE);
 
                     tvCNLink.setVisibility(View.VISIBLE);
-
-
 
                     // link to Charity Navigator URL
                     tvCNLink.setClickable(true);
@@ -150,6 +177,15 @@ public class CharityDetailsActivity extends AppCompatActivity {
 
                     pbLoadingCharity.setVisibility(View.GONE);
 
+                    if (charity.hasDonationAddress()) {
+                        addresses.add(charity.getDonationAddress());
+                    }
+
+                    if (charity.hasMailingAddress()) {
+                        addresses.add(charity.getMailingAddress());
+                    }
+
+                    setMap();
                 } catch (JSONException e) {
                     Log.e("CharityDetailsActivity", "Failed to parse response", e);
                 }

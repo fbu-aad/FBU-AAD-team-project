@@ -6,23 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!--TODO set all views to gone-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".CharityDetailsActivity">
 
-        <ImageView
-            android:id="@+id/ivCharityImage"
-            android:layout_width="wrap_content"
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/charity_image_height"
-            android:scaleType="fitXY"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/tvCharityName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/backgrounds/scenic[5]" />
+            tools:context=".CharityDetailsActivity" />
 
         <TextView
             android:id="@+id/tvCharityName"
@@ -31,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_padding"
             android:layout_marginLeft="@dimen/standard_padding"
-            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:autoLink="all"
@@ -39,10 +37,10 @@
             android:text="TextView"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="@dimen/charity_name_font_size"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCharityImage" />
+            app:layout_constraintTop_toBottomOf="@+id/map" />
 
         <TextView
             android:id="@+id/tvCharityDescription"
@@ -55,7 +53,7 @@
             android:layout_marginRight="@dimen/standard_padding"
             android:text="TextView"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvAboutUs" />
@@ -70,10 +68,10 @@
             android:backgroundTint="@color/una_gold"
             android:clickable="true"
             android:src="@drawable/fui_ic_mail_white_24dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:borderWidth="0dp"
             app:fabSize="mini"
-            app:layout_constraintBottom_toBottomOf="@+id/ivCharityImage"
+            app:layout_constraintBottom_toBottomOf="@+id/map"
             app:layout_constraintEnd_toStartOf="@+id/btnFollow" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -86,7 +84,7 @@
             android:clickable="true"
             android:src="@android:drawable/stat_sys_phone_call"
             android:tint="@color/white"
-            android:visibility="gone"
+            android:visibility="visible"
             app:borderWidth="0dp"
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="@+id/fabEmail"
@@ -105,7 +103,7 @@
             android:text="@string/about_us_msg"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="@dimen/charity_about_us_font_size"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTagline" />
@@ -122,7 +120,7 @@
             android:text="Visit"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="@dimen/charity_about_us_font_size"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +138,7 @@
             android:autoLink="all"
             android:linksClickable="true"
             android:text="TextView"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -170,7 +168,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="TextView"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCharityName" />
@@ -183,7 +181,7 @@
             android:layout_marginRight="16dp"
             android:textOff="Follow"
             android:textOn="Following"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/fabCall"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/fabCall" />
@@ -195,7 +193,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:text="TextView"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/ivCategory"
             app:layout_constraintEnd_toEndOf="@+id/tvCategoryLabel"
             app:layout_constraintStart_toEndOf="@+id/ivCategory"
@@ -211,7 +209,7 @@
             android:text="Category"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="@dimen/charity_about_us_font_size"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toStartOf="@+id/tvCauseLabel"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -229,7 +227,7 @@
             android:layout_marginBottom="16dp"
             android:linksClickable="true"
             android:text="TextView"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -242,7 +240,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:text="TextView"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/ivCause"
             app:layout_constraintEnd_toEndOf="@+id/tvCauseLabel"
             app:layout_constraintStart_toEndOf="@+id/ivCause"
@@ -255,7 +253,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toStartOf="@+id/tvCategory"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -267,7 +265,7 @@
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_marginTop="8dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toStartOf="@+id/tvCause"
             app:layout_constraintStart_toStartOf="@+id/tvCauseLabel"
             app:layout_constraintTop_toBottomOf="@+id/tvCauseLabel"
@@ -285,7 +283,7 @@
             android:text="Cause"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="@dimen/charity_about_us_font_size"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/tvCategoryLabel"
