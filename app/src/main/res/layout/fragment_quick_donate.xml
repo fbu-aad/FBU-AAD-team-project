@@ -10,7 +10,7 @@
         android:id="@+id/charityContentConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_anchor="@+id/donationConstraintLayout"
+        app:layout_anchor="@+id/bottomSheet"
         app:layout_anchorGravity="end|top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -185,13 +185,14 @@
 
     <!-- the constraint layout for the bottom sheet fragment -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/donationConstraintLayout"
+        android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
         android:layout_height="305dp"
         app:behavior_peekHeight="48dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/una_paper">
 
 
         <RadioGroup

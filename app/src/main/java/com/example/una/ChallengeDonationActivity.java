@@ -199,6 +199,17 @@ public class ChallengeDonationActivity extends AppCompatActivity {
                 // update challenge progress
                 client.updateChallengeProgress(challengeId, amount);
 
+                Map<String, Object> mBroadcast = new HashMap<>();
+                mBroadcast.put("challenge_id", challengeId);
+                mBroadcast.put("charity_name", charityName);
+                mBroadcast.put("type", Broadcast.CHALLENGE_DONATION);
+                mBroadcast.put("privacy", privacy);
+                mBroadcast.put("user_name", userName);
+                mBroadcast.put("donor", client.getCurrentUser());
+                mBroadcast.put("charity_ein", charityEin);
+
+                Broadcast broadcast = new Broadcast(mBroadcast);
+
                 // write to donations collection, including a challenge id
                 client.createNewDonation(new OnSuccessListener<Void>() {
                     @Override
@@ -210,8 +221,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         Log.i(TAG, "Donation challenge failure :(");
                     }
-                }, amount, Frequency.SINGLE_DONATION, privacy, charityEin, challengeId, challengeName,
-                        userName, charityName);
+                }, broadcast, amount);
 
                 client.addDonorToChallenge(challengeId);
 

@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -38,7 +39,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+<<<<<<< HEAD
 import java.util.Locale;
+=======
+import java.util.Map;
+>>>>>>> added bottom sheet fragment to quick donate page
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,7 +65,6 @@ public class CreateChallengeStoryFragment extends Fragment {
     @BindView(R.id.btnCreateChallenge) Button btnCreateChallenge;
 
     HashMap<String, Object> challenge = new HashMap<>();
-    HashMap<String, Object> broadcast = new HashMap<>();
     private FirestoreClient fsClient;
     private CharityNavigatorClient cnClient;
     private final String TAG = "CreateChallenge";
@@ -146,7 +150,8 @@ public class CreateChallengeStoryFragment extends Fragment {
                     challenge.put("type", "matching");
                 }
 
-                challenge.put("name", etTitle.getText().toString());
+                String name = etTitle.getText().toString();
+                challenge.put("name", name);
                 challenge.put("description", etAbout.getText().toString());
 
                 if (etTitle.getText().toString().isEmpty()) {
@@ -176,20 +181,24 @@ public class CreateChallengeStoryFragment extends Fragment {
                                     @Override
                                     public void onSuccess(Object o) {
                                         Log.i(TAG, "Challenge created successfully!");
-
+                                        Map<String, Object> broadcastFields = new HashMap<>();
+                                        broadcastFields.put("charity_ein", associatedCharityEin);
+                                        broadcastFields.put("donor", fsClient.getCurrentUser());
+                                        broadcastFields.put("frequency", frequency);
+                                        broadcastFields.put("type", Broadcast.NEW_CHALLENGE);
+                                        broadcastFields.put("user_name", userName);
+                                        broadcastFields.put("challenge_name", name);
+                                        broadcastFields.put("privacy", PrivacySetting.PUBLIC);
+                                        Broadcast broadcast = new Broadcast(broadcastFields);
                                         fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
-                                                                        @Override
-                                                                        public void onSuccess(Void aVoid) {
-
-                                                                        }
-                                                                    }, new OnFailureListener() {
-                                                                        @Override
-                                                                        public void onFailure(@NonNull Exception e) {
-
-                                                                        }
-                                                                    }, frequency, PrivacySetting.PUBLIC, associatedCharityEin, null,
-                                                );
-
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                }
+                                            }, new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                }
+                                            }, broadcast);
                                         // return result to calling activity
                                         Intent resultData = new Intent();
                                         getActivity().setResult(RESULT_OK, resultData);
