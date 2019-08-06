@@ -7,4 +7,16 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="UnaAppTheme" parent="UnaBaseAppTheme">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="colorPrimary"></item>
+        <item name="colorPrimaryDark"></item>
+        <item name="colorAccent"></item>
+    </style>
 </resources>
