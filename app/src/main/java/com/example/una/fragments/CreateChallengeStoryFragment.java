@@ -166,7 +166,7 @@ public class CreateChallengeStoryFragment extends Fragment {
                     @Override
                     public void onSuccess(int statusCode, Header[] header, JSONObject response) {
                         try {
-                            Charity charity = new Charity(response);
+                            Charity charity = new Charity(response, getContext());
                             associatedCharityName = charity.getName();
                             challenge.put("associated_charity_name", associatedCharityName);
 

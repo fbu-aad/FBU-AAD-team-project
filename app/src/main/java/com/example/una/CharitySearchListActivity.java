@@ -139,7 +139,7 @@ public class CharitySearchListActivity extends AppCompatActivity {
             try {
                 if (response != null) {
                     for (int i = 0; i < response.length(); i++) {
-                        Charity charity = new Charity(response.getJSONObject(i));
+                        Charity charity = new Charity(response.getJSONObject(i), getApplicationContext());
                         charities.add(charity);
                         Log.i(TAG, String.format("Loaded %s charities", charities.size()));
                     }
