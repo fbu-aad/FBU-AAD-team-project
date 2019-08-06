@@ -44,7 +44,7 @@ public class BroadcastsFragment extends Fragment {
         broadcasts = new ArrayList<>();
         adapter = new BroadcastsAdapter(broadcasts);
         rvNotifications.setAdapter(adapter);
-        client = new FirestoreClient(getContext());
+        client = new FirestoreClient();
         fetchBroadcasts();
         return view;
     }

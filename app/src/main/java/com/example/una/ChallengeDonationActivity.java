@@ -30,6 +30,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.conn.routing.BasicRouteDirector;
 
 import static com.example.una.utils.ChallengeViewsUtil.formatCurrency;
 
@@ -67,7 +68,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challenge_donation);
         ButterKnife.bind(this);
-        client = new FirestoreClient(this);
+        client = new FirestoreClient();
 
         // get extras from intent
         challengeId = getIntent().getStringExtra("challenge_id");
@@ -198,26 +199,16 @@ public class ChallengeDonationActivity extends AppCompatActivity {
                 // update challenge progress
                 client.updateChallengeProgress(challengeId, amount);
 
-                // write to broadcast collection regarding challenge participation if not private
-                if (!privacy.equals(PrivacySetting.PRIVATE)) {
-                    Map<String, Object> broadcast = new HashMap<>();
-                    broadcast.put("challenge_id", challengeId);
-                    broadcast.put("challenge_name", challengeName);
-                    broadcast.put("charity_name", charityName);
-                    broadcast.put("charity_ein", charityEin);
-                    broadcast.put("user_name", userName);
-                    client.createNewBroadcast(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.i(TAG, "Broadcast challenge donation success :)");
-                        }
-                    }, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.i(TAG, "Broadcast challenge donation failure :(");
-                        }
-                    }, Broadcast.CHALLENGE_DONATION, privacy, broadcast);
-                }
+                Map<String, Object> mBroadcast = new HashMap<>();
+                mBroadcast.put("challenge_id", challengeId);
+                mBroadcast.put("charity_name", charityName);
+                mBroadcast.put("type", Broadcast.CHALLENGE_DONATION);
+                mBroadcast.put("privacy", privacy);
+                mBroadcast.put("user_name", userName);
+                mBroadcast.put("donor", client.getCurrentUser());
+                mBroadcast.put("charity_ein", charityEin);
+
+                Broadcast broadcast = new Broadcast(mBroadcast);
 
                 // write to donations collection, including a challenge id
                 client.createNewDonation(new OnSuccessListener<Void>() {
@@ -230,7 +221,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         Log.i(TAG, "Donation challenge failure :(");
                     }
-                }, amount, Frequency.SINGLE_DONATION, charityEin, challengeId);
+                }, broadcast, amount);
 
                 client.addDonorToChallenge(challengeId);
 

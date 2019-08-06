@@ -56,7 +56,7 @@ public class CharityCreateBroadcastActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        client = new FirestoreClient(this);
+        client = new FirestoreClient();
         charity = Parcels.unwrap(getIntent().getParcelableExtra("charity"));
         context = this;
 
@@ -84,11 +84,13 @@ public class CharityCreateBroadcastActivity extends AppCompatActivity {
             pd.setCancelable(false);
             pd.show();
 
-            Map<String, Object> broadcast = new HashMap<>();
+            Map<String, Object> mBroadcast = new HashMap<>();
 
-            broadcast.put(getString(R.string.firestore_broadcast_message_field), message);
-            broadcast.put(getString(R.string.firestore_charity_ein_field), charity.getEin());
-            broadcast.put(getString(R.string.firestore_charity_name_field), charity.getName());
+            mBroadcast.put(getString(R.string.firestore_broadcast_message_field), message);
+            mBroadcast.put(getString(R.string.firestore_charity_ein_field), charity.getEin());
+            mBroadcast.put(getString(R.string.firestore_charity_name_field), charity.getName());
+
+            Broadcast broadcast = new Broadcast(mBroadcast);
 
             client.createNewBroadcast(new OnSuccessListener<Void>() {
                 @Override
@@ -108,7 +110,7 @@ public class CharityCreateBroadcastActivity extends AppCompatActivity {
                     pd.dismiss();
                     Toast.makeText(context, "Post failed", Toast.LENGTH_SHORT).show();
                 }
-            }, Broadcast.POST, PrivacySetting.PUBLIC, broadcast);
+            }, broadcast);
         }
     }
 }

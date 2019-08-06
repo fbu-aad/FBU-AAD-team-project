@@ -10,6 +10,7 @@
     <dimen name="medium_large_padding">32dp</dimen>
     <dimen name="medium_xl_padding">48dp</dimen>
     <dimen name="large_padding">56dp</dimen>
+    <dimen name="extra_large_padding">148dp</dimen>
     <dimen name="medium_button_width">120dp</dimen>
     <dimen name="large_textView_width">200dp</dimen>
     <dimen name="small_textView_width">80dp</dimen>
@@ -30,9 +31,9 @@
     <dimen name="charity_image_height">300dp</dimen>
     <dimen name="charity_name_font_size">24dp</dimen>
     <dimen name="charity_about_us_font_size">20dp</dimen>
-    <dimen name="charity_description_font_size">18dp</dimen>
+    <dimen name="charity_description_font_size">18sp</dimen>
     <dimen name="charity_more_info_font_size">20dp</dimen>
-    <dimen name="charity_link_info_font_size">18dp</dimen>
+    <dimen name="charity_link_info_font_size">18sp</dimen>
     <dimen name="pb_margin_end_padding">108dp</dimen>
     <dimen name="pb_margin_right_padding">108dp</dimen>
     <dimen name="no_layout_width_textview">0dp</dimen>
@@ -60,7 +61,16 @@
     <dimen name="broadcast_card_view_min_height">100dp</dimen>
     <dimen name="text_view_two_lines_fixed_size">36dp</dimen>
 
+
     <dimen name="fragment_impact_textview_no_width">0dp</dimen>
     <dimen name="fragment_impact_textview_no_height">0dp</dimen>
     <dimen name="fragment_impact_no_border_width">0dp</dimen>
+
+    <dimen name="quick_donate_circle_radius">80dp</dimen>
+    <dimen name="quick_donate_circle_size">50dp</dimen>
+
+    <dimen name="quick_donate_circle_width">148dp</dimen>
+
+    <dimen name="quick_donate_radio_button_corner_radius">12dp</dimen>
+
 </resources>

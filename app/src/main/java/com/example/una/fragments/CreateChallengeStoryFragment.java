@@ -39,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,7 +61,6 @@ public class CreateChallengeStoryFragment extends Fragment {
     @BindView(R.id.btnCreateChallenge) Button btnCreateChallenge;
 
     HashMap<String, Object> challenge = new HashMap<>();
-    HashMap<String, Object> broadcast = new HashMap<>();
     private FirestoreClient fsClient;
     private CharityNavigatorClient cnClient;
     private final String TAG = "CreateChallenge";
@@ -84,7 +84,7 @@ public class CreateChallengeStoryFragment extends Fragment {
                 R.layout.fragment_create_challenge_story, container, false);
         mOnButtonClickListener = (OnButtonClickListener) getContext();
         ButterKnife.bind(this, rootView);
-        fsClient = new FirestoreClient(getContext());
+        fsClient = new FirestoreClient();
         // get donor name
         fsClient.getCurrentUserName(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -146,7 +146,8 @@ public class CreateChallengeStoryFragment extends Fragment {
                     challenge.put("type", "matching");
                 }
 
-                challenge.put("name", etTitle.getText().toString());
+                String name = etTitle.getText().toString();
+                challenge.put("name", name);
                 challenge.put("description", etAbout.getText().toString());
 
                 if (etTitle.getText().toString().isEmpty()) {
@@ -176,7 +177,29 @@ public class CreateChallengeStoryFragment extends Fragment {
                                     @Override
                                     public void onSuccess(Object o) {
                                         Log.i(TAG, "Challenge created successfully!");
+                                        Map<String, Object> broadcastFields = new HashMap<>();
+                                        broadcastFields.put("charity_ein", associatedCharityEin);
+                                        broadcastFields.put("donor", fsClient.getCurrentUser());
+                                        broadcastFields.put("frequency", frequency);
+                                        broadcastFields.put("type", Broadcast.NEW_CHALLENGE);
+                                        broadcastFields.put("user_name", userName);
 
+                                        SharedPreferences sharedPref = getContext()
+                                                .getSharedPreferences(getString(R.string.preference_file_key),
+                                                        Context.MODE_PRIVATE);
+                                        sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user));
+                                        broadcastFields.put("challenge_name", name);
+                                        broadcastFields.put("privacy", PrivacySetting.PUBLIC);
+                                        Broadcast broadcast = new Broadcast(broadcastFields);
+                                        fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                }
+                                            }, new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                }
+                                            }, broadcast);
                                         // return result to calling activity
                                         Intent resultData = new Intent();
                                         getActivity().setResult(RESULT_OK, resultData);
@@ -188,24 +211,6 @@ public class CreateChallengeStoryFragment extends Fragment {
                                         Log.i(TAG, "Failed to create challenge!");
                                     }
                                 }, challenge);
-
-                                // write to broadcasts collection
-                                if (userName != null) {
-                                    broadcast.put("user_name", userName);
-                                }
-                                broadcast.put("challenge_name", etTitle.getText().toString());
-                                broadcast.put("associated_charity_name", associatedCharityName);
-                                fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-
-                                    }
-                                }, new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-
-                                    }
-                                }, Broadcast.NEW_CHALLENGE, PrivacySetting.PUBLIC, broadcast);
                             }
                         } catch (JSONException e) {
                             Log.e("CreateChallengeFragment", "Failed to parse response", e);

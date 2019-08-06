@@ -46,7 +46,7 @@ public class CharityLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_charity_login);
 
         ButterKnife.bind(this);
-        client = new FirestoreClient(this);
+        client = new FirestoreClient();
         mAuth = FirebaseAuth.getInstance();
 
         context = this;

@@ -127,5 +127,22 @@
     <string name="take_photo">Take Photo</string>
     <string name="library">Library</string>
     <string name="create">Create</string>
+
     <string name="sign_out">Sign Out</string>
+
+    <string name="quick_donate_description">Instead of drinking coffee this morning, decide to donate to your favorite charity. A little bit goes a long way :) We gave you a default charity to start, but feel free to set a new one!</string>
+    <string name="quick_donate_stats_title">Your Stats</string>
+
+    <string name="quick_donate_donation_sheet_title">Give Today</string>
+    <string name="quick_donate_donation_button">Give</string>
+
+    <string name="radio_one_quick_donate_item">Ramen</string>
+    <string name="radio_three_quick_donate_item">Coffee</string>
+    <string name="radio_five_quick_donate_item">Gelato</string>
+    <string name="radio_ten_quick_donate_item">Sushi</string>
+    <string name="radio_tuition_quick_donate_item">Tuition</string>
+
+    <string name="quick_donate_times_donated">Times Donated</string>
+    <string name="quick_donate_amount_donated">Amount Donated</string>
+    <string name="quick_donate_num_challenges">Challenges Created</string>
 </resources>

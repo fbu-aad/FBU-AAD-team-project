@@ -64,7 +64,7 @@ public class ChallengesFragment extends Fragment {
         challenges = new ArrayList<>();
         adapter = new StreaksComplexRecyclerViewAdapter(challenges);
         rvChallenges.setAdapter(adapter);
-        client = new FirestoreClient(getContext());
+        client = new FirestoreClient();
         getChallenges();
         return view;
     }

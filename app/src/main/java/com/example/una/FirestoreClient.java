@@ -3,6 +3,7 @@ package com.example.una;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -41,11 +42,9 @@ public class FirestoreClient {
     private CollectionReference charityUsers = db.collection("charity_users");
     private FirebaseUser user;
     private final String TAG = "FirestoreClient";
-    private Context context;
 
-    public FirestoreClient(Context context) {
+    public FirestoreClient() {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        this.context = context;
     }
 
     public void getBroadcasts(OnCompleteListener onCompleteListener) {
@@ -176,26 +175,43 @@ public class FirestoreClient {
         docRef.update("amount_raised", FieldValue.increment(amount));
     }
 
-    public void createNewBroadcast(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener,
-                                   String type, String privacy, Map<String, Object> broadcast) {
+    public void createNewBroadcast(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener, Broadcast body) {
+        Map<String, Object> broadcast = new HashMap<>();
+
         Date timeOfBroadcast = new Date();
         broadcast.put("time", new Timestamp(timeOfBroadcast));
-        broadcast.put("type", type);
-        broadcast.put("privacy", privacy);
+        broadcast.put("type", body.getType());
+        broadcast.put("privacy", body.getPrivacy());
 
-        if (type.equals(Broadcast.CHALLENGE_DONATION)) {
+
+        if (body.getType().equals(Broadcast.CHALLENGE_DONATION)) {
             broadcast.put("donor", user.getUid());
-            String message = broadcast.get("user_name") + " participated in " + broadcast.get("charity_name")
-                    + "'s \"" + broadcast.get("challenge_name") + "\" challenge.";
+            broadcast.put("user_name", body.getUserName());
+            broadcast.put("charity_name", body.getCharityName());
+            broadcast.put("challenge_name", body.getChallengeName());
+            broadcast.put("challenge_id", body.getChallengeName());
+
+            String message = String.format("%s participated in %s\'s %s challenge", body.getUserName(),
+                    body.getCharityName(), body.getChallengeName());
             broadcast.put("message", message);
-        } else if (type.equals(Broadcast.DONATION)) {
-            // TODO broadcast donation
-            // put user, charity recipient
-        } else if (type.equals(Broadcast.NEW_CHALLENGE)) {
+
+        } else if (body.getType().equals(Broadcast.DONATION)) {
+            broadcast.put("donor", user.getUid());
+            broadcast.put("charity_ein", body.getCharityEin());
+            broadcast.put("user_name", body.getUserName());
+            broadcast.put("charity_name", body.getCharityName());
+            String message = "";
+
+            if (body.getFrequency().equals(Frequency.SINGLE_DONATION)) {
+                message = String.format("%s donated to %s.", body.getUserName(),
+                        body.getCharityName());
+            } else {
+                message = String.format("%s will donate to %s %s", body.getUserName(), body.getCharityName(), body.getFrequency());
+            }
+            broadcast.put("message", message);
+        } else if (body.getType().equals(Broadcast.NEW_CHALLENGE)) {
             String message;
-            SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_key),
-                    Context.MODE_PRIVATE);
-            if (sharedPref.getBoolean("user_type", context.getResources().getBoolean(R.bool.is_user))) {
+            if (body.getUserType() == Resources.getSystem().getBoolean(R.bool.is_user)) {
                 // donor-created challenge
                 message = broadcast.get("user_name") + " created a new challenge " + "\""
                         + broadcast.get("challenge_name") + ".\" Check it out!";
@@ -206,12 +222,14 @@ public class FirestoreClient {
                         + broadcast.get("challenge_name") + ".\" Check it out!";
                 broadcast.put("message", message);
             }
-        } else if (type.equals(Broadcast.POST)) {
+        } else if (body.getType().equals(Broadcast.POST)) {
             // TODO broadcast post
             // put charity user, message
+        } else {
+            Log.i(TAG, "no broadcast type in create new broadcast for " + body.getDonor());
         }
 
-        db.collection("broadcasts").document().set(broadcast)
+        broadcasts.document().set(broadcast)
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
 
@@ -227,24 +245,52 @@ public class FirestoreClient {
         donations.get().addOnCompleteListener(onCompleteListener);
     }
 
+    /*
+    Double amount, String frequency, String privacy, String recipientEin,
+                                  String challengeId, String challengeName,
+                                  String userName, String charityName
+     */
     public void createNewDonation(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener,
-                                  Double amount, String frequency, String recipientEin, String challengeId) {
+                                  Broadcast body, Double amount) {
         Date timeOfDonation = new Date();
         Map<String, Object> donation = new HashMap<>();
+
         donation.put("amount", amount);
         donation.put("donor_id", user.getUid());
-        donation.put("frequency", frequency);
-        donation.put("recipient", recipientEin);
+        donation.put("frequency", body.getFrequency());
+        donation.put("recipient", body.getCharityEin());
         donation.put("time", new Timestamp(timeOfDonation));
 
-        donations.document().set(donation);
+        String type;
         // if donation was part of a challenge, add challenge_id field
-        if (challengeId != null) {
-            donation.put("challenge_id", challengeId);
+        if (body.getChallengeId() != null) {
+            donation.put("challenge_id", body.getChallengeId());
+            type = Broadcast.CHALLENGE_DONATION;
+        } else {
+            type = Broadcast.DONATION;
         }
+        donation.put("type", type);
+        // the donation is not a challenge and can be created automatically
+        donations.document().set(donation)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (body.getPrivacy() != PrivacySetting.PRIVATE) {
+                            body.setDonor(user.getUid());
+                            body.setTimestamp(new Timestamp(timeOfDonation));
 
-        db.collection("donations").document().set(donation)
-                .addOnSuccessListener(onSuccessListener)
+                            createNewBroadcast(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    onSuccessListener.onSuccess(aVoid);
+                                }}, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    onFailureListener.onFailure(e);
+                                }}, body);
+                        }
+                    }
+                })
                 .addOnFailureListener(onFailureListener);
     }
 
