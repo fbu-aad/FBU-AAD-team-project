@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.una.FirestoreClient;
 import com.example.una.R;
+import com.example.una.TimeFormatHelper;
 import com.example.una.models.Donation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -72,8 +72,8 @@ public class DonationsHistoryAdapter extends RecyclerView.Adapter<DonationsHisto
         Donation donation = mDonations.get(position);
         // populate the views according to this data
         viewHolder.tvDonationAmount.setText("$" + donation.getDonationAmount().toString());
-        SimpleDateFormat sfd = new SimpleDateFormat("MM/dd/yy");
-        viewHolder.tvTimestamp.setText(sfd.format(donation.getTimestamp().toDate()));
+        String donationCreationTime = TimeFormatHelper.getDateStringFromDate(donation.getTimestamp().toDate());
+        viewHolder.tvTimestamp.setText(donationCreationTime);
         client.findCharityByEIN(donation.getRecipient(), new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
