@@ -188,12 +188,18 @@ public class QuickDonateFragment extends Fragment {
         });
     }
 
+    private String clean(String value) {
+        value.replaceAll("[$, ]", "");
+        return value;
+    }
+
     private void createNewDonation(Broadcast broadcast, Double amount) {
         client.createNewDonation(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getContext(), "Your donation was received",
                         Toast.LENGTH_SHORT).show();
+
                 numDonations++;
                 totalAmountDonated += amount;
 
