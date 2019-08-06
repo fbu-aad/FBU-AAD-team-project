@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.una.FirestoreClient;
 import com.example.una.R;
+import com.example.una.TimeFormatHelper;
 import com.example.una.models.Donation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,7 +23,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -67,8 +67,8 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     @Override
     public void onBindViewHolder(@NonNull NotificationsAdapter.ViewHolder holder, int position) {
         Donation donation = mOtherUserDonations.get(position);
-        SimpleDateFormat sfd = new SimpleDateFormat("MM/dd/yy");
-        holder.tvTimestamp.setText(sfd.format(donation.getTimestamp().toDate()));
+        String notificationCreationTime = TimeFormatHelper.getDateStringFromDate(donation.getTimestamp().toDate());
+        holder.tvTimestamp.setText(notificationCreationTime);
         client.findCharityByEIN(donation.getRecipient(), new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
