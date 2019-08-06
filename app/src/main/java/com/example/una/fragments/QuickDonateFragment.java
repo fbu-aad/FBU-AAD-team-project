@@ -105,6 +105,10 @@ public class QuickDonateFragment extends Fragment {
                     charityEin = getString(R.string.red_cross_ein);
                 }
 
+                if (charityName == null) {
+                    charityName = "";
+                }
+
                 charity = new Charity(charityEin, charityName);
                 tvCharityName.setText(charity.getName());
 

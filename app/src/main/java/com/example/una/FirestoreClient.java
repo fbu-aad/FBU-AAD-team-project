@@ -43,6 +43,8 @@ public class FirestoreClient {
     private FirebaseUser user;
     private final String TAG = "FirestoreClient";
 
+    private final int ONE = 1;
+
     public FirestoreClient() {
         user = FirebaseAuth.getInstance().getCurrentUser();
     }
@@ -275,6 +277,9 @@ public class FirestoreClient {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        incrementDonationCount();
+                        addDonationAmountToTotal(amount);
+
                         if (body.getPrivacy() != PrivacySetting.PRIVATE) {
                             body.setDonor(user.getUid());
                             body.setTimestamp(new Timestamp(timeOfDonation));
@@ -303,6 +308,8 @@ public class FirestoreClient {
         db.collection("challenges").document().set(challenge)
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
+
+        incrementChallengeCount();
     }
 
     public FirebaseUser getCurrentUser() {
@@ -350,6 +357,18 @@ public class FirestoreClient {
                 .limit(loadedBroadcastsPerPage)
                 .startAfter(documentSnapshot)
                 .get().addOnSuccessListener(onSuccessListener);
+    }
+
+    public void incrementDonationCount() {
+        users.document(user.getUid()).update("num_donations", FieldValue.increment(ONE));
+    }
+
+    public void addDonationAmountToTotal(Double amount) {
+        users.document(user.getUid()).update("donation_total", FieldValue.increment(amount));
+    }
+
+    public void incrementChallengeCount() {
+        users.document(user.getUid()).update("num_challenges", FieldValue.increment(ONE));
     }
 
     private static abstract class SimpleTask<TResult> extends Task<TResult> {
