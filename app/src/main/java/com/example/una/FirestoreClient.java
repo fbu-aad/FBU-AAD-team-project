@@ -371,6 +371,16 @@ public class FirestoreClient {
         users.document(user.getUid()).update("num_challenges", FieldValue.increment(ONE));
     }
 
+    public void updateUserStreaks(long numDonations, long numChallenges, Double totalAmountDonated,
+                                 OnSuccessListener onSuccessListener, OnFailureListener onFailureListener) {
+        users.document(user.getUid())
+                .update("num_donations", numDonations,
+                        "num_challenges", numChallenges,
+                         "donation_total", totalAmountDonated)
+                .addOnSuccessListener(onSuccessListener)
+                .addOnFailureListener(onFailureListener);
+    }
+
     private static abstract class SimpleTask<TResult> extends Task<TResult> {
         @Override
         public boolean isComplete() {

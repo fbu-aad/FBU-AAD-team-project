@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,16 +63,19 @@ public class QuickDonateFragment extends Fragment {
     FirestoreClient client;
     Charity charity;
     BottomSheetBehavior bottomSheetBehavior;
+    DecimalFormat df;
 
     Double amount;
-    Double numChallenges;
-    Double numDonations;
+    long numChallenges;
+    long numDonations;
     Double totalAmountDonated;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quick_donate, container, false);
         ButterKnife.bind(this, view);
+
+        df = new DecimalFormat("###,###,###,##0.00");
 
         client = new FirestoreClient();
         amount = 0.00;
@@ -106,13 +110,47 @@ public class QuickDonateFragment extends Fragment {
                 String charityName = (String) documentSnapshot.get("fav_charity_name");
                 String charityEin;
 
-                numChallenges = (Double) documentSnapshot.get("num_challenges");
-                numDonations = (Double) documentSnapshot.get("num_donations");
-                totalAmountDonated = (Double) documentSnapshot.get("total_amount_donated");
+                boolean isValid = true;
 
-                tvNumChallegesCreated.setText(numChallenges.toString());
-                tvAmountDonated.setText(totalAmountDonated.toString());
-                tvTimesDonated.setText(numDonations.toString());
+                if (documentSnapshot.contains("num_challenges")) {
+                    numChallenges = (long) documentSnapshot.get("num_challenges");
+                } else {
+                    isValid = false;
+                    numChallenges = 0;
+                }
+
+                if (documentSnapshot.contains("num_donations")) {
+                    numDonations = (long) documentSnapshot.get("num_donations");
+                } else {
+                    isValid = false;
+                    numDonations = 0;
+                }
+
+                if (documentSnapshot.contains("donation_total")) {
+                    totalAmountDonated = (Double) documentSnapshot.get("donation_total");
+                } else {
+                    isValid = false;
+                    totalAmountDonated = 0.0;
+                }
+
+                tvNumChallegesCreated.setText(numChallenges + "");
+                tvAmountDonated.setText("$" + df.format(totalAmountDonated));
+                tvTimesDonated.setText(numDonations + "");
+
+                if (!isValid) {
+                    client.updateUserStreaks(numDonations, numChallenges, totalAmountDonated,
+                            new OnSuccessListener() {
+                                @Override
+                                public void onSuccess(Object o) {
+                                    Log.i(TAG, "updated user streaks");
+                                }
+                            }, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.i(TAG, "failed to update user streaks");
+                                }
+                            });
+                }
 
                 if (documentSnapshot.contains("fav_charity_ein")) {
                     charityEin = documentSnapshot.get("fav_charity_ein").toString();
@@ -131,8 +169,8 @@ public class QuickDonateFragment extends Fragment {
                 donateBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        resetBottomSheet();
                         createNewDonation(setDonateBroadcastParams(charity), amount);
+                        resetBottomSheet();
                     }
                 });
             }
@@ -146,12 +184,23 @@ public class QuickDonateFragment extends Fragment {
         });
     }
 
+    private String clean(String value) {
+        value.replaceAll("[$, ]", "");
+        return value;
+    }
+
     private void createNewDonation(Broadcast broadcast, Double amount) {
         client.createNewDonation(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getContext(), "Your donation was received",
                         Toast.LENGTH_SHORT).show();
+
+                numDonations++;
+                totalAmountDonated += amount;
+
+                tvTimesDonated.setText(numDonations + "");
+                tvAmountDonated.setText("$" + df.format(totalAmountDonated));
             }
         }, new OnFailureListener() {
             @Override
@@ -161,9 +210,6 @@ public class QuickDonateFragment extends Fragment {
             }
         }, broadcast, amount);
 
-        numDonations++;
-        totalAmountDonated += amount;
-        tvTimesDonated.setText(numDonations.toString());
     }
 
     private void resetBottomSheet() {
@@ -192,19 +238,19 @@ public class QuickDonateFragment extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId) {
                     case R.id.radio1:
-                        etCustomAmount.setText("24");
+                        etCustomAmount.setText(".24");
                         amount = 0.24;
                         break;
                     case R.id.radio3:
-                        etCustomAmount.setText("325");
+                        etCustomAmount.setText("3.25");
                         amount = 3.25;
                         break;
                     case R.id.radio5:
-                        etCustomAmount.setText("549");
+                        etCustomAmount.setText("5.49");
                         amount = 5.49;
                         break;
                     case R.id.radio10:
-                        etCustomAmount.setText("1350");
+                        etCustomAmount.setText("13.50");
                         amount = 13.50;
                         break;
                     case R.id.radioTuition:
