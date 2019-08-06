@@ -95,6 +95,7 @@ public class QuickDonateFragment extends Fragment {
         donateBtn.setEnabled(false);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
+
         tvAmountDonated.setText("-");
         tvTimesDonated.setText("-");
         tvNumChallegesCreated.setText("-");
@@ -194,7 +195,6 @@ public class QuickDonateFragment extends Fragment {
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getContext(), "Your donation was received",
                         Toast.LENGTH_SHORT).show();
-
                 numDonations++;
                 totalAmountDonated += amount;
 
