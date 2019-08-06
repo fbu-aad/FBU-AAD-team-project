@@ -146,6 +146,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (email != null) {
                             newUser.put("email", email);
                         }
+                        newUser.put("num_donations", 0.0);
+                        newUser.put("num_challenges", 0.0);
+                        newUser.put("donation_total", 0.0);
 
                         // add a new document with a generated id
                         Intent surveyIntent = new Intent(getApplicationContext(), SurveyActivity.class);
