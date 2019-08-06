@@ -11,10 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.una.models.Broadcast;
+import com.example.una.models.Challenge;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.like.LikeButton;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -48,36 +51,25 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
         client = new FirestoreClient(this);
         ButterKnife.bind(this);
 
+        broadcast = Parcels.unwrap(getIntent().getParcelableExtra(Broadcast.class.getSimpleName()));
+        String broadcastId = broadcast.getUid();
 
-        String broadcastId = getIntent().getStringExtra("id");
-        client.getBroadcast(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                broadcast = new Broadcast(documentSnapshot.getData(), broadcastId);
+        // set views
+        tvCharityName.setText(broadcast.getCharityName());
+        tvMessage.setText(broadcast.getMessage());
+        ArrayList<String> comments = broadcast.getComments();
 
-                // set views
-                tvCharityName.setText(broadcast.getCharityName());
-                tvMessage.setText(broadcast.getMessage());
-                ArrayList<String> comments = broadcast.getComments();
-
-                // set comments text view
-                setTvComments(comments, tvComments);
-            }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        }, broadcastId);
+        // set comments text view
+        setTvComments(comments, tvComments);
 
         // set profile image placeholder
         setProfileImagePlaceholder(this, ivProfile);
 
         // set like button depending on whether broadcast is already liked and number of likes text view
-        setLikeButtonAndText(client, btnLike, tvNumLikes, broadcastId);
+        setLikeButtonAndText(client, btnLike, tvNumLikes, broadcast);
 
         // set number of comments text view
-        setNumCommentsText(client, tvNumComments, broadcastId);
+        setNumCommentsText(tvNumComments, broadcast);
 
         // on like listener for like button
         setOnLikeListener(client, btnLike, broadcastId);

@@ -5,14 +5,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.una.FirestoreClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.example.una.models.Broadcast;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 
@@ -20,42 +16,22 @@ import java.util.ArrayList;
 
 public class BroadcastViewsUtil {
 
-    public static void setLikeButtonAndText(FirestoreClient client, LikeButton likeButton, TextView tvNumLikes, String broadcastId) {
+    public static void setLikeButtonAndText(FirestoreClient client, LikeButton likeButton, TextView tvNumLikes, Broadcast broadcast) {
         String userId = client.getCurrentUser().getUid();
-        client.getBroadcast(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                ArrayList<String> usersLiked = (ArrayList<String>) documentSnapshot.get("liked_by");
-                setNumberText(usersLiked, tvNumLikes);
-                if (usersLiked != null) {
-                    if (usersLiked.contains(userId)) {
-                        likeButton.setLiked(true);
-                    }
-                } else {
-                    likeButton.setLiked(false);
-                }
+        ArrayList<String> usersLiked = broadcast.getLikes();
+        setNumberText(usersLiked, tvNumLikes);
+        if (usersLiked != null) {
+            if (usersLiked.contains(userId)) {
+                likeButton.setLiked(true);
             }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        }, broadcastId);
+        } else {
+            likeButton.setLiked(false);
+        }
     }
 
-    public static void setNumCommentsText(FirestoreClient client, TextView tvNumComments, String broadcastId) {
-        client.getBroadcast(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                ArrayList<String> comments = (ArrayList<String>) documentSnapshot.get("comments");
-                setNumberText(comments, tvNumComments);
-            }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        }, broadcastId);
+    public static void setNumCommentsText(TextView tvNumComments, Broadcast broadcast) {
+        ArrayList<String> comments = broadcast.getComments();
+        setNumberText(comments, tvNumComments);
     }
 
     public static void setNumberText(ArrayList<String> users, TextView tvNum) {

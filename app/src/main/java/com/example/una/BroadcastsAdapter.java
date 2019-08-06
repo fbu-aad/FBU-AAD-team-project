@@ -20,6 +20,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 
 import static com.example.una.utils.BroadcastViewsUtil.setLikeButtonAndText;
@@ -82,10 +84,10 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             // set like button depending on whether broadcast is already liked and number of likes text view
             setLikeButtonAndText(client, broadcastViewHolder.getBroadcastLikeButton(),
-                    broadcastViewHolder.getBroadcastNumLikes(), broadcast.getUid());
+                    broadcastViewHolder.getBroadcastNumLikes(), broadcast);
 
             // set number of comments text view
-            setNumCommentsText(client, broadcastViewHolder.getBroadcastNumComments(), broadcast.getUid());
+            setNumCommentsText(broadcastViewHolder.getBroadcastNumComments(), broadcast);
 
             // on like listener for like button
             setOnLikeListener(client, broadcastViewHolder.getBroadcastLikeButton(), broadcast.getUid());
@@ -96,7 +98,7 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 public void onClick(View v) {
                     // open detail view of broadcast
                     Intent detailBroadcast = new Intent(context, BroadcastDetailsActivity.class);
-                    detailBroadcast.putExtra("id", broadcast.getUid());
+                    detailBroadcast.putExtra(Broadcast.class.getSimpleName(), Parcels.wrap(broadcast));
                     context.startActivity(detailBroadcast);
                 }
             });

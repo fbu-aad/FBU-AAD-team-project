@@ -2,9 +2,13 @@ package com.example.una.models;
 
 import com.google.firebase.Timestamp;
 
+import org.parceler.Parcel;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
 
+@Parcel
 public class Broadcast {
     public static final String POST = "post";
     public static final String DONATION = "donation";
@@ -25,6 +29,9 @@ public class Broadcast {
     private boolean userType;
     String uid;
     ArrayList<String> comments;
+    ArrayList<String> likes;
+
+    public Broadcast() {}
 
     public Broadcast(String charityName, String message) {
         this.charityName = charityName;
@@ -84,6 +91,10 @@ public class Broadcast {
 
         if (broadcastFields.containsKey("comments")) {
             comments = (ArrayList<String>) broadcastFields.get("comments");
+        }
+
+        if (broadcastFields.containsKey("liked_by")) {
+            likes = (ArrayList<String>) broadcastFields.get("liked_by");
         }
     }
 
@@ -146,4 +157,6 @@ public class Broadcast {
     }
 
     public ArrayList<String> getComments() { return comments; }
+
+    public ArrayList<String> getLikes() { return likes; }
 }

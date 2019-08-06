@@ -15,6 +15,8 @@ import com.example.una.R;
 import com.example.una.models.Broadcast;
 import com.like.LikeButton;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -45,7 +47,7 @@ public class BroadcastViewHolder extends RecyclerView.ViewHolder {
                     Broadcast broadcast = broadcasts.get(position);
                     // open detail view of broadcast
                     Intent detailBroadcast = new Intent(context, BroadcastDetailsActivity.class);
-                    detailBroadcast.putExtra("id", broadcast.getUid());
+                    detailBroadcast.putExtra(Broadcast.class.getSimpleName(), Parcels.wrap(broadcast));
                     context.startActivity(detailBroadcast);
                 }
             }
