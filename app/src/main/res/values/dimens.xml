@@ -60,8 +60,6 @@
 
     <dimen name="broadcast_card_view_min_height">100dp</dimen>
     <dimen name="text_view_two_lines_fixed_size">36dp</dimen>
-
-
     <dimen name="fragment_impact_textview_no_width">0dp</dimen>
     <dimen name="fragment_impact_textview_no_height">0dp</dimen>
     <dimen name="fragment_impact_no_border_width">0dp</dimen>
@@ -70,7 +68,6 @@
     <dimen name="quick_donate_circle_size">50dp</dimen>
 
     <dimen name="quick_donate_circle_width">148dp</dimen>
-
     <dimen name="quick_donate_radio_button_corner_radius">8dp</dimen>
-
+    <dimen name="broadcast_image_button_size">16dp</dimen>
 </resources>

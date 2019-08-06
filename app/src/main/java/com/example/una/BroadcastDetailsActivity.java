@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.una.models.Broadcast;
@@ -23,6 +24,11 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.una.utils.BroadcastViewsUtil.setLikeButtonAndText;
+import static com.example.una.utils.BroadcastViewsUtil.setNumCommentsText;
+import static com.example.una.utils.BroadcastViewsUtil.setOnLikeListener;
+import static com.example.una.utils.BroadcastViewsUtil.setProfileImagePlaceholder;
+
 public class BroadcastDetailsActivity extends AppCompatActivity {
 
     FirestoreClient client;
@@ -36,6 +42,7 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
     @BindView(R.id.message) TextView tvMessage;
     @BindView(R.id.tvComments) TextView tvComments;
     @BindView(R.id.etComment) TextView etComment;
+    @BindView(R.id.profileImage) ImageView ivProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,24 +73,17 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
             }
         }, broadcastId);
 
+        // set profile image placeholder
+        setProfileImagePlaceholder(this, ivProfile);
+
         // set like button depending on whether broadcast is already liked and number of likes text view
-        setLikeButtonAndText(btnLike, tvNumLikes, broadcastId);
+        setLikeButtonAndText(client, btnLike, tvNumLikes, broadcastId);
 
         // set number of comments text view
-        setNumCommentsText(tvNumComments, broadcastId);
+        setNumCommentsText(client, tvNumComments, broadcastId);
 
         // on like listener for like button
-        btnLike.setOnLikeListener(new OnLikeListener() {
-            @Override
-            public void liked(LikeButton likeButton) {
-                client.likeBroadcast(broadcastId);
-            }
-
-            @Override
-            public void unLiked(LikeButton likeButton) {
-                client.unlikeBroadcast(broadcastId);
-            }
-        });
+        setOnLikeListener(client, btnLike, broadcastId);
 
         // comment on a post
         btnComment.setOnClickListener(new View.OnClickListener() {
@@ -98,53 +98,6 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
                 etComment.setText("");
             }
         });
-    }
-
-    private void setLikeButtonAndText(LikeButton likeButton, TextView tvNumLikes, String broadcastId) {
-        String userId = client.getCurrentUser().getUid();
-        client.getBroadcast(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                ArrayList<String> usersLiked = (ArrayList<String>) documentSnapshot.get("liked_by");
-                if (usersLiked != null) {
-                    setNumberText(usersLiked, tvNumLikes);
-                    if (usersLiked.contains(userId)) {
-                        likeButton.setLiked(true);
-                    }
-                } else {
-                    likeButton.setLiked(false);
-                }
-            }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        }, broadcastId);
-    }
-
-    private void setNumCommentsText(TextView tvNumComments, String broadcastId) {
-        client.getBroadcast(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                ArrayList<String> comments = (ArrayList<String>) documentSnapshot.get("comments");
-                if (comments != null) {
-                    setNumberText(comments, tvNumComments);
-                }
-            }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        }, broadcastId);
-    }
-
-    private void setNumberText(ArrayList<String> users, TextView tvNum) {
-        if (users != null && users.size() != 0) {
-            tvNum.setVisibility(View.VISIBLE);
-            tvNum.setText(Integer.toString(users.size()));
-        }
     }
 
     private void setTvComments(ArrayList<String> comments, TextView tvComments) {
