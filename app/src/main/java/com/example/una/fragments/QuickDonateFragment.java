@@ -95,7 +95,6 @@ public class QuickDonateFragment extends Fragment {
         donateBtn.setEnabled(false);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
-
         tvAmountDonated.setText("-");
         tvTimesDonated.setText("-");
         tvNumChallegesCreated.setText("-");
