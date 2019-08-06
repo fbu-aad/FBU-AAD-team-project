@@ -245,6 +245,11 @@ public class FirestoreClient {
         broadcasts.document(broadcastId).update("liked_by", FieldValue.arrayRemove(user.getUid()));
     }
 
+    // users cannot comment the same string more than once
+    public void commentOnBroadcast(String broadcastId, String comment) {
+        broadcasts.document(broadcastId).update("comments", FieldValue.arrayUnion(user.getDisplayName() + ": " + comment));
+    }
+
     public void getBroadcast(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,
                                    String broadcastId) {
         DocumentReference docRef = broadcasts.document(broadcastId);

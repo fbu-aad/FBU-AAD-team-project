@@ -2,6 +2,7 @@ package com.example.una.models;
 
 import com.google.firebase.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Broadcast {
@@ -23,6 +24,7 @@ public class Broadcast {
     private String charityEin;
     private boolean userType;
     String uid;
+    ArrayList<String> comments;
 
     public Broadcast(String charityName, String message) {
         this.charityName = charityName;
@@ -78,6 +80,10 @@ public class Broadcast {
 
         if (broadcastFields.containsKey("user_type")) {
             userType = (boolean) broadcastFields.get("user_type");
+        }
+
+        if (broadcastFields.containsKey("comments")) {
+            comments = (ArrayList<String>) broadcastFields.get("comments");
         }
     }
 
@@ -138,4 +144,6 @@ public class Broadcast {
     public boolean getUserType() {
         return userType;
     }
+
+    public ArrayList<String> getComments() { return comments; }
 }

@@ -112,6 +112,7 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
+    // TODO refactor into public utils class
     private void setLikeButtonAndText(LikeButton likeButton, TextView tvNumLikes, String broadcastId) {
         String userId = client.getCurrentUser().getUid();
         client.getBroadcast(new OnSuccessListener<DocumentSnapshot>() {
