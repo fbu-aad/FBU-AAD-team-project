@@ -188,11 +188,6 @@ public class QuickDonateFragment extends Fragment {
         });
     }
 
-    private String clean(String value) {
-        value.replaceAll("[$, ]", "");
-        return value;
-    }
-
     private void createNewDonation(Broadcast broadcast, Double amount) {
         client.createNewDonation(new OnSuccessListener<Void>() {
             @Override
