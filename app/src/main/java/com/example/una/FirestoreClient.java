@@ -245,7 +245,7 @@ public class FirestoreClient {
         broadcasts.document(broadcastId).update("liked_by", FieldValue.arrayRemove(user.getUid()));
     }
 
-    public void getBroadcastLikers(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,
+    public void getBroadcast(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,
                                    String broadcastId) {
         DocumentReference docRef = broadcasts.document(broadcastId);
         docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);

@@ -1,13 +1,13 @@
 package com.example.una;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -38,7 +38,7 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         client = new FirestoreClient();
         LayoutInflater inflater = LayoutInflater.from(context);
         View ivBroadcast = inflater.inflate(R.layout.broadcast_layout, parent, false);
-        return new BroadcastViewHolder(ivBroadcast, context);
+        return new BroadcastViewHolder(ivBroadcast, broadcasts, context);
     }
 
     @Override
@@ -80,7 +80,10 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             // set like button depending on whether broadcast is already liked and number of likes text view
             setLikeButtonAndText(broadcastViewHolder.getBroadcastLikeButton(),
-                    broadcastViewHolder.getBroadcastNumLikes(), broadcast);
+                    broadcastViewHolder.getBroadcastNumLikes(), broadcast.getUid());
+
+            // set number of comments text view
+            setNumCommentsText(broadcastViewHolder.getBroadcastNumComments(), broadcast.getUid());
 
             // on like listener for like button
             broadcastViewHolder.getBroadcastLikeButton().setOnLikeListener(new OnLikeListener() {
@@ -94,13 +97,24 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     client.unlikeBroadcast(broadcast.getUid());
                 }
             });
+
+            // on click listener for comment button
+            // TODO set focus on comment edit text, start activity for result
+            broadcastViewHolder.getBroadcastCommentButton().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // open detail view of broadcast
+                    Intent detailBroadcast = new Intent(context, BroadcastDetailsActivity.class);
+                    detailBroadcast.putExtra("id", broadcast.getUid());
+                    context.startActivity(detailBroadcast);
+                }
+            });
         }
     }
 
-    private void setLikeButtonAndText(LikeButton likeButton, TextView tvNumLikes, Broadcast broadcast) {
+    private void setLikeButtonAndText(LikeButton likeButton, TextView tvNumLikes, String broadcastId) {
         String userId = client.getCurrentUser().getUid();
-        String broadcastId = broadcast.getUid();
-        client.getBroadcastLikers(new OnSuccessListener<DocumentSnapshot>() {
+        client.getBroadcast(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 ArrayList<String> usersLiked = (ArrayList<String>) documentSnapshot.get("liked_by");
@@ -121,6 +135,23 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }, broadcastId);
     }
 
+    private void setNumCommentsText(TextView tvNumComments, String broadcastId) {
+        client.getBroadcast(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                ArrayList<String> comments = (ArrayList<String>) documentSnapshot.get("comments");
+                if (comments != null) {
+                    setNumberText(comments, tvNumComments);
+                }
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        }, broadcastId);
+    }
+
     private void setNumberText(ArrayList<String> users, TextView tvNum) {
         if (users != null && users.size() != 0) {
             tvNum.setVisibility(View.VISIBLE);
@@ -128,7 +159,7 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    //
+    // getItemId and getItemViewType ensure that the recycler view items are recycled properly
     @Override
     public long getItemId(int position) {
         return position;
