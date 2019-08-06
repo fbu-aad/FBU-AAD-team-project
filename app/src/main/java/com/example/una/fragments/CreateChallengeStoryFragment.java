@@ -26,7 +26,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -39,11 +38,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-<<<<<<< HEAD
 import java.util.Locale;
-=======
 import java.util.Map;
->>>>>>> added bottom sheet fragment to quick donate page
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,7 +84,7 @@ public class CreateChallengeStoryFragment extends Fragment {
                 R.layout.fragment_create_challenge_story, container, false);
         mOnButtonClickListener = (OnButtonClickListener) getContext();
         ButterKnife.bind(this, rootView);
-        fsClient = new FirestoreClient(getContext());
+        fsClient = new FirestoreClient();
         // get donor name
         fsClient.getCurrentUserName(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -187,6 +183,11 @@ public class CreateChallengeStoryFragment extends Fragment {
                                         broadcastFields.put("frequency", frequency);
                                         broadcastFields.put("type", Broadcast.NEW_CHALLENGE);
                                         broadcastFields.put("user_name", userName);
+
+                                        SharedPreferences sharedPref = getContext()
+                                                .getSharedPreferences(getString(R.string.preference_file_key),
+                                                        Context.MODE_PRIVATE);
+                                        sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user));
                                         broadcastFields.put("challenge_name", name);
                                         broadcastFields.put("privacy", PrivacySetting.PUBLIC);
                                         Broadcast broadcast = new Broadcast(broadcastFields);

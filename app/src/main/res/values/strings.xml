@@ -135,4 +135,14 @@
 
     <string name="quick_donate_donation_sheet_title">Give Today</string>
     <string name="quick_donate_donation_button">Give</string>
-git</resources>
+
+    <string name="radio_one_quick_donate_item">Ramen</string>
+    <string name="radio_three_quick_donate_item">Coffee</string>
+    <string name="radio_five_quick_donate_item">Gelato</string>
+    <string name="radio_ten_quick_donate_item">Sushi</string>
+    <string name="radio_tuition_quick_donate_item">Tuition</string>
+
+    <string name="quick_donate_times_donated">Times Donated</string>
+    <string name="quick_donate_amount_donated">Amount Donated</string>
+    <string name="quick_donate_num_challenges">Challenges Created</string>
+</resources>

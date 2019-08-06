@@ -22,6 +22,7 @@ public class Broadcast {
     private String frequency;
     private String challengeId;
     private String charityEin;
+    private boolean userType;
 
     public Broadcast(Map<String, Object> broadcastFields) {
         if (broadcastFields.containsKey("charity_name")) {
@@ -66,6 +67,10 @@ public class Broadcast {
 
         if(broadcastFields.containsKey("charity_ein")) {
             charityEin = (String) broadcastFields.get("charity_ein");
+        }
+
+        if (broadcastFields.containsKey("user_type")) {
+            userType = (boolean) broadcastFields.get("user_type");
         }
     }
 
@@ -119,5 +124,9 @@ public class Broadcast {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public boolean getUserType() {
+        return userType;
     }
 }

@@ -55,7 +55,7 @@ public class DonationActivity extends AppCompatActivity {
     private Context context;
     private String userName;
 
-    FirestoreClient firestoreClient = new FirestoreClient(this);
+    FirestoreClient firestoreClient = new FirestoreClient();
     private Charity charity;
 
     @Override

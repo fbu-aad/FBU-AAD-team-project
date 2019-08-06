@@ -3,6 +3,7 @@ package com.example.una;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -41,11 +42,9 @@ public class FirestoreClient {
     private CollectionReference charityUsers = db.collection("charity_users");
     private FirebaseUser user;
     private final String TAG = "FirestoreClient";
-    private Context context;
 
-    public FirestoreClient(Context context) {
+    public FirestoreClient() {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        this.context = context;
     }
 
     public void getBroadcasts(OnCompleteListener onCompleteListener) {
@@ -211,9 +210,7 @@ public class FirestoreClient {
             }
         } else if (body.getType().equals(Broadcast.NEW_CHALLENGE)) {
             String message;
-            SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_key),
-                    Context.MODE_PRIVATE);
-            if (sharedPref.getBoolean("user_type", context.getResources().getBoolean(R.bool.is_user))) {
+            if (body.getUserType() == Resources.getSystem().getBoolean(R.bool.is_user)) {
                 // donor-created challenge
                 message = broadcast.get("user_name") + " created a new challenge " + "\""
                         + broadcast.get("challenge_name") + ".\" Check it out!";
