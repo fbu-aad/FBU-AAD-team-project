@@ -68,6 +68,7 @@ public class QuickDonateFragment extends Fragment {
     Double amount;
     long numChallenges;
     long numDonations;
+
     Double totalAmountDonated;
 
     @Override
@@ -93,7 +94,6 @@ public class QuickDonateFragment extends Fragment {
 
         donateBtn.setEnabled(false);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-
 
         tvAmountDonated.setText("-");
         tvTimesDonated.setText("-");
@@ -205,6 +205,10 @@ public class QuickDonateFragment extends Fragment {
                         Toast.LENGTH_SHORT).show();
             }
         }, broadcast, amount);
+
+        numDonations++;
+        totalAmountDonated += amount;
+        tvTimesDonated.setText(numDonations + "");
     }
 
     private void resetBottomSheet() {
