@@ -26,8 +26,8 @@ public class BroadcastViewsUtil {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 ArrayList<String> usersLiked = (ArrayList<String>) documentSnapshot.get("liked_by");
+                setNumberText(usersLiked, tvNumLikes);
                 if (usersLiked != null) {
-                    setNumberText(usersLiked, tvNumLikes);
                     if (usersLiked.contains(userId)) {
                         likeButton.setLiked(true);
                     }
@@ -38,7 +38,7 @@ public class BroadcastViewsUtil {
         }, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                e.printStackTrace();
             }
         }, broadcastId);
     }
@@ -48,9 +48,7 @@ public class BroadcastViewsUtil {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 ArrayList<String> comments = (ArrayList<String>) documentSnapshot.get("comments");
-                if (comments != null) {
-                    setNumberText(comments, tvNumComments);
-                }
+                setNumberText(comments, tvNumComments);
             }
         }, new OnFailureListener() {
             @Override

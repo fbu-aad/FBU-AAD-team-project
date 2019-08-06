@@ -25,7 +25,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BroadcastsFragment extends Fragment {
-    private final static String TAG = "BroadcastsFragment";
     private final static int BROADCASTS_PER_PAGE_QUERY = 10;
 
     private EndlessRecyclerViewScrollListener scrollListener;
