@@ -215,6 +215,7 @@
             android:gravity="center"
             android:text="TextView"
             android:textColor="@color/una_charcoal"
+            android:textSize="@dimen/medium_font_size"
             app:layout_constraintBottom_toTopOf="@+id/ivCharityPicture"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -228,7 +229,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="305dp"
+        android:layout_height="wrap_content"
         android:background="@color/una_paper"
         app:behavior_peekHeight="@dimen/large_padding"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
@@ -336,9 +337,11 @@
             android:layout_marginStart="@dimen/medium_large_padding"
             android:layout_marginLeft="@dimen/medium_large_padding"
             android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/medium_large_padding"
             android:ems="10"
             android:hint="@string/donation_hint"
             android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/valueOK"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -379,6 +382,17 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/etCustomAmount"
             app:layout_constraintTop_toBottomOf="@+id/rgSuggestedDonations" />
+
+        <ImageView
+            android:id="@+id/raise_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
