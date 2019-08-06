@@ -1,6 +1,5 @@
 package com.example.una;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -11,10 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.una.models.Broadcast;
-import com.example.una.models.Challenge;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.like.LikeButton;
 
 import org.parceler.Parcels;

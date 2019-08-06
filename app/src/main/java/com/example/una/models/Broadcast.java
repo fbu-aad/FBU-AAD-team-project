@@ -1,10 +1,8 @@
 package com.example.una.models;
 
 import com.google.firebase.Timestamp;
-
 import org.parceler.Parcel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
 
