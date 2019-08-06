@@ -64,6 +64,9 @@ public class QuickDonateFragment extends Fragment {
     BottomSheetBehavior bottomSheetBehavior;
 
     Double amount;
+    Double numChallenges;
+    Double numDonations;
+    Double totalAmountDonated;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,17 +90,29 @@ public class QuickDonateFragment extends Fragment {
         donateBtn.setEnabled(false);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
-        getFavoriteCharity();
+        tvAmountDonated.setText("-");
+        tvTimesDonated.setText("-");
+        tvNumChallegesCreated.setText("-");
+
+        populateData();
         etCustomAmount.addTextChangedListener(new CurrencyTextWatcher(etCustomAmount, "$0.00"));
         setValueCheckedListener();
     }
 
-    private void getFavoriteCharity() {
-        client.getFavoriteCharity(new OnSuccessListener<DocumentSnapshot>() {
+    private void populateData() {
+        client.getUserDocument(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 String charityName = (String) documentSnapshot.get("fav_charity_name");
                 String charityEin;
+
+                numChallenges = (Double) documentSnapshot.get("num_challenges");
+                numDonations = (Double) documentSnapshot.get("num_donations");
+                totalAmountDonated = (Double) documentSnapshot.get("total_amount_donated");
+
+                tvNumChallegesCreated.setText(numChallenges.toString());
+                tvAmountDonated.setText(totalAmountDonated.toString());
+                tvTimesDonated.setText(numDonations.toString());
 
                 if (documentSnapshot.contains("fav_charity_ein")) {
                     charityEin = documentSnapshot.get("fav_charity_ein").toString();
@@ -145,6 +160,10 @@ public class QuickDonateFragment extends Fragment {
                         Toast.LENGTH_SHORT).show();
             }
         }, broadcast, amount);
+
+        numDonations++;
+        totalAmountDonated += amount;
+        tvTimesDonated.setText(numDonations.toString());
     }
 
     private void resetBottomSheet() {

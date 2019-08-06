@@ -54,7 +54,7 @@ public class FirestoreClient {
                 .addOnCompleteListener(onCompleteListener);
     }
 
-    public void getFavoriteCharity(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener) {
+    public void getUserDocument(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener) {
         DocumentReference docRef = users.document(user.getUid());
         docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
     }
