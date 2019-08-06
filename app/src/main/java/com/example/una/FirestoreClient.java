@@ -237,6 +237,20 @@ public class FirestoreClient {
 
     }
 
+    public void likeBroadcast(String broadcastId) {
+        broadcasts.document(broadcastId).update("liked_by", FieldValue.arrayUnion(user.getUid()));
+    }
+
+    public void unlikeBroadcast(String broadcastId) {
+        broadcasts.document(broadcastId).update("liked_by", FieldValue.arrayRemove(user.getUid()));
+    }
+
+    public void getBroadcastLikers(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,
+                                   String broadcastId) {
+        DocumentReference docRef = broadcasts.document(broadcastId);
+        docRef.get().addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
+    }
+
     public void findUserWhereIDEquals(String uid, OnSuccessListener onSuccessListener, OnFailureListener onFailureListener) {
         // pass in the users UID's & passes back the user's name
         DocumentReference docRef = users.document(uid);

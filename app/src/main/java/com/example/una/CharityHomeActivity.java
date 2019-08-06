@@ -109,7 +109,7 @@ public class CharityHomeActivity extends AppCompatActivity {
                     Log.i(TAG, "completed getting broadcasts");
                     QuerySnapshot result = task.getResult();
                     for (QueryDocumentSnapshot broadcastsDoc : result) {
-                        broadcasts.add(new Broadcast(broadcastsDoc.getData()));
+                        broadcasts.add(new Broadcast(broadcastsDoc.getData(), broadcastsDoc.getId()));
                     }
                     adapter.notifyItemInserted(broadcasts.size() - 1);
                 } else {

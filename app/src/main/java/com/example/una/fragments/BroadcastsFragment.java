@@ -84,7 +84,7 @@ public class BroadcastsFragment extends Fragment {
 
     private void loadMoreData(QuerySnapshot documentSnapshots) {
         for(QueryDocumentSnapshot broadcastDoc : documentSnapshots) {
-            broadcasts.add(new Broadcast(broadcastDoc.getData()));
+            broadcasts.add(new Broadcast(broadcastDoc.getData(), broadcastDoc.getId()));
         }
         adapter.notifyDataSetChanged();
         if(documentSnapshots.size() > 0) {

@@ -1,7 +1,6 @@
 package com.example.una.models;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.Query;
 
 import java.util.Map;
 
@@ -23,8 +22,16 @@ public class Broadcast {
     private String challengeId;
     private String charityEin;
     private boolean userType;
+    String uid;
 
-    public Broadcast(Map<String, Object> broadcastFields) {
+    public Broadcast(String charityName, String message) {
+        this.charityName = charityName;
+        this.message = message;
+    }
+
+    public Broadcast(Map<String, Object> broadcastFields, String uid) {
+        this.uid = uid;
+
         if (broadcastFields.containsKey("charity_name")) {
             charityName = (String) broadcastFields.get("charity_name");
         }
@@ -73,6 +80,8 @@ public class Broadcast {
             userType = (boolean) broadcastFields.get("user_type");
         }
     }
+
+    public String getUid() { return uid; }
 
     public String getCharityName() {
         return charityName;
