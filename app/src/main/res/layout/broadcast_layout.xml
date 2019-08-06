@@ -85,11 +85,15 @@
 
             <TextView
                 android:id="@+id/tvNumLikes"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/small_padding"
+                android:layout_marginRight="@dimen/small_padding"
                 android:text="TextView"
+                android:textColor="@color/black"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/btnLike"
+                app:layout_constraintEnd_toStartOf="@+id/ibComment"
                 app:layout_constraintStart_toEndOf="@+id/btnLike"
                 app:layout_constraintTop_toTopOf="@+id/btnLike" />
 
@@ -110,13 +114,17 @@
 
             <TextView
                 android:id="@+id/tvNumComments"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standard_padding"
                 android:layout_marginLeft="@dimen/standard_padding"
+                android:layout_marginEnd="@dimen/small_padding"
+                android:layout_marginRight="@dimen/small_padding"
                 android:text="TextView"
+                android:textColor="@color/black"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/ibComment"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ibComment"
                 app:layout_constraintTop_toTopOf="@+id/ibComment" />
 
