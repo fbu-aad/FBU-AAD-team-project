@@ -68,7 +68,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challenge_donation);
         ButterKnife.bind(this);
-        client = new FirestoreClient(this);
+        client = new FirestoreClient();
 
         // get extras from intent
         challengeId = getIntent().getStringExtra("challenge_id");

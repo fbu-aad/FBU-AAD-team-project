@@ -71,7 +71,7 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
                 R.layout.fragment_create_challenge_basic_info, container, false);
         mOnButtonClickListener = (OnButtonClickListener) getContext();
         cnClient = new CharityNavigatorClient(this.getContext());
-        fsClient = new FirestoreClient(getContext());
+        fsClient = new FirestoreClient();
         ButterKnife.bind(this, rootView);
 
         CurrencyTextWatcher watcher = new CurrencyTextWatcher(etGoalAmount, currentAmount);

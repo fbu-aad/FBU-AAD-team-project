@@ -56,7 +56,7 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         context = viewGroup.getContext();
-        client = new FirestoreClient(context);
+        client = new FirestoreClient();
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         if (viewType == CHALLENGE) {

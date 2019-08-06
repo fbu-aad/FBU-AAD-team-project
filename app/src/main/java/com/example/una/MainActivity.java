@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         // instantiate a new Firestore client
-        client = new FirestoreClient(this);
+        client = new FirestoreClient();
         View header = nvDrawer.getHeaderView(0);
         TextView navDrawerHeaderName = header.findViewById(R.id.tvCurrentUsername);
         fullName = client.getCurrentUser().getDisplayName();

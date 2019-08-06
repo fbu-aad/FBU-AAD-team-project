@@ -66,7 +66,7 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         context = ChallengeDetailsActivity.this;
 
-        client = new FirestoreClient(this);
+        client = new FirestoreClient();
         challenge = Parcels.unwrap(getIntent().getParcelableExtra(Challenge.class.getSimpleName()));
 
         // populate the views

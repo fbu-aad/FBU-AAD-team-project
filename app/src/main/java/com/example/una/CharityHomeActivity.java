@@ -53,7 +53,7 @@ public class CharityHomeActivity extends AppCompatActivity {
         adapter = new BroadcastsAdapter(broadcasts);
 
         rvBroadcasts.setAdapter(adapter);
-        client = new FirestoreClient(this);
+        client = new FirestoreClient();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvBroadcasts.setLayoutManager(layoutManager);

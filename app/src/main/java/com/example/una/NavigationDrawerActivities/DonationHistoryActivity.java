@@ -48,7 +48,7 @@ public class DonationHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation_history);
         ButterKnife.bind(this);
-        client = new FirestoreClient(this);
+        client = new FirestoreClient();
         donations = new ArrayList<>(); // currently creating new donation list
         adapter = new DonationsHistoryAdapter(donations); // stop and go to adapter
         setSupportActionBar(toolbar);

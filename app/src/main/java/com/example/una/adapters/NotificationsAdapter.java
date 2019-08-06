@@ -51,7 +51,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     public NotificationsAdapter(List<Donation> donations) {
         mOtherUserDonations = donations;
-        client = new FirestoreClient(context);
+        client = new FirestoreClient();
     }
 
     @NonNull

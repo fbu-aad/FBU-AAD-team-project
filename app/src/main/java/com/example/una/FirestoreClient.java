@@ -208,6 +208,7 @@ public class FirestoreClient {
             } else {
                 message = String.format("%s will donate to %s %s", body.getUserName(), body.getCharityName(), body.getFrequency());
             }
+            broadcast.put("message", message);
         } else if (body.getType().equals(Broadcast.NEW_CHALLENGE)) {
             String message;
             if (body.getUserType() == Resources.getSystem().getBoolean(R.bool.is_user)) {
@@ -224,6 +225,8 @@ public class FirestoreClient {
         } else if (body.getType().equals(Broadcast.POST)) {
             // TODO broadcast post
             // put charity user, message
+        } else {
+            Log.i(TAG, "no broadcast type in create new broadcast for " + body.getDonor());
         }
 
         broadcasts.document().set(broadcast)
@@ -266,6 +269,7 @@ public class FirestoreClient {
         } else {
             type = Broadcast.DONATION;
         }
+        donation.put("type", type);
         // the donation is not a challenge and can be created automatically
         donations.document().set(donation)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
