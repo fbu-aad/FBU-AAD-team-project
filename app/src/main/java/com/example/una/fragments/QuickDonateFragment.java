@@ -1,8 +1,6 @@
 package com.example.una.fragments;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.una.CurrencyTextWatcher;
 import com.example.una.FirestoreClient;
 import com.example.una.Frequency;
@@ -79,9 +79,20 @@ public class QuickDonateFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Glide.with(getContext())
+                .load("https://placeimg.com/400/400/nature")
+                .apply(RequestOptions.centerCropTransform())
+                .into(ivCharityPicture);
+
         donateBtn.setEnabled(false);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
+        getFavoriteCharity();
+        etCustomAmount.addTextChangedListener(new CurrencyTextWatcher(etCustomAmount, "$0.00"));
+        setValueCheckedListener();
+    }
+
+    private void getFavoriteCharity() {
         client.getFavoriteCharity(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -101,34 +112,8 @@ public class QuickDonateFragment extends Fragment {
                 donateBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Map<String, Object> mBroadcast = new HashMap<>();
-                        mBroadcast.put("charity_name", charity.getName());
-                        mBroadcast.put("type", Broadcast.DONATION);
-                        mBroadcast.put("privacy", PrivacySetting.PUBLIC);
-                        mBroadcast.put("user_name", client.getCurrentUser().getDisplayName());
-                        mBroadcast.put("donor", client.getCurrentUser().getUid());
-                        mBroadcast.put("frequency", Frequency.SINGLE_DONATION);
-                        mBroadcast.put("charity_ein", charity.getEin());
-
-                        Broadcast broadcast = new Broadcast(mBroadcast);
-
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                        etCustomAmount.setText("");
-                        rgSuggestedDonations.clearCheck();
-
-                        client.createNewDonation(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(getContext(), "Your donation was received",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }, new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getContext(), "Your donation was not received :(",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }, broadcast, amount);
+                        resetBottomSheet();
+                        createNewDonation(setDonateBroadcastParams(charity), amount);
                     }
                 });
             }
@@ -140,9 +125,45 @@ public class QuickDonateFragment extends Fragment {
                 Toast.makeText(getContext(), "Can't get favorite charity", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        etCustomAmount.addTextChangedListener(new CurrencyTextWatcher(etCustomAmount, "$0.00"));
+    private void createNewDonation(Broadcast broadcast, Double amount) {
+        client.createNewDonation(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getContext(), "Your donation was received",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Your donation was not received :(",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, broadcast, amount);
+    }
 
+    private void resetBottomSheet() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        etCustomAmount.setText("");
+        rgSuggestedDonations.clearCheck();
+    }
+
+    private Broadcast setDonateBroadcastParams(Charity charity) {
+        Map<String, Object> broadcastParams = new HashMap<>();
+        broadcastParams.put("charity_name", charity.getName());
+        broadcastParams.put("type", Broadcast.DONATION);
+        broadcastParams.put("privacy", PrivacySetting.PUBLIC);
+        broadcastParams.put("user_name", client.getCurrentUser().getDisplayName());
+        broadcastParams.put("donor", client.getCurrentUser().getUid());
+        broadcastParams.put("frequency", Frequency.SINGLE_DONATION);
+        broadcastParams.put("charity_ein", charity.getEin());
+
+        Broadcast broadcast = new Broadcast(broadcastParams);
+        return broadcast;
+    }
+
+    private void setValueCheckedListener() {
         rgSuggestedDonations.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -171,7 +192,6 @@ public class QuickDonateFragment extends Fragment {
                         etCustomAmount.setText("0.00");
                         amount = 0.00;
                         break;
-
                 }
             }
         });

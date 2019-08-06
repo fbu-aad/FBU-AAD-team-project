@@ -188,7 +188,7 @@
 
         <ImageView
             android:id="@+id/ivCharityPicture"
-            android:layout_width="394dp"
+            android:layout_width="match_parent"
             android:layout_height="241dp"
             android:layout_marginStart="@dimen/small_padding"
             android:layout_marginLeft="@dimen/small_padding"
