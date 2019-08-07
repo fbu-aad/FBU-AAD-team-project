@@ -30,6 +30,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -192,14 +193,15 @@ public class CreateChallengeStoryFragment extends Fragment {
                                         broadcastFields.put("privacy", PrivacySetting.PUBLIC);
                                         Broadcast broadcast = new Broadcast(broadcastFields);
                                         fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                }
-                                            }, new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                }
-                                            }, broadcast);
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                            }
+                                        }, new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, e.toString());
+                                            }
+                                        }, broadcast);
                                         // return result to calling activity
                                         Intent resultData = new Intent();
                                         getActivity().setResult(RESULT_OK, resultData);
@@ -213,9 +215,29 @@ public class CreateChallengeStoryFragment extends Fragment {
                                 }, challenge);
                             }
                         } catch (JSONException e) {
-                            Log.e("CreateChallengeFragment", "Failed to parse response", e);
+                            Log.d(TAG, e.toString());
                         }
                     }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        super.onFailure(statusCode, headers, throwable, errorResponse);
+                        Log.d(TAG, "failed getting the charity");
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                        super.onFailure(statusCode, headers, throwable, errorResponse);
+                        Log.d(TAG, "failed getting the charity");
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        super.onFailure(statusCode, headers, responseString, throwable);
+                        Log.d(TAG, "failed getting the charity");
+                    }
+
+
                 });
             }
         });
