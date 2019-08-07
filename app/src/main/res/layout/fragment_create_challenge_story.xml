@@ -156,7 +156,7 @@
             android:layout_marginTop="@dimen/standard_padding"
             android:layout_marginBottom="@dimen/small_padding"
             android:rotation="180"
-            android:tint="@color/una_gold"
+            android:tint="@color/colorPrimary"
             android:src="@drawable/ic_arrow_right"
             android:backgroundTint="@color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"

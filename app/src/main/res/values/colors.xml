@@ -4,10 +4,6 @@
     <color name="og_colorPrimaryDark">#00574B</color>
     <color name="og_colorAccent">#D81B60</color>
 
-    <color name="colorPrimary">@color/una_paper</color>
-    <color name="colorPrimaryDark">@color/una_silk</color>
-    <color name="colorAccent">@color/una_charcoal</color>
-
     <color name="bumbleYellow">#FFCB37</color>
     <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
@@ -27,4 +23,12 @@
     <color name="una_white">#FFFFFF</color>
     <color name="una_dark_grey">#8c8c8c</color>
 
+    <color name="colorPrimary">#82b3c9</color>
+    <color name="colorPrimaryLight">#b3e5fc</color>
+    <color name="colorPrimaryDark">#528398</color>
+    <color name="colorAccent">#efa7b0</color>
+    <color name="colorAccentLight">#ffd9e2</color>
+    <color name="colorAccentDark">#bb7781</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
 </resources>

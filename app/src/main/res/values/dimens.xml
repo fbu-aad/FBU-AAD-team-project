@@ -71,6 +71,6 @@
 
     <dimen name="quick_donate_circle_width">148dp</dimen>
 
-    <dimen name="quick_donate_radio_button_corner_radius">12dp</dimen>
+    <dimen name="quick_donate_radio_button_corner_radius">8dp</dimen>
 
 </resources>

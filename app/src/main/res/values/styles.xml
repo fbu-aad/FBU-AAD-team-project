@@ -1,16 +1,16 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/una_paper</item>
-        <item name="colorPrimaryDark">@color/una_gold</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/una_charcoal</item>
     </style>
 
     <style name="UnaAppTheme" parent="UnaBaseAppTheme" />
 
     <style name="UnaBaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/una_paper</item>
-        <item name="colorPrimaryDark">@color/una_gold</item>
-        <item name="colorAccent">@color/una_charcoal</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 </resources>

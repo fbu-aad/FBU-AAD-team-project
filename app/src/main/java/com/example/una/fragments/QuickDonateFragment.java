@@ -171,8 +171,10 @@ public class QuickDonateFragment extends Fragment {
                 donateBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        createNewDonation(setDonateBroadcastParams(charity), amount);
-                        resetBottomSheet();
+                        if (amount >= 0.0) {
+                            createNewDonation(setDonateBroadcastParams(charity), amount);
+                            resetBottomSheet();
+                        }
                     }
                 });
             }
