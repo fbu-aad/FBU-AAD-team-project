@@ -13,18 +13,18 @@ public class Broadcast {
     public static final String CHALLENGE_DONATION = "challenge_donation";
     public static final String NEW_CHALLENGE = "new_challenge";
 
-    private String charityName;
-    private String challengeName;
-    private String message;
-    private String userName;
-    private String donor;
-    private String type;
-    private String privacy;
-    private Timestamp timestamp;
-    private String frequency;
-    private String challengeId;
-    private String charityEin;
-    private boolean userType;
+    String charityName;
+    String challengeName;
+    String message;
+    String userName;
+    String donor;
+    String type;
+    String privacy;
+    Timestamp timestamp;
+    String frequency;
+    String challengeId;
+    String charityEin;
+    boolean userType;
     String uid;
     ArrayList<String> comments;
     ArrayList<String> likes;
@@ -37,7 +37,9 @@ public class Broadcast {
     }
 
     public Broadcast(Map<String, Object> broadcastFields, String uid) {
-        this.uid = uid;
+        if (uid != null) {
+            this.uid = uid;
+        }
 
         if (broadcastFields.containsKey("charity_name")) {
             charityName = (String) broadcastFields.get("charity_name");

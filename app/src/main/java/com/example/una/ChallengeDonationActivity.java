@@ -209,7 +209,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
                 mBroadcast.put("donor", client.getCurrentUser().getUid());
                 mBroadcast.put("charity_ein", charityEin);
 
-                Broadcast broadcast = new Broadcast(mBroadcast);
+                Broadcast broadcast = new Broadcast(mBroadcast, null);
 
                 // write to donations collection, including a challenge id
                 client.createNewDonation(new OnSuccessListener<Void>() {

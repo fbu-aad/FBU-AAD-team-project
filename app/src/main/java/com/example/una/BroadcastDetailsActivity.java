@@ -49,7 +49,7 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast_details);
-        client = new FirestoreClient(this);
+        client = new FirestoreClient();
         ButterKnife.bind(this);
 
         broadcast = Parcels.unwrap(getIntent().getParcelableExtra(Broadcast.class.getSimpleName()));

@@ -90,7 +90,7 @@ public class CharityCreateBroadcastActivity extends AppCompatActivity {
             mBroadcast.put(getString(R.string.firestore_charity_ein_field), charity.getEin());
             mBroadcast.put(getString(R.string.firestore_charity_name_field), charity.getName());
 
-            Broadcast broadcast = new Broadcast(mBroadcast);
+            Broadcast broadcast = new Broadcast(mBroadcast, null);
 
             client.createNewBroadcast(new OnSuccessListener<Void>() {
                 @Override
