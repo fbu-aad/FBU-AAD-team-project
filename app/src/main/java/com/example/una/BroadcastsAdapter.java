@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import static com.example.una.utils.BroadcastViewsUtil.setCharityNameTextView;
 import static com.example.una.utils.BroadcastViewsUtil.setLikeButtonAndText;
 import static com.example.una.utils.BroadcastViewsUtil.setNumCommentsText;
 import static com.example.una.utils.BroadcastViewsUtil.setOnLikeListener;
@@ -53,21 +55,8 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private void configureBroadcastViewHolder(BroadcastViewHolder broadcastViewHolder, Broadcast broadcast) {
         if (broadcast != null) {
-            switch (broadcast.getType()) {
-                case Broadcast.DONATION:
-                    broadcastViewHolder.getBroadcastCharityName().setText(broadcast.getUserName());
-                    break;
-                case Broadcast.NEW_CHALLENGE:
-                case Broadcast.CHALLENGE_DONATION:
-                    broadcastViewHolder.getBroadcastCharityName().setText(broadcast.getChallengeName());
-                    break;
-                case Broadcast.POST:
-                    broadcastViewHolder.getBroadcastCharityName().setText(broadcast.getCharityName());
-                    break;
-                default:
-                    broadcastViewHolder.getBroadcastCharityName().setText("null");
-                    break;
-            }
+            // set title text view
+            setCharityNameTextView(broadcastViewHolder.getBroadcastCharityName(), broadcast);
 
             broadcastViewHolder.getBroadcastCharityMessage().setText(broadcast.getMessage());
 

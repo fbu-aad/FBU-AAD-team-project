@@ -230,7 +230,7 @@ public class QuickDonateFragment extends Fragment {
         broadcastParams.put("frequency", Frequency.SINGLE_DONATION);
         broadcastParams.put("charity_ein", charity.getEin());
 
-        Broadcast broadcast = new Broadcast(broadcastParams, null);
+        Broadcast broadcast = new Broadcast(broadcastParams);
         return broadcast;
     }
 

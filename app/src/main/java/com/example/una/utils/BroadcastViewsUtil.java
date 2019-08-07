@@ -16,6 +16,24 @@ import java.util.ArrayList;
 
 public class BroadcastViewsUtil {
 
+    public static void setCharityNameTextView(TextView tvCharityName, Broadcast broadcast) {
+        switch (broadcast.getType()) {
+            case Broadcast.DONATION:
+                tvCharityName.setText(broadcast.getUserName());
+                break;
+            case Broadcast.NEW_CHALLENGE:
+            case Broadcast.CHALLENGE_DONATION:
+                tvCharityName.setText(broadcast.getChallengeName());
+                break;
+            case Broadcast.POST:
+                tvCharityName.setText(broadcast.getCharityName());
+                break;
+            default:
+                tvCharityName.setText("null");
+                break;
+        }
+    }
+
     public static void setLikeButtonAndText(FirestoreClient client, LikeButton likeButton, TextView tvNumLikes, Broadcast broadcast) {
         String userId = client.getCurrentUser().getUid();
         ArrayList<String> usersLiked = broadcast.getLikes();

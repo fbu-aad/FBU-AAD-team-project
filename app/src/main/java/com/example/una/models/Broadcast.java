@@ -36,11 +36,16 @@ public class Broadcast {
         this.message = message;
     }
 
-    public Broadcast(Map<String, Object> broadcastFields, String uid) {
-        if (uid != null) {
-            this.uid = uid;
-        }
+    public Broadcast(Map<String, Object> broadcastFields) {
+        setFields(broadcastFields);
+    }
 
+    public Broadcast(Map<String, Object> broadcastFields, String uid) {
+        this.uid = uid;
+        setFields(broadcastFields);
+    }
+
+    public void setFields(Map<String, Object> broadcastFields) {
         if (broadcastFields.containsKey("charity_name")) {
             charityName = (String) broadcastFields.get("charity_name");
         }

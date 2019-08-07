@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.una.utils.BroadcastViewsUtil.setCharityNameTextView;
 import static com.example.una.utils.BroadcastViewsUtil.setLikeButtonAndText;
 import static com.example.una.utils.BroadcastViewsUtil.setNumCommentsText;
 import static com.example.una.utils.BroadcastViewsUtil.setOnLikeListener;
@@ -56,7 +57,7 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
         String broadcastId = broadcast.getUid();
 
         // set views
-        tvCharityName.setText(broadcast.getCharityName());
+        setCharityNameTextView(tvCharityName, broadcast);
         tvMessage.setText(broadcast.getMessage());
         comments = broadcast.getComments();
         if (comments != null && comments.size() > 0) {
