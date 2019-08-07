@@ -1,6 +1,8 @@
 package com.example.una;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.una.adapters.CommentAdapter;
 import com.example.una.models.Broadcast;
 import com.like.LikeButton;
 
@@ -35,9 +38,12 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tvNumComments) TextView tvNumComments;
     @BindView(R.id.charityName) TextView tvCharityName;
     @BindView(R.id.message) TextView tvMessage;
-    @BindView(R.id.tvComments) TextView tvComments;
     @BindView(R.id.etComment) TextView etComment;
     @BindView(R.id.profileImage) ImageView ivProfile;
+
+    @BindView(R.id.rvComments) RecyclerView rvComments;
+    ArrayList<String> comments;
+    CommentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +58,15 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
         // set views
         tvCharityName.setText(broadcast.getCharityName());
         tvMessage.setText(broadcast.getMessage());
-        ArrayList<String> comments = broadcast.getComments();
+        comments = broadcast.getComments();
+        if (comments != null && comments.size() > 0) {
+            rvComments.setVisibility(View.VISIBLE);
+        }
 
-        // set comments text view
-        setTvComments(comments, tvComments);
+        adapter = new CommentAdapter(comments);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvComments.setLayoutManager(linearLayoutManager);
+        rvComments.setAdapter(adapter);
 
         // set profile image placeholder
         setProfileImagePlaceholder(this, ivProfile);
@@ -82,19 +93,5 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
                 etComment.setText("");
             }
         });
-    }
-
-    private void setTvComments(ArrayList<String> comments, TextView tvComments) {
-        if (comments != null) {
-            // set comments text view
-            tvComments.setVisibility(View.VISIBLE);
-
-            String text = "";
-            for (int i = 0; i < comments.size()-1; i++) {
-                text = text + comments.get(i) + "\n";
-            }
-            text = text + comments.get(comments.size()-1);
-            tvComments.setText(text);
-        }
     }
 }
