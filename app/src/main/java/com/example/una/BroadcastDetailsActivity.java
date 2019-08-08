@@ -32,7 +32,8 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
 
     FirestoreClient client;
     Broadcast broadcast;
-    @BindView(R.id.btnLike) LikeButton btnLike;
+    @BindView(R.id.btnLike)
+    LikeButton btnLike;
     @BindView(R.id.ibComment) ImageButton ibComment;
     @BindView(R.id.btnComment) Button btnComment;
     @BindView(R.id.tvNumLikes) TextView tvNumLikes;

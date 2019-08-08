@@ -263,6 +263,10 @@ public class FirestoreClient {
             broadcast.put("message", message);
         } else if (body.getType().equals(Broadcast.NEW_CHALLENGE)) {
             String message;
+            broadcast.put("user_name", body.getUserName());
+            broadcast.put("charity_name", body.getCharityName());
+            broadcast.put("challenge_name", body.getChallengeName());
+            broadcast.put("challenge_id", body.getChallengeId());
             if (body.getUserType() == Broadcast.IS_USER) {
                 // donor-created challenge
                 message = body.getUserName() + " created a new challenge " + "\""
