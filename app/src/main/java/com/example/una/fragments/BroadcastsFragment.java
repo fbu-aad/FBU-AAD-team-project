@@ -25,7 +25,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BroadcastsFragment extends Fragment {
-    private final static String TAG = "BroadcastsFragment";
     private final static int BROADCASTS_PER_PAGE_QUERY = 10;
 
     private EndlessRecyclerViewScrollListener scrollListener;
@@ -84,7 +83,7 @@ public class BroadcastsFragment extends Fragment {
 
     private void loadMoreData(QuerySnapshot documentSnapshots) {
         for(QueryDocumentSnapshot broadcastDoc : documentSnapshots) {
-            broadcasts.add(new Broadcast(broadcastDoc.getData()));
+            broadcasts.add(new Broadcast(broadcastDoc.getData(), broadcastDoc.getId()));
         }
         adapter.notifyDataSetChanged();
         if(documentSnapshots.size() > 0) {

@@ -14,6 +14,7 @@
         android:theme="@style/UnaAppTheme">
 
         <activity android:name=".CharityCreateBroadcastActivity"/>
+        <activity android:name=".BroadcastDetailsActivity"></activity>
         <activity android:name=".ChallengeDetailsActivity" />
         <activity android:name=".NavigationDrawerActivities.DonationHistoryActivity" />
         <activity android:name=".ChallengeDonationActivity" />

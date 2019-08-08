@@ -1,30 +1,51 @@
 package com.example.una.models;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.Query;
+import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.Map;
 
+@Parcel
 public class Broadcast {
     public static final String POST = "post";
     public static final String DONATION = "donation";
     public static final String CHALLENGE_DONATION = "challenge_donation";
     public static final String NEW_CHALLENGE = "new_challenge";
 
-    private String charityName;
-    private String challengeName;
-    private String message;
-    private String userName;
-    private String donor;
-    private String type;
-    private String privacy;
-    private Timestamp timestamp;
-    private String frequency;
-    private String challengeId;
-    private String charityEin;
-    private boolean userType;
+    public String charityName;
+    public String challengeName;
+    public String message;
+    public String userName;
+    public String donor;
+    public String type;
+    public String privacy;
+    public Timestamp timestamp;
+    public String frequency;
+    public String challengeId;
+    public String charityEin;
+    public boolean userType;
+    public String uid;
+    public ArrayList<String> comments;
+    public ArrayList<String> likes;
+
+    public Broadcast() {}
+
+    public Broadcast(String charityName, String message) {
+        this.charityName = charityName;
+        this.message = message;
+    }
 
     public Broadcast(Map<String, Object> broadcastFields) {
+        setFields(broadcastFields);
+    }
+
+    public Broadcast(Map<String, Object> broadcastFields, String uid) {
+        this.uid = uid;
+        setFields(broadcastFields);
+    }
+
+    public void setFields(Map<String, Object> broadcastFields) {
         if (broadcastFields.containsKey("charity_name")) {
             charityName = (String) broadcastFields.get("charity_name");
         }
@@ -72,7 +93,17 @@ public class Broadcast {
         if (broadcastFields.containsKey("user_type")) {
             userType = (boolean) broadcastFields.get("user_type");
         }
+
+        if (broadcastFields.containsKey("comments")) {
+            comments = (ArrayList<String>) broadcastFields.get("comments");
+        }
+
+        if (broadcastFields.containsKey("liked_by")) {
+            likes = (ArrayList<String>) broadcastFields.get("liked_by");
+        }
     }
+
+    public String getUid() { return uid; }
 
     public String getCharityName() {
         return charityName;
@@ -129,4 +160,8 @@ public class Broadcast {
     public boolean getUserType() {
         return userType;
     }
+
+    public ArrayList<String> getComments() { return comments; }
+
+    public ArrayList<String> getLikes() { return likes; }
 }

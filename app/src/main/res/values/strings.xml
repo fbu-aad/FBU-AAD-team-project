@@ -145,4 +145,7 @@
     <string name="quick_donate_times_donated">Times Donated</string>
     <string name="quick_donate_amount_donated">Amount Donated</string>
     <string name="quick_donate_num_challenges">Challenges Created</string>
+
+    <string name="add_a_comment">Add a comment...</string>
+    <string name="comment">Comment</string>
 </resources>
