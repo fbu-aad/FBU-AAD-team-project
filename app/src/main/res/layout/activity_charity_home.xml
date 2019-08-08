@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.AppCompat"
-    tools:context=".CharityHomeActivity"
-    android:background="@color/una_paper">
+    tools:context=".CharityHomeActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvBroadcasts"
@@ -47,7 +46,7 @@
         android:layout_marginEnd="@dimen/small_padding"
         android:layout_marginRight="@dimen/small_padding"
         android:layout_marginBottom="@dimen/small_padding"
-        android:backgroundTint="@color/una_gold"
+        android:backgroundTint="@color/colorAccent"
         android:tint="@color/white"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toTopOf="@+id/fabCreate"

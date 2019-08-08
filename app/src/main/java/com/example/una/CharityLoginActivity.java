@@ -91,12 +91,14 @@ public class CharityLoginActivity extends AppCompatActivity {
                                 client.setNewCharity(name, ein, email, new OnSuccessListener() {
                                     @Override
                                     public void onSuccess(Object o) {
+                                        pd.dismiss();
                                         Log.d(TAG, String.format("%s successfully added", name));
                                         startCharityHome(new Charity(ein, name));
                                     }
                                 }, new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
+                                        pd.dismiss();
                                         Log.d(TAG, String.format("%s not added to database", name));
                                         mAuth.signOut();
                                     }
@@ -106,6 +108,7 @@ public class CharityLoginActivity extends AppCompatActivity {
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                 Toast.makeText(CharityLoginActivity.this,
                                         "Authentication Failed", Toast.LENGTH_SHORT).show();
+                                pd.dismiss();
                             }
                         }
                     });
@@ -119,12 +122,14 @@ public class CharityLoginActivity extends AppCompatActivity {
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
+        pd.show();
         if (checkInputs(name, ein, email, password)) {
             // sign in the charity with firebase
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+                            pd.dismiss();
                             if (task.isSuccessful()) {
                                 getCharity(ein);
                             } else {

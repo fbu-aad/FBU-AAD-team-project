@@ -39,7 +39,7 @@
             android:layout_marginRight="@dimen/medium_small_padding"
             android:layout_marginBottom="@dimen/medium_small_padding"
             android:ellipsize="end"
-            android:fontFamily="@font/lato"
+            android:fontFamily="@font/roboto"
             android:maxLines="2"
             android:text="TextView"
             android:textAlignment="center"

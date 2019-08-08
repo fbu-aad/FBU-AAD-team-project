@@ -68,6 +68,7 @@ public class QuickDonateFragment extends Fragment {
     Double amount;
     long numChallenges;
     long numDonations;
+
     Double totalAmountDonated;
 
     @Override
@@ -99,6 +100,7 @@ public class QuickDonateFragment extends Fragment {
         tvNumChallegesCreated.setText("-");
 
         populateData();
+
         etCustomAmount.addTextChangedListener(new CurrencyTextWatcher(etCustomAmount, "$0.00"));
         setValueCheckedListener();
     }
@@ -169,8 +171,10 @@ public class QuickDonateFragment extends Fragment {
                 donateBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        createNewDonation(setDonateBroadcastParams(charity), amount);
-                        resetBottomSheet();
+                        if (amount > 0.0) {
+                            createNewDonation(setDonateBroadcastParams(charity), amount);
+                            resetBottomSheet();
+                        }
                     }
                 });
             }
@@ -182,11 +186,6 @@ public class QuickDonateFragment extends Fragment {
                 Toast.makeText(getContext(), "Can't get favorite charity", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private String clean(String value) {
-        value.replaceAll("[$, ]", "");
-        return value;
     }
 
     private void createNewDonation(Broadcast broadcast, Double amount) {
@@ -210,6 +209,9 @@ public class QuickDonateFragment extends Fragment {
             }
         }, broadcast, amount);
 
+        numDonations++;
+        totalAmountDonated += amount;
+        tvTimesDonated.setText(numDonations + "");
     }
 
     private void resetBottomSheet() {

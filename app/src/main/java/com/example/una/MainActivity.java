@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                                 finish();
                             }
                         });
+                break;
             default:
                 Toast.makeText(this, "Default Item", Toast.LENGTH_LONG).show();
         }

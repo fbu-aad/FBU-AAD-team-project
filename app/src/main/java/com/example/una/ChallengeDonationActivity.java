@@ -23,6 +23,7 @@ import com.example.una.models.Broadcast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.HashMap;
@@ -205,7 +206,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
                 mBroadcast.put("type", Broadcast.CHALLENGE_DONATION);
                 mBroadcast.put("privacy", privacy);
                 mBroadcast.put("user_name", userName);
-                mBroadcast.put("donor", client.getCurrentUser());
+                mBroadcast.put("donor", client.getCurrentUser().getUid());
                 mBroadcast.put("charity_ein", charityEin);
 
                 Broadcast broadcast = new Broadcast(mBroadcast);

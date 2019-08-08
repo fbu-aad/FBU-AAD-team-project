@@ -3,16 +3,17 @@
     package="com.example.una">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <!-- launcher icon designed by Freepik from Flaticon-->
     <application
         android:name=".UnaApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_una_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_una_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".CharityCreateBroadcastActivity"></activity>
+        android:theme="@style/UnaAppTheme">
+
+        <activity android:name=".CharityCreateBroadcastActivity"/>
         <activity android:name=".ChallengeDetailsActivity" />
         <activity android:name=".NavigationDrawerActivities.DonationHistoryActivity" />
         <activity android:name=".ChallengeDonationActivity" />
@@ -23,11 +24,9 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".CharityHomeActivity" />
         <activity
-            android:name=".CharityLoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".CharityLoginActivity" />
         <activity
-            android:name=".UnaStartupActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".UnaStartupActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
