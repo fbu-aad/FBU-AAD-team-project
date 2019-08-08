@@ -88,7 +88,7 @@ public class ChallengeViewsUtil {
                     // user already joined; click to leave, removing user from challenge collection
                     client.removeUserFromChallenge(challengeId);
                     challenge.setChallengeNumParticipants(challenge.getChallengeNumParticipants() - 1);
-                    updateStrNumParticipants(challenge, tvNumParticipants);
+                    tvNumParticipants.setText(getStrNumParticipants(challenge));
                     if (btnDonate != null) {
                         btnDonate.setEnabled(false);
                     }
@@ -97,7 +97,7 @@ public class ChallengeViewsUtil {
                     // add user to challenge collection
                     client.addUserToChallenge(challengeId);
                     challenge.setChallengeNumParticipants(challenge.getChallengeNumParticipants() + 1);
-                    updateStrNumParticipants(challenge, tvNumParticipants);
+                    tvNumParticipants.setText(getStrNumParticipants(challenge));
                     if (btnDonate != null) {
                         if (!btnDonate.isEnabled() && !btnDonate.isChecked()) {
                             btnDonate.setEnabled(true);
@@ -123,18 +123,6 @@ public class ChallengeViewsUtil {
             sNumParticipants = numParticipants + " participants";
         }
         return sNumParticipants;
-    }
-
-    // update number of participants string
-    public static void updateStrNumParticipants(Challenge challenge, TextView tvNumParticipants) {
-        int numParticipants = challenge.getChallengeNumParticipants();
-        String sNumParticipants;
-        if (numParticipants == 1) {
-            sNumParticipants = numParticipants + " participant";
-        } else {
-            sNumParticipants = numParticipants + " participants";
-        }
-        tvNumParticipants.setText(sNumParticipants);
     }
 
     // get time left string for challenge text view
