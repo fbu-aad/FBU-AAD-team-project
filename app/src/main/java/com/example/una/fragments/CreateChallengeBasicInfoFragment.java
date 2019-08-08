@@ -131,7 +131,7 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
                 String ein = etAssociatedCharity.getText().toString();
 
                 // check if valid goal amount
-                double goalAmount = 0;
+                double goalAmount = 0.0;
                 boolean validGoalAmount = true;
                 if (etGoalAmount.getText().toString().isEmpty()) {
                     etGoalAmount.setError("Enter an amount");
@@ -167,7 +167,7 @@ public class CreateChallengeBasicInfoFragment extends Fragment implements DatePi
                     SharedPreferences sharedPreferences = getContext().getSharedPreferences(CHALLENGE_PREFERENCES, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("associated_charity_ein", ein);
-                    editor.putLong("goal_amount", (long) goalAmount);
+                    editor.putFloat("goal_amount", (float) goalAmount);
                     editor.putString("end_date", etEndDate.getText().toString());
                     editor.putString("frequency", frequency);
                     editor.putBoolean("matching", bMatching);

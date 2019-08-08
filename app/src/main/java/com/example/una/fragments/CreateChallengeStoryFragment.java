@@ -114,7 +114,7 @@ public class CreateChallengeStoryFragment extends Fragment {
                 SharedPreferences preferences = getContext().getSharedPreferences(CHALLENGE_PREFERENCES, Context.MODE_PRIVATE);
                 if (preferences != null) {
                     associatedCharityEin = preferences.getString("associated_charity_ein", null);
-                    goalAmount = preferences.getLong("goal_amount", 0);
+                    goalAmount = preferences.getFloat("goal_amount", 0);
                     endDate = preferences.getString("end_date", null);
                     frequency = preferences.getString("frequency", null);
                     matching = preferences.getBoolean("matching", true);
