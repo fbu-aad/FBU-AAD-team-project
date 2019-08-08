@@ -138,6 +138,12 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
                 // if user donated, disable and toggle donate button
                 btnDonate.setChecked(true);
                 btnDonate.setEnabled(false);
+
+                // get amount donated and update views
+                double amount = data.getDoubleExtra("amountDonated", 0.0);
+                challenge.setChallengeAmountRaised(challenge.getChallengeAmountRaised() + amount);
+                tvProgress.setText(getStrProgress(challenge));
+                setPbProgress(pbProgress, challenge);
             }
         }
     }

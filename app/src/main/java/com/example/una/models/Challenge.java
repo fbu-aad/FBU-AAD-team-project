@@ -123,6 +123,10 @@ public class Challenge {
         this.numParticipants = numParticipants;
     }
 
+    public void setChallengeAmountRaised(double amountRaised) {
+        this.amountRaised = amountRaised;
+    }
+
     public Date getChallengeStartDate() {
         return startDate;
     }
