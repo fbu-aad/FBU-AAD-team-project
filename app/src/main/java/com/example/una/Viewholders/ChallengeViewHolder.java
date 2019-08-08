@@ -36,7 +36,7 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvProgress) TextView tvProgress;
     @BindView(R.id.pbProgress) ProgressBar pbProgress;
 
-    public ChallengeViewHolder(@NonNull View itemView, ArrayList<Object> challenges, Context context) {
+    public ChallengeViewHolder(@NonNull View itemView, ArrayList<Challenge> challenges, Context context) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         itemView.setOnClickListener(new View.OnClickListener() {

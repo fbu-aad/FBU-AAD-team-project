@@ -1,5 +1,6 @@
 package com.example.una.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.una.CharityNavigatorClient;
+import com.example.una.CreateChallengeScreenSlideActivity;
 import com.example.una.FirestoreClient;
 import com.example.una.PrivacySetting;
 import com.example.una.R;
@@ -75,6 +77,7 @@ public class CreateChallengeStoryFragment extends Fragment {
     private boolean validDesc = true;
     private boolean validTitle = true;
 
+    ProgressDialog pd;
 
     public static final String CHALLENGE_PREFERENCES = "ChallengePreferences";
 
@@ -87,19 +90,7 @@ public class CreateChallengeStoryFragment extends Fragment {
         ButterKnife.bind(this, rootView);
         fsClient = new FirestoreClient();
         // get donor name
-        fsClient.getCurrentUserName(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        if (document.contains("first_name")) {
-                            userName = document.get("first_name") + " " + document.get("last_name");
-                        }
-                    }
-                }
-            }
-        });
+        userName = ((CreateChallengeScreenSlideActivity) getActivity()).getName();
 
         return rootView;
     }
@@ -142,6 +133,7 @@ public class CreateChallengeStoryFragment extends Fragment {
                     challenge.put("target", goalAmount);
                 }
                 challenge.put("end_date", date);
+                challenge.put("user_name", userName);
                 challenge.put("frequency", frequency);
                 if (matching) {
                     challenge.put("type", "matching");
@@ -161,18 +153,25 @@ public class CreateChallengeStoryFragment extends Fragment {
                     validDesc = false;
                 }
 
-                // get associated charity name
-                RequestParams params = new RequestParams();
-                cnClient = new CharityNavigatorClient(getContext());
-                cnClient.getCharityInfo(params, associatedCharityEin, new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] header, JSONObject response) {
-                        try {
-                            Charity charity = new Charity(response, getContext());
-                            associatedCharityName = charity.getName();
-                            challenge.put("associated_charity_name", associatedCharityName);
+                pd = new ProgressDialog(getContext());
+                pd.setTitle("Creating challenge...");
+                pd.setMessage("Please wait.");
+                pd.setCancelable(false);
 
-                            if (validDesc && validTitle) {
+                if (validDesc && validTitle) {
+                    pd.show();
+
+                    // get associated charity name
+                    RequestParams params = new RequestParams();
+                    cnClient = new CharityNavigatorClient(getContext());
+                    cnClient.getCharityInfo(params, associatedCharityEin, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] header, JSONObject response) {
+                            try {
+                                Charity charity = new Charity(response, getContext());
+                                associatedCharityName = charity.getName();
+                                challenge.put("associated_charity_name", associatedCharityName);
+
                                 // write to challenges collection
                                 fsClient.createNewChallenge(new OnSuccessListener() {
                                     @Override
@@ -180,66 +179,70 @@ public class CreateChallengeStoryFragment extends Fragment {
                                         Log.i(TAG, "Challenge created successfully!");
                                         Map<String, Object> broadcastFields = new HashMap<>();
                                         broadcastFields.put("charity_ein", associatedCharityEin);
-                                        broadcastFields.put("donor", fsClient.getCurrentUser());
+                                        broadcastFields.put("donor", fsClient.getCurrentUser().getUid());
                                         broadcastFields.put("frequency", frequency);
                                         broadcastFields.put("type", Broadcast.NEW_CHALLENGE);
                                         broadcastFields.put("user_name", userName);
-
                                         SharedPreferences sharedPref = getContext()
                                                 .getSharedPreferences(getString(R.string.preference_file_key),
                                                         Context.MODE_PRIVATE);
-                                        sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user));
+                                        boolean userType = sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user));
+                                        broadcastFields.put("user_type", userType);
                                         broadcastFields.put("challenge_name", name);
                                         broadcastFields.put("privacy", PrivacySetting.PUBLIC);
+                                        broadcastFields.put("charity_name", associatedCharityName);
+
                                         Broadcast broadcast = new Broadcast(broadcastFields);
                                         fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Log.d(TAG, String.format("created broadcast successfully from %s", name));
-                                            }
-                                        }, new OnFailureListener() {
+                                            }}, new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 Log.d(TAG, String.format("create %s broadcast failed", name), e);
-                                            }
-                                        }, broadcast);
+                                            }}, broadcast);
                                         // return result to calling activity
+                                        pd.dismiss();
                                         Intent resultData = new Intent();
                                         getActivity().setResult(RESULT_OK, resultData);
                                         getActivity().finish();
-                                    }
-                                }, new OnFailureListener() {
+                                    }}, new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Log.i(TAG, "Failed to create challenge!");
-                                    }
-                                }, challenge);
+                                        pd.dismiss();
+                                    }}, challenge);
+                            } catch (JSONException e) {
+                                Log.d(TAG, e.toString());
+                                pd.dismiss();
                             }
-                        } catch (JSONException e) {
-                            Log.d(TAG, e.toString());
                         }
-                    }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        super.onFailure(statusCode, headers, throwable, errorResponse);
-                        Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
-                    }
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            super.onFailure(statusCode, headers, throwable, errorResponse);
+                            Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
+                            pd.dismiss();
+                        }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                        super.onFailure(statusCode, headers, throwable, errorResponse);
-                        Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
-                    }
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                            super.onFailure(statusCode, headers, throwable, errorResponse);
+                            Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
+                            pd.dismiss();
+                        }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        super.onFailure(statusCode, headers, responseString, throwable);
-                        Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
-                    }
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            super.onFailure(statusCode, headers, responseString, throwable);
+                            Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
+                            pd.dismiss();
+                        }
 
 
-                });
+                    });
+                }
             }
         });
     }

@@ -12,6 +12,7 @@ public class Broadcast {
     public static final String DONATION = "donation";
     public static final String CHALLENGE_DONATION = "challenge_donation";
     public static final String NEW_CHALLENGE = "new_challenge";
+    public static final boolean IS_USER = true;
 
     public String charityName;
     public String challengeName;

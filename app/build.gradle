@@ -99,6 +99,7 @@ dependencies {
 
     // animated like button
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

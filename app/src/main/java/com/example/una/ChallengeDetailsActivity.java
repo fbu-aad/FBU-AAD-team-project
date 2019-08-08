@@ -71,7 +71,7 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
 
         // populate the views
         tvChallengeTitle.setText(challenge.getChallengeName());
-        setTvOwnerRecipientInfo(client, tvChallengeOwnerRecipientInfo, challenge);
+        setTvOwnerRecipientInfo(tvChallengeOwnerRecipientInfo, challenge);
 
         tvNumParticipants.setText(getStrNumParticipants(challenge));
 

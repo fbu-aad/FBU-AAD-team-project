@@ -27,10 +27,14 @@ public class CreateChallengeScreenSlideActivity extends FragmentActivity impleme
     Fragment fBasicInfo = new CreateChallengeBasicInfoFragment();
     Fragment fStory = new CreateChallengeStoryFragment();
 
+    private String name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_challenge_screen_slide);
+
+        name = getIntent().getStringExtra("name");
 
         mPager = (ViewPager) findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -82,5 +86,9 @@ public class CreateChallengeScreenSlideActivity extends FragmentActivity impleme
         public int getCount() {
             return NUM_PAGES;
         }
+    }
+
+    public String getName() {
+        return name;
     }
 }

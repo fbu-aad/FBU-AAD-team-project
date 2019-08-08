@@ -1,46 +1,45 @@
 package com.example.una;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
-import com.example.una.models.Broadcast;
+import com.example.una.fragments.CharityBroadcastsFragment;
+import com.example.una.fragments.CharityChallengesFragment;
 import com.example.una.models.Charity;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import org.parceler.Parcels;
-
-import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class CharityHomeActivity extends AppCompatActivity {
 
+    private static final String TAG = "CharityHomeActivity";
     Charity charity;
-    @BindView(R.id.rvBroadcasts) RecyclerView rvBroadcasts;
-    @BindView(R.id.signOutBtn) Button signOutBtn;
-    @BindView(R.id.fabCreate) FloatingActionButton fabCreate;
-    @BindView(R.id.fabCreateChallenge) FloatingActionButton fabCreateChallenge;
 
-    private final String TAG = "CharityHomeActivity";
-    static final int CREATE_CHALLENGE = 111;
-    FirestoreClient client;
+    @BindView(R.id.bottomNavigationCharityHome) BottomNavigationView charityBottomNavigation;
+    @BindView(R.id.nvDrawerCharity) NavigationView nvDrawerCharity;
+    @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
-    ArrayList<Broadcast> broadcasts;
-    BroadcastsAdapter adapter;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,72 +48,95 @@ public class CharityHomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         charity = Parcels.unwrap(getIntent().getParcelableExtra("charity"));
-        broadcasts = new ArrayList<>();
-        adapter = new BroadcastsAdapter(broadcasts);
 
-        rvBroadcasts.setAdapter(adapter);
-        client = new FirestoreClient();
+        View header = nvDrawerCharity.getHeaderView(0);
+        TextView navDrawerHeaderName = header.findViewById(R.id.tvCurrentUsername);
+        navDrawerHeaderName.setText(charity.getName());
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        rvBroadcasts.setLayoutManager(layoutManager);
+        setSupportActionBar(toolbar);
+        setupDrawerContent(nvDrawerCharity);
+        drawerToggle = setupDrawerToggle();
+        drawerLayout.addDrawerListener(drawerToggle);
 
-        getBroadcasts();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment broadcastsFragment = new CharityBroadcastsFragment();
+        final Fragment challengesFragment = new CharityChallengesFragment();
+
+        charityBottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                Fragment fragment;
+                switch (menuItem.getItemId()) {
+                    case R.id.action_broadcasts:
+                        fragment = broadcastsFragment;
+                        break;
+                    case R.id.action_challenges:
+                        fragment = challengesFragment;
+                        break;
+                    default:
+                        fragment = broadcastsFragment;
+                        break;
+                }
+                fragmentManager.beginTransaction().replace(R.id.flCharityFragments, fragment).commit();
+                return true;
+            }
+        });
+        charityBottomNavigation.setSelectedItemId(R.id.action_broadcasts);
     }
 
-    @OnClick(R.id.fabCreate)
-    public void createBroadcast() {
-        Intent createBroadcastIntent = new Intent(this, CharityCreateBroadcastActivity.class);
-        createBroadcastIntent.putExtra("charity", Parcels.wrap(charity));
-        startActivity(createBroadcastIntent);
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
     }
 
-    @OnClick(R.id.fabCreateChallenge)
-    public void createChallenge() {
-        Intent createChallengeIntent = new Intent(this, CreateChallengeScreenSlideActivity.class);
-        startActivityForResult(createChallengeIntent, CREATE_CHALLENGE);
+    public void selectDrawerItem(MenuItem menuItem) {
+        switch(menuItem.getItemId()) {
+            case R.id.profile_item:
+                break;
+            case R.id.sign_out_item:
+                AuthUI.getInstance()
+                        .signOut(getApplicationContext())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent signOutIntent = new Intent(getApplicationContext(), UnaStartupActivity.class);
+                                startActivity(signOutIntent);
+                                finish();
+                            }
+                        });
+                break;
+            default:
+                Log.d(TAG, "Default item clicked in drawer");
+        }
+
+        menuItem.setChecked(true);
+        // Close the navigation drawer
+        drawerLayout.closeDrawers();
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open,  R.string.drawer_close);
+    }
+
+    public Charity getCharity() {
+        return charity;
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // check which request we are responding to
-        if (requestCode == CREATE_CHALLENGE) {
-            // make sure request was successful
-            if (resultCode == RESULT_OK) {
-                // user successfully created challenge
-                adapter.notifyDataSetChanged();
-            }
-        }
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
     }
 
-    @OnClick(R.id.signOutBtn)
-    public void signOutCharity() {
-        FirebaseAuth.getInstance().signOut();
-        Intent goToStartupPage = new Intent(this, UnaStartupActivity.class);
-        startActivity(goToStartupPage);
-        finish();
-    }
-
-    // TODO create tab view with two screens for the challenges and donations
-
-    // get the charities broadcasts
-    private void getBroadcasts() {
-        Log.i(TAG, String.format("Getting broadcasts for %s", charity.getEin()));
-        Log.d(TAG, charity.getEin());
-        client.getCharityBroadcasts(charity.getEin(), new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    broadcasts.clear();
-                    Log.i(TAG, "completed getting broadcasts");
-                    QuerySnapshot result = task.getResult();
-                    for (QueryDocumentSnapshot broadcastsDoc : result) {
-                        broadcasts.add(new Broadcast(broadcastsDoc.getData()));
-                    }
-                    adapter.notifyItemInserted(broadcasts.size() - 1);
-                } else {
-                    Log.d(TAG, "Error getting broadcasts: ", task.getException());
-                }
-            }
-        });
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 }

@@ -18,7 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.una.CreateChallengeScreenSlideActivity;
 import com.example.una.FirestoreClient;
 import com.example.una.R;
-import com.example.una.adapters.StreaksComplexRecyclerViewAdapter;
+import com.example.una.adapters.ChallengesAdapter;
 import com.example.una.models.Challenge;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,14 +44,24 @@ public class ChallengesFragment extends Fragment {
     static final int CREATE_CHALLENGE = 111;
     FirestoreClient client;
 
-    ArrayList<Object> challenges;
-    StreaksComplexRecyclerViewAdapter adapter;
+    ArrayList<Challenge> challenges;
+    ChallengesAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         challengeDescription = getContext().getResources().getString(R.string.challenge_description_dummy_text);
         View view = inflater.inflate(R.layout.fragment_impact, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rvChallenges.setLayoutManager(layoutManager);
 
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -62,26 +72,19 @@ public class ChallengesFragment extends Fragment {
         });
 
         challenges = new ArrayList<>();
-        adapter = new StreaksComplexRecyclerViewAdapter(challenges);
+        adapter = new ChallengesAdapter(challenges);
         rvChallenges.setAdapter(adapter);
         client = new FirestoreClient();
         getChallenges();
-        return view;
-    }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         fabCreateChallenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent createChallenge = new Intent(getContext(), CreateChallengeScreenSlideActivity.class);
+                createChallenge.putExtra("name", client.getCurrentUser().getDisplayName());
                 startActivityForResult(createChallenge, CREATE_CHALLENGE);
             }
         });
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        rvChallenges.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -97,17 +100,15 @@ public class ChallengesFragment extends Fragment {
     }
 
     // place challenges for user here
-    private ArrayList<Object> getChallenges() {
+    private ArrayList<Challenge> getChallenges() {
         // get all challenges from Firestore and create a new Challenge object for each one
         client.getChallenges(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         adapter.clear();
-                        challenges.add("image");
                         for (QueryDocumentSnapshot challengeDoc : task.getResult()) {
                             challenges.add(new Challenge(challengeDoc.getData(), challengeDoc.getId()));
-                            Log.d(TAG, challengeDoc.getId() + " => " + challengeDoc.getData());
                         }
                         adapter.addAll(challenges);
                         adapter.notifyDataSetChanged();

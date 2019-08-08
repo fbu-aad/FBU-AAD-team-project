@@ -25,17 +25,16 @@ import static com.example.una.utils.ChallengeViewsUtil.setJoinBtn;
 import static com.example.una.utils.ChallengeViewsUtil.setPbProgress;
 import static com.example.una.utils.ChallengeViewsUtil.setTvOwnerRecipientInfo;
 
-public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ChallengesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // The challenges to display in your RecyclerView
-    private ArrayList<Object> challenges;
-    private final int IMAGE = 0, CHALLENGE = 1;
+    private ArrayList<Challenge> challenges;
     public final static String TAG = "StreaksComplexRVAdapter";
     Context context;
 
     // Firestore client
     FirestoreClient client;
 
-    public StreaksComplexRecyclerViewAdapter(ArrayList<Object> challenges) {
+    public ChallengesAdapter(ArrayList<Challenge> challenges) {
         this.challenges = challenges;
     }
 
@@ -45,40 +44,21 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     }
 
     @Override
-    public int getItemViewType(int position) {
-        if (position == 0) {
-            return IMAGE;
-        } else {
-            return CHALLENGE;
-        }
-    }
-
-    @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         context = viewGroup.getContext();
         client = new FirestoreClient();
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        if (viewType == CHALLENGE) {
-            View itemViewChallenge = inflater.inflate(R.layout.challenge_item_layout, viewGroup, false);
-            viewHolder = new ChallengeViewHolder(itemViewChallenge, challenges, context);
-        }
-        else {
-            View itemViewStreaks = inflater.inflate(R.layout.user_current_streaks_layout, viewGroup, false);
-            viewHolder = new StreaksViewHolder(itemViewStreaks);
-        }
+
+        View itemViewChallenge = inflater.inflate(R.layout.challenge_item_layout, viewGroup, false);
+        viewHolder = new ChallengeViewHolder(itemViewChallenge, challenges, context);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        if (getItemViewType(position) == IMAGE) {
-            StreaksViewHolder streaksViewHolder = (StreaksViewHolder) viewHolder;
-            configureStreakViewHolder(streaksViewHolder);
-        } else {
-            ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
-            configureChallengeViewHolder(challengeViewHolder, position);
-        }
+        ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
+        configureChallengeViewHolder(challengeViewHolder, position);
     }
 
     private void configureChallengeViewHolder(ChallengeViewHolder vhChallenge, int position) {
@@ -87,7 +67,7 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
             // set challenge title text view
             vhChallenge.getTvChallengeTitle().setText(challenge.getChallengeName());
             // set challenge owner and associated charity text view
-            setTvOwnerRecipientInfo(client, vhChallenge.getTvChallengeOwnerRecipientInfo(), challenge);
+            setTvOwnerRecipientInfo(vhChallenge.getTvChallengeOwnerRecipientInfo(), challenge);
 
             // set participants text view
             vhChallenge.getTvNumParticipants().setText(getStrNumParticipants(challenge));
@@ -117,10 +97,6 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
         }
     }
 
-    private void configureStreakViewHolder(StreaksViewHolder vhStreak) {
-        vhStreak.getIvCharityImage().setImageResource(R.drawable.ic_streak_black_24dp);
-    }
-
     // Clean all elements of the recycler
     public void clear() {
         challenges.clear();
@@ -128,7 +104,7 @@ public class StreaksComplexRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     }
 
     // Add a list of items -- change to type used
-    public void addAll(ArrayList<Object> list) {
+    public void addAll(ArrayList<Challenge> list) {
         challenges.addAll(list);
         notifyDataSetChanged();
     }
