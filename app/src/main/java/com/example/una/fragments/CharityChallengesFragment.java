@@ -104,6 +104,7 @@ public class CharityChallengesFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<ArrayList<Challenge>> task) {
                 if (task.isSuccessful()) {
+                    challenges.clear();
                     challenges = task.getResult();
                     adapter.addAll(challenges);
                     adapter.notifyDataSetChanged();
