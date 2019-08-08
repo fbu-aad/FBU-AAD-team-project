@@ -195,11 +195,12 @@ public class CreateChallengeStoryFragment extends Fragment {
                                         fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, String.format("created broadcast successfully from %s", name));
                                             }
                                         }, new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Log.d(TAG, e.toString());
+                                                Log.d(TAG, String.format("create %s broadcast failed", name), e);
                                             }
                                         }, broadcast);
                                         // return result to calling activity
@@ -222,19 +223,19 @@ public class CreateChallengeStoryFragment extends Fragment {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                         super.onFailure(statusCode, headers, throwable, errorResponse);
-                        Log.d(TAG, "failed getting the charity");
+                        Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                         super.onFailure(statusCode, headers, throwable, errorResponse);
-                        Log.d(TAG, "failed getting the charity");
+                        Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         super.onFailure(statusCode, headers, responseString, throwable);
-                        Log.d(TAG, "failed getting the charity");
+                        Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
                     }
 
 

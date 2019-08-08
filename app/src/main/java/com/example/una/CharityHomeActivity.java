@@ -59,7 +59,6 @@ public class CharityHomeActivity extends AppCompatActivity {
         rvBroadcasts.setLayoutManager(layoutManager);
 
         getBroadcasts();
-        // getCharitySpecificChallenges();
     }
 
     @OnClick(R.id.fabCreate)

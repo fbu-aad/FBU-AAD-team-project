@@ -82,16 +82,18 @@ public class CharityCreateBroadcastActivity extends AppCompatActivity {
             pd.setTitle("Posting...");
             pd.setMessage("Please wait.");
             pd.setCancelable(false);
-            pd.show();
 
             Map<String, Object> mBroadcast = new HashMap<>();
 
             mBroadcast.put(getString(R.string.firestore_broadcast_message_field), message);
             mBroadcast.put(getString(R.string.firestore_charity_ein_field), charity.getEin());
             mBroadcast.put(getString(R.string.firestore_charity_name_field), charity.getName());
+            mBroadcast.put("type", Broadcast.POST);
+            mBroadcast.put("privacy", PrivacySetting.PUBLIC);
 
             Broadcast broadcast = new Broadcast(mBroadcast);
 
+            pd.show();
             client.createNewBroadcast(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
