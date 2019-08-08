@@ -225,8 +225,9 @@ public class FirestoreClient {
                 broadcast.put("message", message);
             }
         } else if (body.getType().equals(Broadcast.POST)) {
-            // TODO broadcast post
-            // put charity user, message
+            broadcast.put("charity_ein", body.getCharityEin());
+            broadcast.put("charity_name", body.getCharityName());
+            broadcast.put("message", body.getMessage());
         } else {
             Log.i(TAG, "no broadcast type in create new broadcast for " + body.getDonor());
         }
