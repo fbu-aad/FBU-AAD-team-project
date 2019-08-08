@@ -1,17 +1,17 @@
 package com.example.una;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.una.ScrollListener.EndlessRecyclerViewScrollListener;
 import com.example.una.models.Charity;
@@ -35,6 +35,7 @@ public class CharitySearchListActivity extends AppCompatActivity {
     private ArrayList<Charity> charities = new ArrayList<Charity>();
     private EndlessRecyclerViewScrollListener scrollListener;
     private String sQuery;
+    private String sCategoryID;
 
     // the parameter name for the page size
     public final static String API_PAGE_SIZE_PARAM = "pageSize";
@@ -42,6 +43,7 @@ public class CharitySearchListActivity extends AppCompatActivity {
     public final static String API_PAGE_NUM_PARAM = "pageNum";
     // the parameter name for the search query
     public final static String API_SEARCH_PARAM = "search";
+    public final static String API_CATEGORY_ID_PARAM = "categoryID";
     public final static String TAG = "CharitySearchList";
 
     @BindView(R.id.pbLoading) ProgressBar pbLoading;
@@ -61,7 +63,7 @@ public class CharitySearchListActivity extends AppCompatActivity {
         rvCharities.setLayoutManager(linearLayoutManager);
         rvCharities.addItemDecoration(new DividerItemDecoration(rvCharities.getContext(), DividerItemDecoration.VERTICAL));
         sQuery = getIntent().getStringExtra("query");
-
+        sCategoryID = getIntent().getStringExtra("categoryID");
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -129,7 +131,13 @@ public class CharitySearchListActivity extends AppCompatActivity {
     private void fetchCharities(String query, int page) {
         RequestParams params = new RequestParams();
         params.put(API_PAGE_SIZE_PARAM, 10);
-        params.put(API_SEARCH_PARAM, sQuery);
+
+        if(sCategoryID != null) {
+            params.put(API_CATEGORY_ID_PARAM, sCategoryID);
+        }
+        else {
+            params.put(API_SEARCH_PARAM, sQuery);
+        }
         if (page != 1) {
             params.put(API_PAGE_NUM_PARAM, page);
         }

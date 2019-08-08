@@ -2,6 +2,7 @@ package com.example.una.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +84,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 // fire an intent to an activity with a recycler view populated with a list of charities matching each category
                 Intent categoryList = new Intent(view.getContext(), CharitySearchListActivity.class);
                 categoryList.putExtra("query", category.categoryName);
+                categoryList.putExtra("categoryID", category.categoryID);
+                Log.i("CategoryAdapter", category.categoryID);
                 view.getContext().startActivity(categoryList);
             }
         }
