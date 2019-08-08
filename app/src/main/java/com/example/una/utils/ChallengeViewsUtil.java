@@ -44,7 +44,11 @@ public class ChallengeViewsUtil {
         String associatedCharityName = challenge.getChallengeAssociatedCharityName();
         String userName = challenge.getChallengeCreatorName();
 
-        tvChallengeOwnerRecipientInfo.setText("Challenge for " + associatedCharityName + " by " + userName);
+        if (userName == null) {
+            tvChallengeOwnerRecipientInfo.setText("Challenge for " + associatedCharityName);
+        } else {
+            tvChallengeOwnerRecipientInfo.setText("Challenge for " + associatedCharityName + " by " + userName);
+        }
     }
 
     // set join button depending on whether user already accepted challenge

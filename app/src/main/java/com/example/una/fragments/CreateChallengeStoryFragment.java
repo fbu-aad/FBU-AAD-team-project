@@ -186,9 +186,12 @@ public class CreateChallengeStoryFragment extends Fragment {
                                         SharedPreferences sharedPref = getContext()
                                                 .getSharedPreferences(getString(R.string.preference_file_key),
                                                         Context.MODE_PRIVATE);
-                                        sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user));
+                                        boolean userType = sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user));
+                                        broadcastFields.put("user_type", userType);
                                         broadcastFields.put("challenge_name", name);
                                         broadcastFields.put("privacy", PrivacySetting.PUBLIC);
+                                        broadcastFields.put("charity_name", associatedCharityName);
+
                                         Broadcast broadcast = new Broadcast(broadcastFields);
                                         fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
                                             @Override

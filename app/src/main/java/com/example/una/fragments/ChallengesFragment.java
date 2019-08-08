@@ -51,7 +51,17 @@ public class ChallengesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         challengeDescription = getContext().getResources().getString(R.string.challenge_description_dummy_text);
         View view = inflater.inflate(R.layout.fragment_impact, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rvChallenges.setLayoutManager(layoutManager);
 
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -66,12 +76,7 @@ public class ChallengesFragment extends Fragment {
         rvChallenges.setAdapter(adapter);
         client = new FirestoreClient();
         getChallenges();
-        return view;
-    }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         fabCreateChallenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,9 +85,6 @@ public class ChallengesFragment extends Fragment {
                 startActivityForResult(createChallenge, CREATE_CHALLENGE);
             }
         });
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        rvChallenges.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -107,7 +109,6 @@ public class ChallengesFragment extends Fragment {
                         adapter.clear();
                         for (QueryDocumentSnapshot challengeDoc : task.getResult()) {
                             challenges.add(new Challenge(challengeDoc.getData(), challengeDoc.getId()));
-                            Log.d(TAG, challengeDoc.getId() + " => " + challengeDoc.getData());
                         }
                         adapter.addAll(challenges);
                         adapter.notifyDataSetChanged();

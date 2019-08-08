@@ -143,7 +143,7 @@ public class FirestoreClient {
     }
 
     public void getChallenges(OnCompleteListener onCompleteListener) {
-        challenges.get().addOnCompleteListener(onCompleteListener);
+        challenges.orderBy("start_date", Query.Direction.DESCENDING).get().addOnCompleteListener(onCompleteListener);
     }
 
     public void getCharityChallenges(String ein, OnCompleteListener<ArrayList<Challenge>> onCompleteListener) {
@@ -241,7 +241,7 @@ public class FirestoreClient {
             broadcast.put("user_name", body.getUserName());
             broadcast.put("charity_name", body.getCharityName());
             broadcast.put("challenge_name", body.getChallengeName());
-            broadcast.put("challenge_id", body.getChallengeName());
+            broadcast.put("challenge_id", body.getChallengeId());
 
             String message = String.format("%s participated in %s\'s %s challenge", body.getUserName(),
                     body.getCharityName(), body.getChallengeName());
@@ -265,13 +265,13 @@ public class FirestoreClient {
             String message;
             if (body.getUserType() == Broadcast.IS_USER) {
                 // donor-created challenge
-                message = broadcast.get("user_name") + " created a new challenge " + "\""
-                        + broadcast.get("challenge_name") + ".\" Check it out!";
+                message = body.getUserName() + " created a new challenge " + "\""
+                        + body.getChallengeName() + ".\" Check it out!";
                 broadcast.put("message", message);
             } else {
                 // charity-created challenge
-                message = broadcast.get("associated_charity_name") + " created a new challenge " + "\""
-                        + broadcast.get("challenge_name") + ".\" Check it out!";
+                message = body.getUserName() + " created a new challenge " + "\""
+                        + body.getChallengeName() + ".\" Check it out!";
                 broadcast.put("message", message);
             }
         } else if (body.getType().equals(Broadcast.POST)) {
