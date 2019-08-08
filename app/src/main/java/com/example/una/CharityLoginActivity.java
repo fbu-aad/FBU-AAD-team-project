@@ -157,6 +157,7 @@ public class CharityLoginActivity extends AppCompatActivity {
         client.getCharityUserFromEin(ein, new OnCompleteListener<Charity>() {
             @Override
             public void onComplete(@NonNull Task<Charity> task) {
+                pd.dismiss();
                 if (task.isSuccessful()) {
                     Charity charity = task.getResult();
                     if (charity != null) {
