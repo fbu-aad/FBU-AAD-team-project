@@ -96,4 +96,14 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public int getItemViewType(int position) {
         return position;
     }
+
+    public void clear() {
+        broadcasts.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(ArrayList<Broadcast> list) {
+        broadcasts.addAll(list);
+        notifyDataSetChanged();
+    }
 }

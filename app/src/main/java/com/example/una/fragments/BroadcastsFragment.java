@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.una.BroadcastsAdapter;
 import com.example.una.FirestoreClient;
@@ -29,8 +30,8 @@ public class BroadcastsFragment extends Fragment {
 
     private EndlessRecyclerViewScrollListener scrollListener;
 
-    @BindView(R.id.rvNotifications)
-    RecyclerView rvNotifications;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.rvNotifications) RecyclerView rvNotifications;
     DocumentSnapshot lastVisibleBroadcast;
     FirestoreClient client;
     ArrayList<Broadcast> broadcasts;
@@ -45,6 +46,17 @@ public class BroadcastsFragment extends Fragment {
         rvNotifications.setAdapter(adapter);
         client = new FirestoreClient();
         fetchBroadcasts();
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                adapter.clear();
+                fetchBroadcasts();
+                adapter.addAll(broadcasts);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+
         return view;
     }
 
