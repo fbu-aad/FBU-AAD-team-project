@@ -50,16 +50,14 @@ public class CharityBroadcastsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-
-
+        View view = inflater.inflate(R.layout.fragment_charity_broadcasts, container, false);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        ButterKnife.bind(getContext(), view);
+        ButterKnife.bind(this, view);
 
         charity = ((CharityHomeActivity) getActivity()).getCharity();
 
@@ -79,7 +77,7 @@ public class CharityBroadcastsFragment extends Fragment {
 
     @OnClick(R.id.fabCreate)
     public void createBroadcast() {
-        Intent createBroadcastIntent = new Intent(getActivity(), CharityCreateBroadcastActivity.class);
+        Intent createBroadcastIntent = new Intent(getContext(), CharityCreateBroadcastActivity.class);
         createBroadcastIntent.putExtra("charity", Parcels.wrap(charity));
         startActivity(createBroadcastIntent);
     }

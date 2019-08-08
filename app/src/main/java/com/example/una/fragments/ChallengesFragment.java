@@ -18,7 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.una.CreateChallengeScreenSlideActivity;
 import com.example.una.FirestoreClient;
 import com.example.una.R;
-import com.example.una.adapters.StreaksComplexRecyclerViewAdapter;
+import com.example.una.adapters.ChallengesAdapter;
 import com.example.una.models.Challenge;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,8 +44,8 @@ public class ChallengesFragment extends Fragment {
     static final int CREATE_CHALLENGE = 111;
     FirestoreClient client;
 
-    ArrayList<Object> challenges;
-    StreaksComplexRecyclerViewAdapter adapter;
+    ArrayList<Challenge> challenges;
+    ChallengesAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class ChallengesFragment extends Fragment {
         });
 
         challenges = new ArrayList<>();
-        adapter = new StreaksComplexRecyclerViewAdapter(challenges);
+        adapter = new ChallengesAdapter(challenges);
         rvChallenges.setAdapter(adapter);
         client = new FirestoreClient();
         getChallenges();
@@ -97,14 +97,13 @@ public class ChallengesFragment extends Fragment {
     }
 
     // place challenges for user here
-    private ArrayList<Object> getChallenges() {
+    private ArrayList<Challenge> getChallenges() {
         // get all challenges from Firestore and create a new Challenge object for each one
         client.getChallenges(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         adapter.clear();
-                        challenges.add("image");
                         for (QueryDocumentSnapshot challengeDoc : task.getResult()) {
                             challenges.add(new Challenge(challengeDoc.getData(), challengeDoc.getId()));
                             Log.d(TAG, challengeDoc.getId() + " => " + challengeDoc.getData());

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.una.models.Broadcast;
+import com.example.una.models.Challenge;
 import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,8 +25,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -141,6 +144,51 @@ public class FirestoreClient {
 
     public void getChallenges(OnCompleteListener onCompleteListener) {
         challenges.get().addOnCompleteListener(onCompleteListener);
+    }
+
+    public void getCharityChallenges(String ein, OnCompleteListener<ArrayList<Challenge>> onCompleteListener) {
+        challenges.whereEqualTo("charity_ein", ein).limit(20)
+                .orderBy("time", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<Challenge> challenges = new ArrayList<>();
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                if (!documentSnapshot.exists()) {
+                                    failTask(onCompleteListener);
+                                } else {
+                                    challenges.add((Challenge) documentSnapshot.getData());
+                                }
+                            }
+
+                            onCompleteListener.onComplete(new SimpleTask() {
+                                @Nullable
+                                @Override
+                                public Object getResult() {
+                                    return challenges;
+                                }
+
+                                @Override
+                                public boolean isSuccessful() {
+                                    return true;
+                                }
+                            });
+                        } else {
+                            failTask(onCompleteListener);
+                            return;
+                        }
+                    }
+
+                    private void failTask(OnCompleteListener<ArrayList<Challenge>> onCompleteListener) {
+                        onCompleteListener.onComplete(new SimpleTask<ArrayList<Challenge>>() {
+                            @Override
+                            public boolean isSuccessful() {
+                                return false;
+                            }
+                        });
+                    }
+                });
     }
 
     public void getCharity(String charityKey, OnCompleteListener onCompleteListener) {
