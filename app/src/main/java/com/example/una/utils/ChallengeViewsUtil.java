@@ -77,7 +77,9 @@ public class ChallengeViewsUtil {
     }
 
     // set on click listener for join button
-    public static void handleClickJoinBtn(FirestoreClient client, ToggleButton btnJoin, ToggleButton btnDonate, Challenge challenge, Context context) {
+    public static void handleClickJoinBtn(FirestoreClient client, ToggleButton btnJoin,
+                                          ToggleButton btnDonate, Challenge challenge,
+                                          TextView tvNumParticipants, Context context) {
         String challengeId = challenge.getUid();
         btnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +87,8 @@ public class ChallengeViewsUtil {
                 if (!btnJoin.isChecked()) {
                     // user already joined; click to leave, removing user from challenge collection
                     client.removeUserFromChallenge(challengeId);
+                    challenge.setChallengeNumParticipants(challenge.getChallengeNumParticipants() - 1);
+                    updateStrNumParticipants(challenge, tvNumParticipants);
                     if (btnDonate != null) {
                         btnDonate.setEnabled(false);
                     }
@@ -92,6 +96,8 @@ public class ChallengeViewsUtil {
                 } else {
                     // add user to challenge collection
                     client.addUserToChallenge(challengeId);
+                    challenge.setChallengeNumParticipants(challenge.getChallengeNumParticipants() + 1);
+                    updateStrNumParticipants(challenge, tvNumParticipants);
                     if (btnDonate != null) {
                         if (!btnDonate.isEnabled() && !btnDonate.isChecked()) {
                             btnDonate.setEnabled(true);
@@ -117,6 +123,18 @@ public class ChallengeViewsUtil {
             sNumParticipants = numParticipants + " participants";
         }
         return sNumParticipants;
+    }
+
+    // update number of participants string
+    public static void updateStrNumParticipants(Challenge challenge, TextView tvNumParticipants) {
+        int numParticipants = challenge.getChallengeNumParticipants();
+        String sNumParticipants;
+        if (numParticipants == 1) {
+            sNumParticipants = numParticipants + " participant";
+        } else {
+            sNumParticipants = numParticipants + " participants";
+        }
+        tvNumParticipants.setText(sNumParticipants);
     }
 
     // get time left string for challenge text view
@@ -193,7 +211,7 @@ public class ChallengeViewsUtil {
         } else if (result.get(TimeUnit.MINUTES) == 1) {
             return beginOrEnd + result.get(TimeUnit.MINUTES) + " minute";
         } else {
-            return "Fundraiser ended";
+            return "Challenge ended";
         }
     }
 }

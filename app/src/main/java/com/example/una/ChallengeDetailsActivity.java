@@ -97,7 +97,7 @@ public class ChallengeDetailsActivity extends AppCompatActivity {
         // toggle join button and enable donate button depending on user's acceptance of challenge
         setJoinBtn(client, btnJoin, btnDonate, challenge);
 
-        handleClickJoinBtn(client, btnJoin, btnDonate, challenge, context);
+        handleClickJoinBtn(client, btnJoin, btnDonate, challenge, tvNumParticipants, context);
 
         // set on click listener for donate button
         btnDonate.setOnClickListener(new View.OnClickListener() {
