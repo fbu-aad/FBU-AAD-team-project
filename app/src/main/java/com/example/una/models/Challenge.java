@@ -12,6 +12,7 @@ import java.util.Map;
 public class Challenge {
     String uid;
     String name;
+    String userName;
     String description;
     String imageUrl;
     int numParticipants = 0;
@@ -90,6 +91,10 @@ public class Challenge {
         if (challengeFields.containsKey("default_amount")) {
             defaultAmount = (long) challengeFields.get("default_amount");
         }
+
+        if (challengeFields.containsKey("user_name")) {
+            userName = (String) challengeFields.get("user_name");
+        }
     }
 
     public String getUid() {
@@ -156,5 +161,9 @@ public class Challenge {
 
     public long getDefaultAmount() {
         return defaultAmount;
+    }
+
+    public String getChallengeCreatorName() {
+        return userName;
     }
 }

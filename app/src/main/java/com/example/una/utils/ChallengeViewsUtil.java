@@ -40,35 +40,11 @@ public class ChallengeViewsUtil {
     public static final String TAG = "ChallengeViewsUtil";
 
     // set text view with donor-recipient information
-    public static void setTvOwnerRecipientInfo(FirestoreClient client, TextView tvChallengeOwnerRecipientInfo, Challenge challenge) {
-        String associatedCharity = challenge.getChallengeAssociatedCharityEin();
+    public static void setTvOwnerRecipientInfo(TextView tvChallengeOwnerRecipientInfo, Challenge challenge) {
         String associatedCharityName = challenge.getChallengeAssociatedCharityName();
-        String challengeOwner = challenge.getChallengeOwnerId();
-        String ownerRecipientInfo;
+        String userName = challenge.getChallengeCreatorName();
 
-        // check if challenge owner and associated charity are the same
-        if (associatedCharity.equals(challengeOwner)) {
-            ownerRecipientInfo = "Challenge by " + associatedCharityName;
-            tvChallengeOwnerRecipientInfo.setText(ownerRecipientInfo);
-        } else {
-            // owner is a user; get his or her name
-            client.getChallengeUserCreator(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            String ownerName = document.get("first_name") + " " + document.get("last_name");
-                            String sChallengeOwnerRecipientInfo = "Challenge for "
-                                    + associatedCharityName + " by " + ownerName;
-                            tvChallengeOwnerRecipientInfo.setText(sChallengeOwnerRecipientInfo);
-                        }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
-                    }
-                }
-            }, challengeOwner);
-        }
+        tvChallengeOwnerRecipientInfo.setText("Challenge for " + associatedCharityName + " by " + userName);
     }
 
     // set join button depending on whether user already accepted challenge

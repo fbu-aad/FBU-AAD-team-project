@@ -147,18 +147,20 @@ public class FirestoreClient {
     }
 
     public void getCharityChallenges(String ein, OnCompleteListener<ArrayList<Challenge>> onCompleteListener) {
-        challenges.whereEqualTo("charity_ein", ein).limit(20)
-                .orderBy("time", Query.Direction.DESCENDING).get()
+        challenges.whereEqualTo("associated_charity", ein).limit(20)
+                .orderBy("start_date", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             ArrayList<Challenge> challenges = new ArrayList<>();
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            QuerySnapshot snapshot = task.getResult();
+                            for (QueryDocumentSnapshot documentSnapshot : snapshot) {
                                 if (!documentSnapshot.exists()) {
                                     failTask(onCompleteListener);
                                 } else {
-                                    challenges.add((Challenge) documentSnapshot.getData());
+                                    challenges.add(new Challenge(documentSnapshot.getData(),
+                                            documentSnapshot.getId()));
                                 }
                             }
 
@@ -261,7 +263,7 @@ public class FirestoreClient {
             broadcast.put("message", message);
         } else if (body.getType().equals(Broadcast.NEW_CHALLENGE)) {
             String message;
-            if (body.getUserType() == Resources.getSystem().getBoolean(R.bool.is_user)) {
+            if (body.getUserType() == Broadcast.IS_USER) {
                 // donor-created challenge
                 message = broadcast.get("user_name") + " created a new challenge " + "\""
                         + broadcast.get("challenge_name") + ".\" Check it out!";

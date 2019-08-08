@@ -67,7 +67,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             // set challenge title text view
             vhChallenge.getTvChallengeTitle().setText(challenge.getChallengeName());
             // set challenge owner and associated charity text view
-            setTvOwnerRecipientInfo(client, vhChallenge.getTvChallengeOwnerRecipientInfo(), challenge);
+            setTvOwnerRecipientInfo(vhChallenge.getTvChallengeOwnerRecipientInfo(), challenge);
 
             // set participants text view
             vhChallenge.getTvNumParticipants().setText(getStrNumParticipants(challenge));

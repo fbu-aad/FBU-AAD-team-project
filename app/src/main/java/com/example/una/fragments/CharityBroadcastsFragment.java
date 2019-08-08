@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.una.BroadcastsAdapter;
 import com.example.una.CharityCreateBroadcastActivity;
@@ -51,28 +52,25 @@ public class CharityBroadcastsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_charity_broadcasts, container, false);
-        return view;
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
         charity = ((CharityHomeActivity) getActivity()).getCharity();
 
         broadcasts = new ArrayList<>();
         adapter = new BroadcastsAdapter(broadcasts);
-
-        rvBroadcasts.setAdapter(adapter);
-
         rvBroadcasts.setAdapter(adapter);
         client = new FirestoreClient();
 
+        getBroadcasts();
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvBroadcasts.setLayoutManager(layoutManager);
-
-        getBroadcasts();
     }
 
     @OnClick(R.id.fabCreate)

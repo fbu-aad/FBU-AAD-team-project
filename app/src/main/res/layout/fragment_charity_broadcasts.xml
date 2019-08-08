@@ -7,8 +7,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvBroadcasts"
-        android:layout_width="@dimen/no_layout_width_textview"
-        android:layout_height="@dimen/no_layout_height_textview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginStart="@dimen/small_padding"
         android:layout_marginLeft="@dimen/small_padding"
         android:layout_marginTop="@dimen/small_padding"

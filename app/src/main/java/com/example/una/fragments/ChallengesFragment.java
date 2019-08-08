@@ -76,6 +76,7 @@ public class ChallengesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent createChallenge = new Intent(getContext(), CreateChallengeScreenSlideActivity.class);
+                createChallenge.putExtra("name", client.getCurrentUser().getDisplayName());
                 startActivityForResult(createChallenge, CREATE_CHALLENGE);
             }
         });
