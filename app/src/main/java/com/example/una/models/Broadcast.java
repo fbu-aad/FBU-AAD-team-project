@@ -13,21 +13,21 @@ public class Broadcast {
     public static final String CHALLENGE_DONATION = "challenge_donation";
     public static final String NEW_CHALLENGE = "new_challenge";
 
-    String charityName;
-    String challengeName;
-    String message;
-    String userName;
-    String donor;
-    String type;
-    String privacy;
-    Timestamp timestamp;
-    String frequency;
-    String challengeId;
-    String charityEin;
-    boolean userType;
-    String uid;
-    ArrayList<String> comments;
-    ArrayList<String> likes;
+    public String charityName;
+    public String challengeName;
+    public String message;
+    public String userName;
+    public String donor;
+    public String type;
+    public String privacy;
+    public Timestamp timestamp;
+    public String frequency;
+    public String challengeId;
+    public String charityEin;
+    public boolean userType;
+    public String uid;
+    public ArrayList<String> comments;
+    public ArrayList<String> likes;
 
     public Broadcast() {}
 
