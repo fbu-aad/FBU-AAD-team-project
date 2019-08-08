@@ -1,5 +1,6 @@
 package com.example.una.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -75,6 +76,7 @@ public class CreateChallengeStoryFragment extends Fragment {
     private boolean validDesc = true;
     private boolean validTitle = true;
 
+    ProgressDialog pd;
 
     public static final String CHALLENGE_PREFERENCES = "ChallengePreferences";
 
@@ -161,6 +163,12 @@ public class CreateChallengeStoryFragment extends Fragment {
                     validDesc = false;
                 }
 
+                pd = new ProgressDialog(getContext());
+                pd.setTitle("Creating challenge...");
+                pd.setMessage("Please wait.");
+                pd.setCancelable(false);
+                pd.show();
+
                 // get associated charity name
                 RequestParams params = new RequestParams();
                 cnClient = new CharityNavigatorClient(getContext());
@@ -204,6 +212,7 @@ public class CreateChallengeStoryFragment extends Fragment {
                                             }
                                         }, broadcast);
                                         // return result to calling activity
+                                        pd.dismiss();
                                         Intent resultData = new Intent();
                                         getActivity().setResult(RESULT_OK, resultData);
                                         getActivity().finish();
@@ -212,11 +221,13 @@ public class CreateChallengeStoryFragment extends Fragment {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Log.i(TAG, "Failed to create challenge!");
+                                        pd.dismiss();
                                     }
                                 }, challenge);
                             }
                         } catch (JSONException e) {
                             Log.d(TAG, e.toString());
+                            pd.dismiss();
                         }
                     }
 
@@ -224,18 +235,21 @@ public class CreateChallengeStoryFragment extends Fragment {
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                         super.onFailure(statusCode, headers, throwable, errorResponse);
                         Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
+                        pd.dismiss();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                         super.onFailure(statusCode, headers, throwable, errorResponse);
                         Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
+                        pd.dismiss();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         super.onFailure(statusCode, headers, responseString, throwable);
                         Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
+                        pd.dismiss();
                     }
 
 
