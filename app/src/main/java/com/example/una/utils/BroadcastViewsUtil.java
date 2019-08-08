@@ -60,18 +60,39 @@ public class BroadcastViewsUtil {
         }
     }
 
-    public static void setOnLikeListener(FirestoreClient client, LikeButton btnLike, String broadcastId) {
+    public static void setOnLikeListener(FirestoreClient client, TextView tvNumLikes, LikeButton btnLike, String broadcastId) {
         btnLike.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
                 client.likeBroadcast(broadcastId);
+                updateNumberText(tvNumLikes, true);
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
                 client.unlikeBroadcast(broadcastId);
+                updateNumberText(tvNumLikes, false);
             }
         });
+    }
+
+    public static void updateNumberText(TextView tvNum, boolean increment) {
+        String currVal = tvNum.getText().toString();
+        if (increment) {
+            if (currVal.isEmpty()) {
+                tvNum.setVisibility(View.VISIBLE);
+                tvNum.setText("1");
+            } else {
+                tvNum.setText(String.valueOf(Integer.valueOf(currVal) + 1));
+            }
+        } else {
+            if (currVal.equals("1")) {
+                tvNum.setText("");
+                tvNum.setVisibility(View.GONE);
+            } else {
+                tvNum.setText(String.valueOf(Integer.valueOf(currVal) - 1));
+            }
+        }
     }
 
     public static void setProfileImagePlaceholder(Context context, ImageView ivProfile) {

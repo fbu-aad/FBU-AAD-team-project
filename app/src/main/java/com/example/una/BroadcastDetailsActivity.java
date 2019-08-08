@@ -27,6 +27,7 @@ import static com.example.una.utils.BroadcastViewsUtil.setLikeButtonAndText;
 import static com.example.una.utils.BroadcastViewsUtil.setNumCommentsText;
 import static com.example.una.utils.BroadcastViewsUtil.setOnLikeListener;
 import static com.example.una.utils.BroadcastViewsUtil.setProfileImagePlaceholder;
+import static com.example.una.utils.BroadcastViewsUtil.updateNumberText;
 
 public class BroadcastDetailsActivity extends AppCompatActivity {
 
@@ -80,7 +81,7 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
         setNumCommentsText(tvNumComments, broadcast);
 
         // on like listener for like button
-        setOnLikeListener(client, btnLike, broadcastId);
+        setOnLikeListener(client, tvNumLikes, btnLike, broadcastId);
 
         // comment on a post
         btnComment.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +91,7 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
 
                 if (!comment.isEmpty() && !comment.replaceAll(" ", "").isEmpty()) {
                     client.commentOnBroadcast(broadcastId, comment);
+                    updateNumberText(tvNumComments, true);
                 }
 
                 etComment.setText("");

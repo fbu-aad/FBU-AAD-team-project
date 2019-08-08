@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,7 +70,8 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             setNumCommentsText(broadcastViewHolder.getBroadcastNumComments(), broadcast);
 
             // on like listener for like button
-            setOnLikeListener(client, broadcastViewHolder.getBroadcastLikeButton(), broadcast.getUid());
+            setOnLikeListener(client, broadcastViewHolder.getBroadcastNumLikes(),
+                    broadcastViewHolder.getBroadcastLikeButton(), broadcast.getUid());
 
             // on click listener for comment button
             broadcastViewHolder.getBroadcastCommentButton().setOnClickListener(new View.OnClickListener() {
