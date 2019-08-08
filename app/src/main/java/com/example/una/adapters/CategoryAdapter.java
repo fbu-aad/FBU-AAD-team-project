@@ -1,6 +1,8 @@
 package com.example.una.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.una.CharitySearchListActivity;
 import com.example.una.R;
 import com.example.una.models.Category;
 
@@ -60,7 +63,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivCategoryImage;
         TextView tvCategoryName;
@@ -69,12 +72,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             super(itemView);
             ivCategoryImage = (ImageView) itemView.findViewById(R.id.ivCategoryImage);
             tvCategoryName = (TextView) itemView.findViewById(R.id.tvCategoryName);
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new CategoryClickListener());
         }
 
-        @Override
-        public void onClick(View v) {
-            // TODO display list of charities in that category
+        class CategoryClickListener implements View.OnClickListener {
+            @Override
+            public void onClick(View view) {
+                int categoryItemPosition = getAdapterPosition();
+                // getting the category name based on which the user clicked on
+                Category category = (Category) categories.get(categoryItemPosition);
+                // fire an intent to an activity with a recycler view populated with a list of charities matching each category
+                Intent categoryList = new Intent(view.getContext(), CharitySearchListActivity.class);
+                categoryList.putExtra("query", category.categoryName);
+                categoryList.putExtra("categoryID", category.categoryID);
+                Log.i("CategoryAdapter", category.categoryID);
+                view.getContext().startActivity(categoryList);
+            }
         }
     }
 }

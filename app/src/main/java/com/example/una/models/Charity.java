@@ -6,11 +6,11 @@ import android.location.Geocoder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import org.parceler.Parcel;
 
 @Parcel
 public class Charity {
@@ -75,7 +75,7 @@ public class Charity {
     }
 
     private Address getCharityLocation(JSONObject jsonObject, String typeAddress) throws JSONException {
-        Address addressObj = null;
+        Address addressObj = new Address(Locale.getDefault());
         Geocoder coder = new Geocoder(context, Locale.getDefault());
 
         JSONObject address = jsonObject.getJSONObject(typeAddress);
