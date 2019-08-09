@@ -152,4 +152,6 @@
     <string name="charity_broadcasts_title">Posts</string>
     <string name="charity_challenge_page_name">Challenges</string>
     <string name="donate_the_equivalent_of">Donate the equivalent of:</string>
+
+    <string name="base_image_file_path">images/</string>
 </resources>

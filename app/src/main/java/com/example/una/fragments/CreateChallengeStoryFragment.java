@@ -32,6 +32,7 @@ import com.example.una.models.Broadcast;
 import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.api.LogDescriptor;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -43,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -181,7 +183,7 @@ public class CreateChallengeStoryFragment extends Fragment {
                 if (!imageIncluded) {
                     Toast.makeText(getContext(), "Please add a photo", Toast.LENGTH_SHORT).show();
                 } else {
-                    challenge.put("photo_uri", photoUri);
+                    challenge.put("photo_uri", getString(R.string.base_image_file_path) + photoUri);
                 }
 
                 pd = new ProgressDialog(getContext());
@@ -204,6 +206,7 @@ public class CreateChallengeStoryFragment extends Fragment {
                                 challenge.put("associated_charity_name", associatedCharityName);
 
                                 // write to challenges collection
+
                                 fsClient.createNewChallenge(new OnSuccessListener() {
                                     @Override
                                     public void onSuccess(Object o) {
@@ -250,44 +253,38 @@ public class CreateChallengeStoryFragment extends Fragment {
 
     private void uploadImage() {
         if (photoUri != null) {
+            String filePath = getString(R.string.base_image_file_path) + photoUri;
 
-            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            StorageReference ref = storageReference.child(filePath);
+
             ref.putFile(photoUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Log.d(TAG, "loaded image");
+                            Log.d(TAG, "success uploading images");
                             pd.dismiss();
-                            Intent resultData = new Intent();
-                            getActivity().setResult(RESULT_OK, resultData);
-                            getActivity().finish();
+                            finishActivity();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "failed uploading image");
+                        public void onFailure(@NonNull Exception exception) {
+                            Log.d(TAG, "File not successful");
                             pd.dismiss();
-                            Intent resultData = new Intent();
-                            getActivity().setResult(RESULT_OK, resultData);
-                            getActivity().finish();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            pd.setMessage("Uploaded "+(int)progress+"%");
+                            finishActivity();
                         }
                     });
         } else {
             Log.d(TAG, "attempting to upload null photo URI");
             pd.dismiss();
-            Intent resultData = new Intent();
-            getActivity().setResult(RESULT_OK, resultData);
-            getActivity().finish();
+            finishActivity();
         }
+    }
+
+    private void finishActivity() {
+        Intent resultData = new Intent();
+        getActivity().setResult(RESULT_OK, resultData);
+        getActivity().finish();
     }
 
     public Date getEndDate(String endDate) throws ParseException {
@@ -319,7 +316,6 @@ public class CreateChallengeStoryFragment extends Fragment {
                 imageIncluded = true;
             } catch (IOException e) {
                 e.printStackTrace();
-
             }
         }
     }
