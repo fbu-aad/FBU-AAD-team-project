@@ -4,7 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,6 +63,8 @@ public class CreateChallengeStoryFragment extends Fragment {
     @BindView(R.id.etTitle) EditText etTitle;
     @BindView(R.id.etAbout) EditText etAbout;
     @BindView(R.id.btnCreateChallenge) Button btnCreateChallenge;
+    @BindView(R.id.btnLibrary) Button btnLibrary;
+    @BindView(R.id.ivPreview) ImageView ivPreview;
 
     HashMap<String, Object> challenge = new HashMap<>();
     private FirestoreClient fsClient;
@@ -73,6 +79,9 @@ public class CreateChallengeStoryFragment extends Fragment {
     private boolean matching;
     private boolean validDesc = true;
     private boolean validTitle = true;
+
+    // photo picking information
+    public final static int PICK_PHOTO_CODE = 1046;
 
     ProgressDialog pd;
 
@@ -248,5 +257,26 @@ public class CreateChallengeStoryFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         Date date = dateFormat.parse(endDate);
         return date;
+    }
+
+    // Trigger gallery selection for a photo
+    public void onPickPhoto(View view) {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, PICK_PHOTO_CODE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data != null) {
+            Uri photoUri = data.getData();
+            // Do something with the photo based on Uri
+            Bitmap selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+            // Load the selected image into a preview
+            ivPreview.setImageBitmap(selectedImage);
+        }
     }
 }
