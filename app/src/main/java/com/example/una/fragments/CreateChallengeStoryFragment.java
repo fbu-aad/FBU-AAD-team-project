@@ -24,11 +24,8 @@ import com.example.una.PrivacySetting;
 import com.example.una.R;
 import com.example.una.models.Broadcast;
 import com.example.una.models.Charity;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 

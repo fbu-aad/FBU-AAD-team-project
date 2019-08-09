@@ -226,11 +226,10 @@
         android:layout_height="375dp"
         android:layout_gravity="top"
         android:background="@drawable/bottom_sheet_rounded_rectangle"
-        app:behavior_peekHeight="@dimen/large_padding"
+        app:behavior_peekHeight="@dimen/large_large_padding"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
 
         <RadioGroup
             android:id="@+id/rgSuggestedDonations"
@@ -255,14 +254,14 @@
                 android:layout_margin="@dimen/tiny_padding"
                 android:layout_weight="1"
                 android:width="0dp"
+                android:background="@drawable/quick_donate_radio_flat_selector"
+                android:button="@color/transparent"
                 android:checked="false"
+                android:gravity="center"
                 android:paddingVertical="@dimen/small_medium_padding"
                 android:text="@string/radio_one_quick_donate_item"
-                android:background="@drawable/quick_donate_radio_flat_selector"
                 android:textColor="@color/black"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:button="@color/transparent"/>
+                android:textSize="@dimen/quick_donate_radio_group_font_size" />
 
             <RadioButton
                 android:id="@+id/radio3"
@@ -271,14 +270,14 @@
                 android:layout_margin="@dimen/tiny_padding"
                 android:layout_weight="1"
                 android:width="0dp"
+                android:background="@drawable/quick_donate_radio_flat_selector"
+                android:button="@color/transparent"
                 android:checked="false"
+                android:gravity="center"
                 android:paddingVertical="@dimen/small_medium_padding"
                 android:text="@string/radio_three_quick_donate_item"
-                android:background="@drawable/quick_donate_radio_flat_selector"
                 android:textColor="@color/black"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:button="@color/transparent"/>
+                android:textSize="@dimen/quick_donate_radio_group_font_size" />
 
             <RadioButton
                 android:id="@+id/radio5"
@@ -287,14 +286,14 @@
                 android:layout_margin="@dimen/tiny_padding"
                 android:layout_weight="1"
                 android:width="0dp"
+                android:background="@drawable/quick_donate_radio_flat_selector"
+                android:button="@color/transparent"
                 android:checked="false"
+                android:gravity="center"
                 android:paddingVertical="@dimen/small_medium_padding"
                 android:text="@string/radio_five_quick_donate_item"
-                android:background="@drawable/quick_donate_radio_flat_selector"
                 android:textColor="@color/black"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:button="@color/transparent"/>
+                android:textSize="@dimen/quick_donate_radio_group_font_size" />
 
             <RadioButton
                 android:id="@+id/radio10"
@@ -303,14 +302,14 @@
                 android:layout_margin="@dimen/tiny_padding"
                 android:layout_weight="1"
                 android:width="0dp"
+                android:background="@drawable/quick_donate_radio_flat_selector"
+                android:button="@color/transparent"
                 android:checked="false"
+                android:gravity="center"
                 android:paddingVertical="@dimen/small_medium_padding"
                 android:text="@string/radio_ten_quick_donate_item"
-                android:background="@drawable/quick_donate_radio_flat_selector"
                 android:textColor="@color/black"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:button="@color/transparent"/>
+                android:textSize="@dimen/quick_donate_radio_group_font_size" />
 
             <RadioButton
                 android:id="@+id/radioTuition"
@@ -319,14 +318,14 @@
                 android:layout_margin="@dimen/tiny_padding"
                 android:layout_weight="1"
                 android:width="0dp"
+                android:background="@drawable/quick_donate_radio_flat_selector"
+                android:button="@color/transparent"
                 android:checked="false"
+                android:gravity="center"
                 android:paddingVertical="@dimen/small_medium_padding"
                 android:text="@string/radio_tuition_quick_donate_item"
-                android:background="@drawable/quick_donate_radio_flat_selector"
                 android:textColor="@color/black"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:button="@color/transparent"/>
+                android:textSize="@dimen/quick_donate_radio_group_font_size" />
 
         </RadioGroup>
 
@@ -351,20 +350,39 @@
             android:id="@+id/tvDonationTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/medium_large_padding"
-            android:layout_marginLeft="@dimen/medium_large_padding"
-            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginStart="@dimen/small_padding"
+            android:layout_marginLeft="@dimen/small_padding"
+            android:layout_marginTop="@dimen/tiny_padding"
             android:layout_marginEnd="@dimen/small_padding"
             android:layout_marginRight="@dimen/small_padding"
             android:layout_marginBottom="@dimen/standard_padding"
             android:fontFamily="@font/roboto"
             android:text="@string/quick_donate_donation_sheet_title"
+            android:textSize="@dimen/medium_font_size"
+            app:layout_constraintBottom_toTopOf="@+id/tvDonationPrompt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/raise_bar"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvDonationPrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_padding"
+            android:layout_marginLeft="@dimen/small_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginEnd="@dimen/small_padding"
+            android:layout_marginRight="@dimen/small_padding"
+            android:layout_marginBottom="@dimen/standard_padding"
+            android:fontFamily="@font/roboto"
+            android:text="@string/donate_the_equivalent_of"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintBottom_toTopOf="@+id/rgSuggestedDonations"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDonationTitle"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintVertical_chainStyle="packed" />
 
@@ -387,15 +405,15 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
-            android:id="@+id/raise_arrow"
+            android:id="@+id/raise_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_padding"
-            android:layout_marginEnd="@dimen/standard_padding"
-            android:layout_marginRight="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp" />
+            app:layout_constraintBottom_toTopOf="@id/tvDonationTitle"
+            app:srcCompat="@drawable/raise_bar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
