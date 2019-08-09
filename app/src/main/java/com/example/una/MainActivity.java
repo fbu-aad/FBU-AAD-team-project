@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent donationIntent = new Intent(MainActivity.this, DonationHistoryActivity.class);
                 startActivity(donationIntent);
                 break;
-            case R.id.notification_item:
+            case R.id.your_impact:
                 fragmentManager.beginTransaction().replace(R.id.flMainFragments, fragment).commit();
                 break;
             case R.id.sign_out_item:

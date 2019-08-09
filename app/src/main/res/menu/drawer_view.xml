@@ -10,9 +10,9 @@
             android:icon="@drawable/ic_two"
             android:title="@string/navigation_drawer_donation_history" />
         <item
-            android:id="@+id/notification_item"
+            android:id="@+id/your_impact"
             android:icon="@drawable/ic_three"
-            android:title="@string/navigation_drawer_notifications" />
+            android:title="@string/navigation_drawer_impact" />
         <item
             android:id="@+id/sign_out_item"
             android:icon="@drawable/ic_exit_to_app_black_24dp"

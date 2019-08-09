@@ -35,6 +35,11 @@ public class DonationNotificationsFragment extends Fragment {
     ArrayList<Donation> notifications;
     NotificationsAdapter adapter;
 
+    public static DonationNotificationsFragment newInstance() {
+        DonationNotificationsFragment yourDonations = new DonationNotificationsFragment();
+        return yourDonations;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
