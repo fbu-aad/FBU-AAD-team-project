@@ -46,6 +46,12 @@ public class CharityNavigatorClient {
         client.get(url, params, handler);
     }
 
+    public void getRecommended(RequestParams params, JsonHttpResponseHandler handler) {
+        buildParams(params);
+        String url = getApiUrl("/Lists/" + context.getString(R.string.recommended_list_id));
+        client.get(url, params, handler);
+    }
+
     private RequestParams buildParams(RequestParams params) {
         params.put(API_KEY_PARAM, context.getString(R.string.cn_api_key));
         params.put(API_ID_PARAM, context.getString(R.string.cn_app_id));

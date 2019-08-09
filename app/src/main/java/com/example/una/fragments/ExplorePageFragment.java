@@ -43,6 +43,7 @@ public class ExplorePageFragment extends Fragment {
 
     protected ArrayList<Object> categories = new ArrayList<>();
     protected ArrayList<Object> featured = new ArrayList<>();
+    protected ArrayList<Object> recommended = new ArrayList<>();
     public final static String TAG = "ExplorePageFragment";
     CharityNavigatorClient client;
 
@@ -128,6 +129,15 @@ public class ExplorePageFragment extends Fragment {
         categoriesModel.setViewType(HomeFragmentSection.CATEGORIES_LIST_TYPE);
 
         arrayListVertical.add(categoriesModel);
+
+        // recommended charities
+        HomeFragmentSection recommendedModel = new HomeFragmentSection();
+        recommendedModel.setTitle(getString(R.string.text_home_recommended));
+        getRecommended();
+        recommendedModel.setArrayList(recommended);
+        recommendedModel.setViewType(HomeFragmentSection.RECOMMENDED_LIST_TYPE);
+
+        arrayListVertical.add(recommendedModel);
     }
 
     private void getFeatured() {
@@ -212,6 +222,55 @@ public class ExplorePageFragment extends Fragment {
         // alert the user to avoid silent errors
         // show a long toast with the error message
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    private void getRecommended() {
+        recommended = new ArrayList<>();
+        RequestParams params = new RequestParams();
+        client.getRecommended(params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    JSONArray groupsArr = response.getJSONArray("groups");
+                    JSONObject groupsObj = groupsArr.getJSONObject(0);
+                    JSONArray organizations = groupsObj.getJSONArray("organizations");
+
+                    String prevName = "";
+                    for (int i = 0; i < organizations.length(); i++) {
+                        JSONObject popularCharity = organizations.getJSONObject(i);
+                        Charity charity = new Charity(popularCharity.getJSONObject("organization"), getContext());
+
+                        // make sure there are no duplicates in the data
+                        String newName = charity.getName();
+                        if (!prevName.equals(newName)) {
+                            recommended.add(charity);
+                        }
+                        prevName = newName;
+                    }
+                    Log.i(TAG, String.format("Found %s featured charities", recommended.size()));
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    logError("Failed to parse featured list", e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                logError("Failed to get data from featured endpoint", throwable);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                logError("Failed to get data from featured endpoint", throwable);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                logError("Failed to get data from featured endpoint", throwable);
+            }
+        });
     }
 }
 

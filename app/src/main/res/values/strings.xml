@@ -19,6 +19,7 @@
     <string name="challenge_description_dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In molestie, tellus sollicitudin eleifend mollis, sapien mi gravida arcu, nec dapibus.</string>
 
     <string name="featured_list_id">15</string>
+    <string name="recommended_list_id">18</string>
 
     <string name="text_survey_complete_profile">Complete Your Profile</string>
     <string name="text_survey_complete_profile_info">Your account information is private and is not shared with nonprofits.</string>

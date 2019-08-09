@@ -40,7 +40,7 @@ public class VerticalRecyclerViewAdapter extends RecyclerView.Adapter<VerticalRe
         ArrayList<Object> currentItem = section.getArrayList();
         RecyclerView.Adapter recyclerViewAdapter = null;
 
-        if (holder.getItemViewType() == HomeFragmentSection.CHARITY_LIST_TYPE) {
+        if (holder.getItemViewType() == HomeFragmentSection.CHARITY_LIST_TYPE || holder.getItemViewType() == HomeFragmentSection.RECOMMENDED_LIST_TYPE) {
             recyclerViewAdapter = new CharityAdapter(currentItem);
         } else if (holder.getItemViewType() == HomeFragmentSection.CATEGORIES_LIST_TYPE) {
             recyclerViewAdapter = new CategoryAdapter(currentItem);
