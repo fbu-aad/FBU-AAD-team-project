@@ -110,7 +110,6 @@ public class ChallengesFragment extends Fragment {
                         for (QueryDocumentSnapshot challengeDoc : task.getResult()) {
                             challenges.add(new Challenge(challengeDoc.getData(), challengeDoc.getId()));
                         }
-                        adapter.addAll(challenges);
                         adapter.notifyDataSetChanged();
                         swipeContainer.setRefreshing(false);
                     } else {
