@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -138,14 +139,12 @@
             android:id="@+id/btnCreateChallenge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_padding"
             android:layout_marginEnd="@dimen/standard_padding"
             android:layout_marginRight="@dimen/standard_padding"
             android:layout_marginBottom="@dimen/small_padding"
             android:text="@string/create"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLibrary" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageButton
             android:id="@+id/ibBack"
@@ -153,14 +152,28 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_padding"
             android:layout_marginLeft="@dimen/standard_padding"
-            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/small_padding"
             android:layout_marginBottom="@dimen/small_padding"
-            android:rotation="180"
-            android:tint="@color/colorPrimary"
-            android:src="@drawable/ic_arrow_right"
             android:backgroundTint="@color/transparent"
+            android:rotation="180"
+            android:src="@drawable/ic_arrow_right"
+            android:tint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnTakePhoto" />
+            app:layout_constraintTop_toBottomOf="@+id/ivPreview" />
+
+        <ImageView
+            android:id="@+id/ivPreview"
+            android:layout_width="361dp"
+            android:layout_height="172dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnCreateChallenge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnLibrary"
+            app:srcCompat="@color/colorAccent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
