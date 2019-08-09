@@ -39,10 +39,8 @@ public class BroadcastViewsUtil {
         String userId = client.getCurrentUser().getUid();
         ArrayList<String> usersLiked = broadcast.getLikes();
         setNumberText(usersLiked, tvNumLikes);
-        if (usersLiked != null) {
-            if (usersLiked.contains(userId)) {
-                likeButton.setLiked(true);
-            }
+        if (usersLiked != null && usersLiked.contains(userId)) {
+            likeButton.setLiked(true);
         } else {
             likeButton.setLiked(false);
         }
@@ -57,6 +55,9 @@ public class BroadcastViewsUtil {
         if (users != null && users.size() != 0) {
             tvNum.setVisibility(View.VISIBLE);
             tvNum.setText(Integer.toString(users.size()));
+        } else {
+            tvNum.setText("");
+            tvNum.setVisibility(View.GONE);
         }
     }
 
@@ -75,7 +76,6 @@ public class BroadcastViewsUtil {
             public void unLiked(LikeButton likeButton) {
                 client.unlikeBroadcast(broadcastId);
                 updateNumberText(tvNumLikes, false);
-                // TODO recycler view does not update when like is removed from broadcast detail activity
                 broadcast.removeLike(client.getCurrentUser().getUid());
             }
         });
