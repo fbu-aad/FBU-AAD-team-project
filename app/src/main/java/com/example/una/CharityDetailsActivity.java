@@ -1,5 +1,7 @@
 package com.example.una;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,18 +9,26 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.example.una.models.Broadcast;
 import com.example.una.models.Charity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,6 +36,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -33,13 +46,17 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class CharityDetailsActivity extends FragmentActivity implements OnMapReadyCallback {
+    // charity details information
     @BindView(R.id.tvCharityName) TextView tvCharityName;
     @BindView(R.id.tvTagline) TextView tvTagline;
     @BindView(R.id.tvCharityDescription) TextView tvMission;
@@ -59,9 +76,30 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
     @BindView(R.id.btnFollow) ToggleButton btnFollow;
 
     String ein;
-    CharityNavigatorClient client;
+    CharityNavigatorClient cnClient;
+    FirestoreClient firestoreClient;
     private GoogleMap mMap;
     private ArrayList<Address> addresses = new ArrayList<>();
+
+    // bottom sheet information
+    @BindView(R.id.rgSuggestedDonations) RadioGroup rgSuggestedDonations;
+    @BindView(R.id.radio1) RadioButton radio1;
+    @BindView(R.id.radio3) RadioButton radio3;
+    @BindView(R.id.radio5) RadioButton radio5;
+    @BindView(R.id.radio10) RadioButton radio10;
+    @BindView(R.id.radioTuition) RadioButton radioTuition;
+    @BindView(R.id.etCustomAmount) EditText etCustomAmount;
+    @BindView(R.id.tvDonationTitle) TextView tvDonationTitle;
+    @BindView(R.id.bottomSheet) ConstraintLayout bottomSheet;
+    @BindView(R.id.donateBtn) Button donateBtn;
+    @BindView(R.id.raise_bar) ImageView raiseBar;
+
+    FirestoreClient client;
+    Charity charity;
+    BottomSheetBehavior bottomSheetBehavior;
+    DecimalFormat df;
+    Context context;
+    Double amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +107,6 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
         setContentView(R.layout.activity_charity_details);
         ButterKnife.bind(this);
         ein = getIntent().getStringExtra("ein");
-
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
 
         // hide map fragment
         FragmentManager manager = getSupportFragmentManager();
@@ -87,9 +121,19 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
         fabEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "CharityDetailsActivity -> I am working", Toast.LENGTH_LONG).show();
+                // TO DO: does nothing on click
             }
         });
+
+        // set the behavior and data in the bottom sheet fragment
+        df = new DecimalFormat("###,###,###,##0.00");
+        context = this;
+        client = new FirestoreClient();
+        amount = 0.00;
+        donateBtn.setEnabled(false);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        etCustomAmount.addTextChangedListener(new CurrencyTextWatcher(etCustomAmount, "$0.00"));
+        setValueCheckedListener();
     }
 
     @Override
@@ -116,8 +160,8 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
     // gets current charity's info based on eid value
     private void getCharityInfo(String ein) {
         RequestParams params = new RequestParams();
-        client = new CharityNavigatorClient(CharityDetailsActivity.this);
-        client.getCharityInfo(params, ein, new JsonHttpResponseHandler() {
+        cnClient = new CharityNavigatorClient(CharityDetailsActivity.this);
+        cnClient.getCharityInfo(params, ein, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] header, JSONObject response) {
                 try {
@@ -204,10 +248,91 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
                     }
 
                     pbLoadingCharity.setVisibility(View.GONE);
+
+                    donateBtn.setEnabled(true);
+                    donateBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (amount > 0.0) {
+                                createNewDonation(setDonateBroadcastParams(charity), amount);
+                                resetBottomSheet();
+                            }
+                        }
+                    });
                 } catch (JSONException e) {
                     Log.e("CharityDetailsActivity", "Failed to parse response", e);
                 }
             }
         });
+    }
+
+    private void setValueCheckedListener() {
+        rgSuggestedDonations.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId) {
+                    case R.id.radio1:
+                        etCustomAmount.setText(".24");
+                        amount = 0.24;
+                        break;
+                    case R.id.radio3:
+                        etCustomAmount.setText("3.25");
+                        amount = 3.25;
+                        break;
+                    case R.id.radio5:
+                        etCustomAmount.setText("5.49");
+                        amount = 5.49;
+                        break;
+                    case R.id.radio10:
+                        etCustomAmount.setText("13.50");
+                        amount = 13.50;
+                        break;
+                    case R.id.radioTuition:
+                        etCustomAmount.setText("25,000.00");
+                        amount = 25000.00;
+                        break;
+                    default:
+                        etCustomAmount.setText("0.00");
+                        amount = 0.00;
+                        break;
+                }
+            }
+        });
+    }
+
+    private void createNewDonation(Broadcast broadcast, Double amount) {
+        client.createNewDonation(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, "Your donation was received",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Your donation was not received :(",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, broadcast, amount);
+    }
+
+    private void resetBottomSheet() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        etCustomAmount.setText("");
+        rgSuggestedDonations.clearCheck();
+    }
+
+    private Broadcast setDonateBroadcastParams(Charity charity) {
+        Map<String, Object> broadcastParams = new HashMap<>();
+        broadcastParams.put("charity_name", charity.getName());
+        broadcastParams.put("type", Broadcast.DONATION);
+        broadcastParams.put("privacy", PrivacySetting.PUBLIC);
+        broadcastParams.put("user_name", client.getCurrentUser().getDisplayName());
+        broadcastParams.put("donor", client.getCurrentUser().getUid());
+        broadcastParams.put("frequency", Frequency.SINGLE_DONATION);
+        broadcastParams.put("charity_ein", charity.getEin());
+
+        Broadcast broadcast = new Broadcast(broadcastParams);
+        return broadcast;
     }
 }

@@ -218,7 +218,6 @@
             app:layout_constraintVertical_chainStyle="packed" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <!-- the constraint layout for the bottom sheet fragment -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomSheet"
@@ -227,6 +226,7 @@
         android:layout_gravity="top"
         android:background="@drawable/bottom_sheet_rounded_rectangle"
         app:behavior_peekHeight="@dimen/large_large_padding"
+        android:elevation="@dimen/small_medium_padding"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -396,7 +396,6 @@
             android:layout_marginEnd="@dimen/standard_padding"
             android:layout_marginRight="@dimen/standard_padding"
             android:text="@string/donate_value_accept"
-
             app:layout_constraintBottom_toBottomOf="@+id/etCustomAmount"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

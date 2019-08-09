@@ -10,6 +10,8 @@
     <dimen name="medium_large_padding">32dp</dimen>
     <dimen name="medium_xl_padding">48dp</dimen>
     <dimen name="large_padding">56dp</dimen>
+    <dimen name="large_medium_padding">64dp</dimen>
+    <dimen name="large_medium_plus_padding">72dp</dimen>
     <dimen name="large_large_padding">136dp</dimen>
     <dimen name="extra_large_padding">148dp</dimen>
     <dimen name="medium_button_width">120dp</dimen>
@@ -74,4 +76,5 @@
     <dimen name="raise_bar_width">28dp</dimen>
     <dimen name="raise_bar_height">10dp</dimen>
     <dimen name="quick_donate_radio_group_font_size">16sp</dimen>
+    <dimen name="shadow_height">8dp</dimen>
 </resources>
