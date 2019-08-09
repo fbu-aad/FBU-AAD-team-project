@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,12 +25,17 @@ import androidx.fragment.app.Fragment;
 import com.example.una.CharityNavigatorClient;
 import com.example.una.CreateChallengeScreenSlideActivity;
 import com.example.una.FirestoreClient;
+import com.example.una.MainActivity;
 import com.example.una.PrivacySetting;
 import com.example.una.R;
 import com.example.una.models.Broadcast;
 import com.example.una.models.Charity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -37,6 +43,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,9 +52,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
 
 import static android.app.Activity.RESULT_OK;
@@ -79,9 +89,13 @@ public class CreateChallengeStoryFragment extends Fragment {
     private boolean matching;
     private boolean validDesc = true;
     private boolean validTitle = true;
+    private boolean imageIncluded = false;
 
     // photo picking information
-    public final static int PICK_PHOTO_CODE = 1046;
+    private final static int PICK_PHOTO_CODE = 1046;
+    private Uri photoUri;
+    FirebaseStorage storage;
+    StorageReference storageReference;
 
     ProgressDialog pd;
 
@@ -98,12 +112,17 @@ public class CreateChallengeStoryFragment extends Fragment {
         // get donor name
         userName = ((CreateChallengeScreenSlideActivity) getActivity()).getName();
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
         return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,12 +178,18 @@ public class CreateChallengeStoryFragment extends Fragment {
                     validDesc = false;
                 }
 
+                if (!imageIncluded) {
+                    Toast.makeText(getContext(), "Please add a photo", Toast.LENGTH_SHORT).show();
+                } else {
+                    challenge.put("photo_uri", photoUri);
+                }
+
                 pd = new ProgressDialog(getContext());
                 pd.setTitle("Creating challenge...");
                 pd.setMessage("Please wait.");
                 pd.setCancelable(false);
 
-                if (validDesc && validTitle) {
+                if (validDesc && validTitle && imageIncluded) {
                     pd.show();
 
                     // get associated charity name
@@ -182,37 +207,7 @@ public class CreateChallengeStoryFragment extends Fragment {
                                 fsClient.createNewChallenge(new OnSuccessListener() {
                                     @Override
                                     public void onSuccess(Object o) {
-                                        Log.i(TAG, "Challenge created successfully!");
-                                        Map<String, Object> broadcastFields = new HashMap<>();
-                                        broadcastFields.put("charity_ein", associatedCharityEin);
-                                        broadcastFields.put("donor", fsClient.getCurrentUser().getUid());
-                                        broadcastFields.put("frequency", frequency);
-                                        broadcastFields.put("type", Broadcast.NEW_CHALLENGE);
-                                        broadcastFields.put("user_name", userName);
-                                        SharedPreferences sharedPref = getContext()
-                                                .getSharedPreferences(getString(R.string.preference_file_key),
-                                                        Context.MODE_PRIVATE);
-                                        boolean userType = sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user));
-                                        broadcastFields.put("user_type", userType);
-                                        broadcastFields.put("challenge_name", name);
-                                        broadcastFields.put("privacy", PrivacySetting.PUBLIC);
-                                        broadcastFields.put("charity_name", associatedCharityName);
-
-                                        Broadcast broadcast = new Broadcast(broadcastFields);
-                                        fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Log.d(TAG, String.format("created broadcast successfully from %s", name));
-                                            }}, new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.d(TAG, String.format("create %s broadcast failed", name), e);
-                                            }}, broadcast);
-                                        // return result to calling activity
-                                        pd.dismiss();
-                                        Intent resultData = new Intent();
-                                        getActivity().setResult(RESULT_OK, resultData);
-                                        getActivity().finish();
+                                        makeBroadcastAndUploadImage(name);
                                     }}, new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
@@ -253,6 +248,48 @@ public class CreateChallengeStoryFragment extends Fragment {
         });
     }
 
+    private void uploadImage() {
+        if (photoUri != null) {
+
+            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            ref.putFile(photoUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Log.d(TAG, "loaded image");
+                            pd.dismiss();
+                            Intent resultData = new Intent();
+                            getActivity().setResult(RESULT_OK, resultData);
+                            getActivity().finish();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "failed uploading image");
+                            pd.dismiss();
+                            Intent resultData = new Intent();
+                            getActivity().setResult(RESULT_OK, resultData);
+                            getActivity().finish();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            pd.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        } else {
+            Log.d(TAG, "attempting to upload null photo URI");
+            pd.dismiss();
+            Intent resultData = new Intent();
+            getActivity().setResult(RESULT_OK, resultData);
+            getActivity().finish();
+        }
+    }
+
     public Date getEndDate(String endDate) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         Date date = dateFormat.parse(endDate);
@@ -260,23 +297,65 @@ public class CreateChallengeStoryFragment extends Fragment {
     }
 
     // Trigger gallery selection for a photo
+    @OnClick(R.id.btnLibrary)
     public void onPickPhoto(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-        if (intent.resolveActivity(getPackageManager()) != null) {
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(intent, PICK_PHOTO_CODE);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null) {
-            Uri photoUri = data.getData();
-            // Do something with the photo based on Uri
-            Bitmap selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-            // Load the selected image into a preview
-            ivPreview.setImageBitmap(selectedImage);
+        if (data != null && requestCode == PICK_PHOTO_CODE && resultCode == RESULT_OK
+                && data.getData() != null) {
+            photoUri = data.getData();
+            Bitmap selectedImage;
+            try {
+                selectedImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), photoUri);
+                ivPreview.setImageBitmap(selectedImage);
+                imageIncluded = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
         }
+    }
+
+    private void makeBroadcastAndUploadImage(String name) {
+        Log.i(TAG, "Challenge created successfully!");
+        Map<String, Object> broadcastFields = new HashMap<>();
+        broadcastFields.put("charity_ein", associatedCharityEin);
+        broadcastFields.put("donor", fsClient.getCurrentUser().getUid());
+        broadcastFields.put("frequency", frequency);
+        broadcastFields.put("type", Broadcast.NEW_CHALLENGE);
+        broadcastFields.put("user_name", userName);
+        SharedPreferences sharedPref = getContext()
+                .getSharedPreferences(getString(R.string.preference_file_key),
+                        Context.MODE_PRIVATE);
+        boolean userType = sharedPref.getBoolean("user_type", getResources().getBoolean(R.bool.is_user));
+        broadcastFields.put("user_type", userType);
+        broadcastFields.put("challenge_name", name);
+        broadcastFields.put("privacy", PrivacySetting.PUBLIC);
+        broadcastFields.put("charity_name", associatedCharityName);
+
+        Broadcast broadcast = new Broadcast(broadcastFields);
+        fsClient.createNewBroadcast(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, String.format("created broadcast successfully from %s", name));
+
+                uploadImage();
+            }}, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, String.format("create %s broadcast failed", name), e);
+                pd.dismiss();
+                Intent resultData = new Intent();
+                getActivity().setResult(RESULT_OK, resultData);
+                getActivity().finish();
+            }}, broadcast);
     }
 }

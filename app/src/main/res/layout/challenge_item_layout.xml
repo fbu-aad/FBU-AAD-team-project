@@ -38,7 +38,7 @@
             android:id="@+id/ivChallenge"
             android:transitionName="image"
             android:layout_width="match_parent"
-            android:layout_height="248dp"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
