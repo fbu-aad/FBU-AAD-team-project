@@ -261,7 +261,7 @@
                 android:paddingVertical="@dimen/small_medium_padding"
                 android:text="@string/radio_one_quick_donate_item"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/quick_donate_radio_group_font_size" />
 
             <RadioButton
                 android:id="@+id/radio3"
@@ -277,7 +277,7 @@
                 android:paddingVertical="@dimen/small_medium_padding"
                 android:text="@string/radio_three_quick_donate_item"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/quick_donate_radio_group_font_size" />
 
             <RadioButton
                 android:id="@+id/radio5"
@@ -293,7 +293,7 @@
                 android:paddingVertical="@dimen/small_medium_padding"
                 android:text="@string/radio_five_quick_donate_item"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/quick_donate_radio_group_font_size" />
 
             <RadioButton
                 android:id="@+id/radio10"
@@ -309,7 +309,7 @@
                 android:paddingVertical="@dimen/small_medium_padding"
                 android:text="@string/radio_ten_quick_donate_item"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/quick_donate_radio_group_font_size" />
 
             <RadioButton
                 android:id="@+id/radioTuition"
@@ -325,7 +325,7 @@
                 android:paddingVertical="@dimen/small_medium_padding"
                 android:text="@string/radio_tuition_quick_donate_item"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/quick_donate_radio_group_font_size" />
 
         </RadioGroup>
 
@@ -409,8 +409,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_padding"
-            android:layout_marginEnd="@dimen/standard_padding"
-            android:layout_marginRight="@dimen/standard_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
