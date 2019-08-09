@@ -81,7 +81,7 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
         setNumCommentsText(tvNumComments, broadcast);
 
         // on like listener for like button
-        setOnLikeListener(client, tvNumLikes, btnLike, broadcastId);
+        setOnLikeListener(client, tvNumLikes, btnLike, broadcast);
 
         // comment on a post
         btnComment.setOnClickListener(new View.OnClickListener() {

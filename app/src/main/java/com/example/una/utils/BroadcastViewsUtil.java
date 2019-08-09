@@ -60,18 +60,22 @@ public class BroadcastViewsUtil {
         }
     }
 
-    public static void setOnLikeListener(FirestoreClient client, TextView tvNumLikes, LikeButton btnLike, String broadcastId) {
+    public static void setOnLikeListener(FirestoreClient client, TextView tvNumLikes,
+                                         LikeButton btnLike, Broadcast broadcast) {
+        String broadcastId = broadcast.getUid();
         btnLike.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
                 client.likeBroadcast(broadcastId);
                 updateNumberText(tvNumLikes, true);
+                broadcast.addLike(client.getCurrentUser().getUid());
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
                 client.unlikeBroadcast(broadcastId);
                 updateNumberText(tvNumLikes, false);
+                broadcast.removeLike(client.getCurrentUser().getUid());
             }
         });
     }

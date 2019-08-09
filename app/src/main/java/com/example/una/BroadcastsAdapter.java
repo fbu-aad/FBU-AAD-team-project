@@ -71,7 +71,7 @@ public class BroadcastsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             // on like listener for like button
             setOnLikeListener(client, broadcastViewHolder.getBroadcastNumLikes(),
-                    broadcastViewHolder.getBroadcastLikeButton(), broadcast.getUid());
+                    broadcastViewHolder.getBroadcastLikeButton(), broadcast);
 
             // on click listener for comment button
             broadcastViewHolder.getBroadcastCommentButton().setOnClickListener(new View.OnClickListener() {
