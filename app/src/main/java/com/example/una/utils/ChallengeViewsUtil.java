@@ -135,8 +135,8 @@ public class ChallengeViewsUtil {
     public static String getStrProgress(Challenge challenge) {
         double amountRaised = challenge.getChallengeAmountRaised();
         double amountTarget = challenge.getChallengeAmountTarget();
-        String sAmountRaised = formatCurrency((long) amountRaised);
-        String sAmountTarget = formatCurrency((long) amountTarget);
+        String sAmountRaised = formatCurrency(amountRaised);
+        String sAmountTarget = formatCurrency(amountTarget);
         String sProgress;
         // check if there is a target goal
         if (amountTarget == 0) {
@@ -162,9 +162,9 @@ public class ChallengeViewsUtil {
         }
     }
 
-    public static String formatCurrency(long amount) {
-        NumberFormat dollars = NumberFormat.getCurrencyInstance(Locale.US);
-        return dollars.format(amount);
+    public static String formatCurrency(double amount) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return formatter.format(amount);
     }
 
     public static String getTimeLeft(String beginOrEnd, Date date1, Date date2) {
