@@ -13,13 +13,20 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.una.R;
 import com.example.una.fragments.DonationNotificationsFragment;
 import com.example.una.fragments.YourDonationHistoryFragment;
+import com.google.android.material.tabs.TabLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DonationHistoryActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.tab_layout) TabLayout tabLayout;
+    @BindView(R.id.vpPager) ViewPager vpPager;
     FragmentPagerAdapter adapterViewPager;
+    private int[] tabIcons = {
+            R.drawable.ic_person_black_24dp,
+            R.drawable.ic_people_black_24dp
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +36,6 @@ public class DonationHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_donation_history);
         ButterKnife.bind(this);
 
-        ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
 
@@ -43,6 +49,14 @@ public class DonationHistoryActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        tabLayout.setupWithViewPager(vpPager);
+        setUpTabIcons();
+    }
+
+    private void setUpTabIcons() {
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
     }
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
@@ -67,11 +81,6 @@ public class DonationHistoryActivity extends AppCompatActivity {
                 default:
                     return null;
             }
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "Page " + position;
         }
     }
 }
