@@ -75,6 +75,7 @@ public class BroadcastViewsUtil {
             public void unLiked(LikeButton likeButton) {
                 client.unlikeBroadcast(broadcastId);
                 updateNumberText(tvNumLikes, false);
+                // TODO recycler view does not update when like is removed from broadcast detail activity
                 broadcast.removeLike(client.getCurrentUser().getUid());
             }
         });

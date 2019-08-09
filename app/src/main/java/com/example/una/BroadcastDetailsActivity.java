@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.una.adapters.CommentAdapter;
 import com.example.una.models.Broadcast;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.like.LikeButton;
 
 import org.parceler.Parcels;
@@ -62,8 +63,8 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
         setCharityNameTextView(tvCharityName, broadcast);
         tvMessage.setText(broadcast.getMessage());
         comments = broadcast.getComments();
-        if (comments != null && comments.size() > 0) {
-            rvComments.setVisibility(View.VISIBLE);
+        if (comments == null) {
+            comments = new ArrayList<>();
         }
 
         adapter = new CommentAdapter(comments);
@@ -90,11 +91,20 @@ public class BroadcastDetailsActivity extends AppCompatActivity {
                 final String comment = etComment.getText().toString();
 
                 if (!comment.isEmpty() && !comment.replaceAll(" ", "").isEmpty()) {
-                    client.commentOnBroadcast(broadcastId, comment);
-                    updateNumberText(tvNumComments, true);
+                    client.commentOnBroadcast(broadcastId, comment, new OnSuccessListener() {
+                        @Override
+                        public void onSuccess(Object o) {
+                            updateNumberText(tvNumComments, true);
+                            String name = client.getCurrentUser().getDisplayName();
+                            if (name == null || name.isEmpty()) {
+                                name = client.getCurrentUser().getEmail();
+                            }
+                            comments.add(name + ": " + comment);
+                            adapter.notifyDataSetChanged();
+                            etComment.setText("");
+                        }
+                    });
                 }
-
-                etComment.setText("");
             }
         });
     }

@@ -18,9 +18,15 @@ import butterknife.ButterKnife;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
     private ArrayList<String> comments;
-    Context context;
+    private Context context;
 
-    public CommentAdapter(ArrayList<String> comments) { this.comments = comments; }
+    public CommentAdapter(ArrayList<String> comments) {
+        if (comments == null) {
+            this.comments = new ArrayList<String>();
+        } else {
+            this.comments = comments;
+        }
+    }
 
     @NonNull
     @Override

@@ -113,7 +113,6 @@
             android:layout_marginTop="@dimen/standard_padding"
             android:layout_marginEnd="@dimen/standard_padding"
             android:layout_marginRight="@dimen/standard_padding"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ibComment" />
