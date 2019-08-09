@@ -1,9 +1,13 @@
 package com.example.una.models;
 
+import android.net.Uri;
+
 import com.google.firebase.Timestamp;
 
 import org.parceler.Parcel;
 
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -25,6 +29,7 @@ public class Challenge {
     String frequency;
     String ownerId;
     String type;
+    String photoPath;
     ArrayList<String> usersAccepted;
     long defaultAmount;
 
@@ -94,6 +99,10 @@ public class Challenge {
 
         if (challengeFields.containsKey("user_name")) {
             userName = (String) challengeFields.get("user_name");
+        }
+
+        if (challengeFields.containsKey("photo_uri")) {
+            photoPath = (String) challengeFields.get("photo_uri");
         }
     }
 
@@ -173,5 +182,9 @@ public class Challenge {
 
     public String getChallengeCreatorName() {
         return userName;
+    }
+
+    public String getPictureFilepath() {
+        return photoPath;
     }
 }
