@@ -165,4 +165,13 @@ public class Broadcast {
     public ArrayList<String> getComments() { return comments; }
 
     public ArrayList<String> getLikes() { return likes; }
+
+    public void addLike(String liker) {
+        if (this.likes == null) {
+            likes = new ArrayList<String>();
+        }
+        this.likes.add(liker);
+    }
+
+    public void removeLike(String liker) { this.likes.remove(liker); }
 }

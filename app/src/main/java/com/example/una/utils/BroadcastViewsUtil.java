@@ -39,10 +39,8 @@ public class BroadcastViewsUtil {
         String userId = client.getCurrentUser().getUid();
         ArrayList<String> usersLiked = broadcast.getLikes();
         setNumberText(usersLiked, tvNumLikes);
-        if (usersLiked != null) {
-            if (usersLiked.contains(userId)) {
-                likeButton.setLiked(true);
-            }
+        if (usersLiked != null && usersLiked.contains(userId)) {
+            likeButton.setLiked(true);
         } else {
             likeButton.setLiked(false);
         }
@@ -57,21 +55,49 @@ public class BroadcastViewsUtil {
         if (users != null && users.size() != 0) {
             tvNum.setVisibility(View.VISIBLE);
             tvNum.setText(Integer.toString(users.size()));
+        } else {
+            tvNum.setText("");
+            tvNum.setVisibility(View.GONE);
         }
     }
 
-    public static void setOnLikeListener(FirestoreClient client, LikeButton btnLike, String broadcastId) {
+    public static void setOnLikeListener(FirestoreClient client, TextView tvNumLikes,
+                                         LikeButton btnLike, Broadcast broadcast) {
+        String broadcastId = broadcast.getUid();
         btnLike.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
                 client.likeBroadcast(broadcastId);
+                updateNumberText(tvNumLikes, true);
+                broadcast.addLike(client.getCurrentUser().getUid());
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
                 client.unlikeBroadcast(broadcastId);
+                updateNumberText(tvNumLikes, false);
+                broadcast.removeLike(client.getCurrentUser().getUid());
             }
         });
+    }
+
+    public static void updateNumberText(TextView tvNum, boolean increment) {
+        String currVal = tvNum.getText().toString();
+        if (increment) {
+            if (currVal.isEmpty()) {
+                tvNum.setVisibility(View.VISIBLE);
+                tvNum.setText("1");
+            } else {
+                tvNum.setText(String.valueOf(Integer.valueOf(currVal) + 1));
+            }
+        } else {
+            if (currVal.equals("1")) {
+                tvNum.setText("");
+                tvNum.setVisibility(View.GONE);
+            } else {
+                tvNum.setText(String.valueOf(Integer.valueOf(currVal) - 1));
+            }
+        }
     }
 
     public static void setProfileImagePlaceholder(Context context, ImageView ivProfile) {

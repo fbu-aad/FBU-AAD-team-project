@@ -119,6 +119,14 @@ public class Challenge {
         return numParticipants;
     }
 
+    public void setChallengeNumParticipants(int numParticipants) {
+        this.numParticipants = numParticipants;
+    }
+
+    public void setChallengeAmountRaised(double amountRaised) {
+        this.amountRaised = amountRaised;
+    }
+
     public Date getChallengeStartDate() {
         return startDate;
     }

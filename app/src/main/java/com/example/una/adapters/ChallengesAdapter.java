@@ -93,7 +93,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ToggleButton btnJoin = vhChallenge.getBtnJoin();
             setJoinBtn(client, btnJoin, null, challenge);
 
-            handleClickJoinBtn(client, btnJoin, null, challenge, context);
+            handleClickJoinBtn(client, btnJoin, null, challenge, vhChallenge.getTvNumParticipants(), context);
         }
     }
 

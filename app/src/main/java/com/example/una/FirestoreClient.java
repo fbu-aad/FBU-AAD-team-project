@@ -301,12 +301,13 @@ public class FirestoreClient {
     }
 
     // users cannot comment the same string more than once
-    public void commentOnBroadcast(String broadcastId, String comment) {
+    public void commentOnBroadcast(String broadcastId, String comment, OnSuccessListener onSuccessListener) {
         String name = user.getDisplayName();
         if (name.isEmpty()) {
             name = user.getEmail();
         }
-        broadcasts.document(broadcastId).update("comments", FieldValue.arrayUnion(name + ": " + comment));
+        broadcasts.document(broadcastId).update("comments", FieldValue.arrayUnion(name + ": " + comment))
+                .addOnSuccessListener(onSuccessListener);
     }
 
     public void getBroadcast(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,

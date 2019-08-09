@@ -233,6 +233,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
 
                 // return result to calling activity
                 Intent resultData = new Intent();
+                resultData.putExtra("amountDonated", amount);
                 setResult(RESULT_OK, resultData);
                 finish();
             }
