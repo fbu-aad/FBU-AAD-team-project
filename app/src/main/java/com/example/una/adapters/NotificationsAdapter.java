@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.una.FirestoreClient;
 import com.example.una.R;
 import com.example.una.TimeFormatHelper;
@@ -35,14 +37,9 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     Context context;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.ivFriend)
-        ImageView ivFriend;
-        @BindView(R.id.tvFriendName)
-        TextView tvFriendName;
-        @BindView(R.id.tvCharityName)
-        TextView tvCharityName;
-        @BindView(R.id.tvTimeStamp)
-        TextView tvTimestamp;
+        @BindView(R.id.ivFriend) ImageView ivFriend;
+        @BindView(R.id.tvDonation) TextView tvDonation;
+        @BindView(R.id.tvTimeStamp) TextView tvTimestamp;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -69,25 +66,31 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         Donation donation = mOtherUserDonations.get(position);
         String notificationCreationTime = TimeFormatHelper.getDateStringFromDate(donation.getTimestamp().toDate());
         holder.tvTimestamp.setText(notificationCreationTime);
-        client.findCharityByEIN(donation.getRecipient(), new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot charityDoc : task.getResult()) {
-                        // querying to find which ein fields match in charity_users collection
-                        holder.tvCharityName.setText((String) charityDoc.get("name"));
-                    }
-                } else {
-                    Log.d(TAG, "Error getting challengeDocs: ", task.getException());
-                }
-            }
-        });
+
+        Glide.with(context)
+                .load("https://picsum.photos" + "/64")
+                .apply(RequestOptions.circleCropTransform())
+                .into(holder.ivFriend);
 
         client.findUserWhereIDEquals(donation.getDonorId(), new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 String fullName = documentSnapshot.get("first_name") + " " + documentSnapshot.get("last_name");
-                holder.tvFriendName.setText(fullName);
+
+                client.findCharityByEIN(donation.getRecipient(), new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot charityDoc : task.getResult()) {
+                                // querying to find which ein fields match in charity_users collection
+                                String donation = fullName + " donated to " + charityDoc.get("name");
+                                holder.tvDonation.setText(donation);
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting challengeDocs: ", task.getException());
+                        }
+                    }
+                });
             }
         }, new OnFailureListener() {
             @Override
