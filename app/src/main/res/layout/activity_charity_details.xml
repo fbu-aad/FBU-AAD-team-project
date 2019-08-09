@@ -303,6 +303,7 @@
         android:layout_gravity="top"
         android:background="@drawable/bottom_sheet_rounded_rectangle"
         app:behavior_peekHeight="@dimen/large_medium_padding"
+        android:elevation="@dimen/small_medium_padding"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

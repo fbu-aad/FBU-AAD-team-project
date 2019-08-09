@@ -76,4 +76,5 @@
     <dimen name="raise_bar_width">28dp</dimen>
     <dimen name="raise_bar_height">10dp</dimen>
     <dimen name="quick_donate_radio_group_font_size">16sp</dimen>
+    <dimen name="shadow_height">8dp</dimen>
 </resources>
