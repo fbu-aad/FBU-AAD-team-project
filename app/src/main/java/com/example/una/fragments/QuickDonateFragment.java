@@ -1,5 +1,6 @@
 package com.example.una.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,6 +65,7 @@ public class QuickDonateFragment extends Fragment {
     Charity charity;
     BottomSheetBehavior bottomSheetBehavior;
     DecimalFormat df;
+    Context context;
 
     Double amount;
     long numChallenges;
@@ -75,6 +77,7 @@ public class QuickDonateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quick_donate, container, false);
         ButterKnife.bind(this, view);
+        context = getContext();
 
         df = new DecimalFormat("###,###,###,##0.00");
 
@@ -157,7 +160,7 @@ public class QuickDonateFragment extends Fragment {
                 if (documentSnapshot.contains("fav_charity_ein")) {
                     charityEin = documentSnapshot.get("fav_charity_ein").toString();
                 } else {
-                    charityEin = getString(R.string.red_cross_ein);
+                    charityEin = context.getResources().getString(R.string.red_cross_ein);
                 }
 
                 if (charityName == null) {
