@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class HomeFragmentSection {
     public static final int CHARITY_LIST_TYPE = 0;
     public static final int CATEGORIES_LIST_TYPE = 1;
-    public static final int RECOMMENDED_LIST_TYPE = 2;
 
     String title;
     ArrayList<Object> arrayList;

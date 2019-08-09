@@ -135,7 +135,7 @@ public class ExplorePageFragment extends Fragment {
         recommendedModel.setTitle(getString(R.string.text_home_recommended));
         getRecommended();
         recommendedModel.setArrayList(recommended);
-        recommendedModel.setViewType(HomeFragmentSection.RECOMMENDED_LIST_TYPE);
+        recommendedModel.setViewType(HomeFragmentSection.CHARITY_LIST_TYPE);
 
         arrayListVertical.add(recommendedModel);
     }
