@@ -396,7 +396,6 @@
             android:layout_marginEnd="@dimen/standard_padding"
             android:layout_marginRight="@dimen/standard_padding"
             android:text="@string/donate_value_accept"
-
             app:layout_constraintBottom_toBottomOf="@+id/etCustomAmount"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

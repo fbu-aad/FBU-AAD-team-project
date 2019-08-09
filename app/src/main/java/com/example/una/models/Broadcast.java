@@ -1,9 +1,12 @@
 package com.example.una.models;
 
+import com.example.una.Frequency;
+import com.example.una.PrivacySetting;
 import com.google.firebase.Timestamp;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @Parcel
