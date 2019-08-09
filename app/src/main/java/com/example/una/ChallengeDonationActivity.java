@@ -202,6 +202,7 @@ public class ChallengeDonationActivity extends AppCompatActivity {
 
                 Map<String, Object> mBroadcast = new HashMap<>();
                 mBroadcast.put("challenge_id", challengeId);
+                mBroadcast.put("challenge_name", challengeName);
                 mBroadcast.put("charity_name", charityName);
                 mBroadcast.put("type", Broadcast.CHALLENGE_DONATION);
                 mBroadcast.put("privacy", privacy);
