@@ -110,6 +110,5 @@ public class BroadcastsFragment extends Fragment {
         super.onStart();
         adapter.clear();
         fetchBroadcasts();
-        swipeContainer.setRefreshing(false);
     }
 }
