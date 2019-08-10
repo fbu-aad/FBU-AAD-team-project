@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.una.FirestoreClient;
 import com.example.una.R;
@@ -27,8 +28,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DonationNotificationsFragment extends Fragment {
-    @BindView(R.id.rvNotifications)
-    RecyclerView rvNotifications;
+    @BindView(R.id.rvNotifications) RecyclerView rvNotifications;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
     public final static String TAG = "NotificationsFragment";
     FirestoreClient client;
@@ -49,6 +50,17 @@ public class DonationNotificationsFragment extends Fragment {
         rvNotifications.setAdapter(adapter);
         client = new FirestoreClient();
         fetchUsers();
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                adapter.clear();
+                fetchUsers();
+                adapter.addAll(notifications);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+
         return view;
     }
 

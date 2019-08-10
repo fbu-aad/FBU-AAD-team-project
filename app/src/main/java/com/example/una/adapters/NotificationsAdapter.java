@@ -25,6 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -103,5 +104,15 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     @Override
     public int getItemCount() {
         return mOtherUserDonations.size();
+    }
+
+    public void clear() {
+        mOtherUserDonations.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(ArrayList<Donation> list) {
+        mOtherUserDonations.addAll(list);
+        notifyDataSetChanged();
     }
 }
