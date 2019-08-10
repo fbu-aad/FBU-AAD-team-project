@@ -52,7 +52,6 @@ public class BroadcastsFragment extends Fragment {
             public void onRefresh() {
                 adapter.clear();
                 fetchBroadcasts();
-                adapter.addAll(broadcasts);
                 swipeContainer.setRefreshing(false);
             }
         });
@@ -104,5 +103,13 @@ public class BroadcastsFragment extends Fragment {
         else {
             lastVisibleBroadcast = null;
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.clear();
+        fetchBroadcasts();
+        swipeContainer.setRefreshing(false);
     }
 }
