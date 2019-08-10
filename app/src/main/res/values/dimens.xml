@@ -12,7 +12,7 @@
     <dimen name="large_padding">56dp</dimen>
     <dimen name="large_medium_padding">64dp</dimen>
     <dimen name="large_medium_plus_padding">72dp</dimen>
-    <dimen name="large_large_padding">136dp</dimen>
+    <dimen name="large_large_padding">132dp</dimen>
     <dimen name="extra_large_padding">148dp</dimen>
     <dimen name="medium_button_width">120dp</dimen>
     <dimen name="large_textView_width">200dp</dimen>
@@ -83,4 +83,6 @@
     <dimen name="padding_10">10dp</dimen>
     <dimen name="shimmer_textview_font_size">30dp</dimen>
     <dimen name="challenge_image_height">256dp</dimen>
+    <dimen name="challenge_image_preview_width">206dp</dimen>
+    <dimen name="challenge_image_preview_height">125dp</dimen>
 </resources>
