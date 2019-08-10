@@ -87,4 +87,6 @@
     <dimen name="padding_10">10dp</dimen>
     <dimen name="shimmer_textview_font_size">30dp</dimen>
     <dimen name="challenge_image_height">256dp</dimen>
+    <dimen name="challenge_image_preview_width">206dp</dimen>
+    <dimen name="challenge_image_preview_height">125dp</dimen>
 </resources>
