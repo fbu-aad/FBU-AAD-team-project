@@ -45,6 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -312,6 +313,10 @@ public class CreateChallengeStoryFragment extends Fragment {
             Bitmap selectedImage;
             try {
                 selectedImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), photoUri);
+
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
+                selectedImage.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
                 ivPreview.setImageBitmap(selectedImage);
                 imageIncluded = true;
             } catch (IOException e) {

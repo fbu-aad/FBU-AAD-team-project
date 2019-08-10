@@ -82,4 +82,5 @@
     <dimen name="placeholderTextHeight">8dp</dimen>
     <dimen name="padding_10">10dp</dimen>
     <dimen name="shimmer_textview_font_size">30dp</dimen>
+    <dimen name="challenge_image_height">256dp</dimen>
 </resources>
