@@ -12,10 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Registry;
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.una.FirestoreClient;
+import com.example.una.GlideApp;
 import com.example.una.models.Challenge;
 import com.example.una.R;
 import com.example.una.Viewholders.ChallengeViewHolder;
@@ -96,16 +96,30 @@ public class ChallengesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             // set progress bar
             setPbProgress(vhChallenge.getPbProgress(), challenge);
 
-            StorageReference pathReference = storageReference.child(challenge.getPictureFilepath());
+            String photoFile = challenge.getPictureFilepath();
+            ImageView ivChallengeImage = vhChallenge.getIvChallengeImage();
 
-            Glide.with(context)
-                    .load(pathReference)
-                    .into(vhChallenge.getIvChallengeImage());
+            if (photoFile != null && !photoFile.isEmpty()) {
+                StorageReference pathReference = storageReference.child(photoFile);
+                GlideApp.with(context)
+                        .applyDefaultRequestOptions(RequestOptions.placeholderOf(R.color.una_grey))
+                        .load(pathReference)
+                        .centerCrop()
+                        .into(ivChallengeImage);
+            } else {
+                Glide.with(context)
+                        .load("https://picsum.photos" + "/400/300")
+                        .apply(RequestOptions.placeholderOf(R.color.una_grey))
+                        .apply(RequestOptions.centerCropTransform())
+                        .into(vhChallenge.getIvChallengeImage());
+
+            }
 
             ToggleButton btnJoin = vhChallenge.getBtnJoin();
             setJoinBtn(client, btnJoin, null, challenge);
 
-            handleClickJoinBtn(client, btnJoin, null, challenge, vhChallenge.getTvNumParticipants(), context);
+            handleClickJoinBtn(client, btnJoin, null, challenge, vhChallenge.getTvNumParticipants(),
+                    context);
         }
     }
 
