@@ -85,4 +85,5 @@
     <dimen name="challenge_image_height">256dp</dimen>
     <dimen name="challenge_image_preview_width">206dp</dimen>
     <dimen name="challenge_image_preview_height">125dp</dimen>
+    <dimen name="una_startup_circle_width">170dp</dimen>
 </resources>
