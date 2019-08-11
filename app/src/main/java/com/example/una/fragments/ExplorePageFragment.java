@@ -176,7 +176,7 @@ public class ExplorePageFragment extends Fragment {
                 } catch (JSONException e) {
                     logError("Failed to parse featured list", e);
                 }
-                checkIfAsyncCallsCompleted(counterForEachOnSuccess);
+                checkIfAsyncCallsCompleted();
             }
 
             @Override
@@ -217,7 +217,7 @@ public class ExplorePageFragment extends Fragment {
                 } catch (JSONException e) {
                     logError("Failed to parse categories", e);
                 }
-                checkIfAsyncCallsCompleted(counterForEachOnSuccess);
+                checkIfAsyncCallsCompleted();
             }
 
             @Override
@@ -265,7 +265,7 @@ public class ExplorePageFragment extends Fragment {
                 } catch (JSONException e) {
                     logError("Failed to parse featured list", e);
                 }
-                checkIfAsyncCallsCompleted(counterForEachOnSuccess);
+                checkIfAsyncCallsCompleted();
             }
 
             @Override
@@ -292,11 +292,11 @@ public class ExplorePageFragment extends Fragment {
         loadingShimmer.stopShimmer();
     }
 
-    public void checkIfAsyncCallsCompleted(AtomicInteger numberOfAsyncCalls) {
-        if(numberOfAsyncCalls.get() == 3) {
+    public void checkIfAsyncCallsCompleted() {
+        if(counterForEachOnSuccess.get() == 3) {
             hideShimmerMessage();
             verticalRecyclerView.setVisibility(View.VISIBLE);
-            numberOfAsyncCalls.set(0);
+            counterForEachOnSuccess.set(0);
         }
     }
 }
