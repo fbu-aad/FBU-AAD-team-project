@@ -353,10 +353,7 @@ public class CreateChallengeStoryFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG, String.format("create %s broadcast failed", name), e);
-                pd.dismiss();
-                Intent resultData = new Intent();
-                getActivity().setResult(RESULT_OK, resultData);
-                getActivity().finish();
+                uploadImage();
             }}, broadcast);
     }
 }
