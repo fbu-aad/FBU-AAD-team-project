@@ -38,6 +38,7 @@ import butterknife.OnClick;
 public class CharityBroadcastsFragment extends Fragment {
     @BindView(R.id.rvBroadcasts) RecyclerView rvBroadcasts;
     @BindView(R.id.fabCreate) FloatingActionButton fabCreateBroadcast;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
     FirestoreClient client;
     private final String TAG = "CharityBroadcastPage";
@@ -71,6 +72,14 @@ public class CharityBroadcastsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvBroadcasts.setLayoutManager(layoutManager);
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getBroadcasts();
+                swipeContainer.setRefreshing(false);
+            }
+        });
     }
 
     @OnClick(R.id.fabCreate)
@@ -102,4 +111,9 @@ public class CharityBroadcastsFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        getBroadcasts();
+    }
 }

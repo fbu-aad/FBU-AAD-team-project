@@ -120,4 +120,10 @@ public class ChallengesFragment extends Fragment {
 
         return challenges;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getChallenges();
+    }
 }
