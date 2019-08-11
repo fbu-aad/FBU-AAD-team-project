@@ -25,6 +25,7 @@ import com.example.una.RecyclerViewModels.HomeFragmentSection;
 import com.example.una.adapters.VerticalRecyclerViewAdapter;
 import com.example.una.models.Category;
 import com.example.una.models.Charity;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -33,12 +34,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import cz.msebera.android.httpclient.Header;
 
 public class ExplorePageFragment extends Fragment {
     public RecyclerView verticalRecyclerView;
     public VerticalRecyclerViewAdapter adapter;
+    public ShimmerFrameLayout loadingShimmer;
     ArrayList<HomeFragmentSection> arrayListVertical;
 
     protected ArrayList<Object> categories = new ArrayList<>();
@@ -46,6 +49,7 @@ public class ExplorePageFragment extends Fragment {
     protected ArrayList<Object> recommended = new ArrayList<>();
     public final static String TAG = "ExplorePageFragment";
     CharityNavigatorClient client;
+    AtomicInteger counterForEachOnSuccess = new AtomicInteger(0);
 
     @Nullable
     @Override
@@ -56,7 +60,9 @@ public class ExplorePageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadingShimmer = view.findViewById(R.id.shimmer_view_container);
         verticalRecyclerView = view.findViewById(R.id.homeRecyclerView);
+        verticalRecyclerView.setVisibility(View.GONE);
         // makes verticalRecyclerView's height and width immutable no matter what is inserted or removed inside the recyclerView
         verticalRecyclerView.setHasFixedSize(false);
         verticalRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
@@ -138,6 +144,7 @@ public class ExplorePageFragment extends Fragment {
         recommendedModel.setViewType(HomeFragmentSection.CHARITY_LIST_TYPE);
 
         arrayListVertical.add(recommendedModel);
+
     }
 
     private void getFeatured() {
@@ -146,6 +153,7 @@ public class ExplorePageFragment extends Fragment {
         client.getFeatured(params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                counterForEachOnSuccess.addAndGet(1);
                 try {
                     JSONArray groupsArr = response.getJSONArray("groups");
                     JSONObject groupsObj = groupsArr.getJSONObject(0);
@@ -168,6 +176,7 @@ public class ExplorePageFragment extends Fragment {
                 } catch (JSONException e) {
                     logError("Failed to parse featured list", e);
                 }
+                checkIfAsyncCallsCompleted();
             }
 
             @Override
@@ -196,6 +205,8 @@ public class ExplorePageFragment extends Fragment {
         client.getCategories(params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                counterForEachOnSuccess.addAndGet(1);
+
                 try {
                     for (int i = 0; i < response.length(); i++) {
                         Category category = new Category(response.getJSONObject(i));
@@ -206,6 +217,7 @@ public class ExplorePageFragment extends Fragment {
                 } catch (JSONException e) {
                     logError("Failed to parse categories", e);
                 }
+                checkIfAsyncCallsCompleted();
             }
 
             @Override
@@ -230,6 +242,7 @@ public class ExplorePageFragment extends Fragment {
         client.getRecommended(params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                counterForEachOnSuccess.addAndGet(1);
                 try {
                     JSONArray groupsArr = response.getJSONArray("groups");
                     JSONObject groupsObj = groupsArr.getJSONObject(0);
@@ -247,11 +260,12 @@ public class ExplorePageFragment extends Fragment {
                         }
                         prevName = newName;
                     }
-                    Log.i(TAG, String.format("Found %s featured charities", recommended.size()));
+                    Log.i(TAG, String.format("Found %s recommended charities", recommended.size()));
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     logError("Failed to parse featured list", e);
                 }
+                checkIfAsyncCallsCompleted();
             }
 
             @Override
@@ -271,6 +285,19 @@ public class ExplorePageFragment extends Fragment {
                 logError("Failed to get data from featured endpoint", throwable);
             }
         });
+    }
+
+    // Hide progress
+    public void hideShimmerMessage() {
+        loadingShimmer.stopShimmer();
+    }
+
+    public void checkIfAsyncCallsCompleted() {
+        if(counterForEachOnSuccess.get() == 3) {
+            hideShimmerMessage();
+            verticalRecyclerView.setVisibility(View.VISIBLE);
+            counterForEachOnSuccess.set(0);
+        }
     }
 }
 
