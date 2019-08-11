@@ -77,4 +77,9 @@
     <dimen name="raise_bar_height">10dp</dimen>
     <dimen name="quick_donate_radio_group_font_size">16sp</dimen>
     <dimen name="shadow_height">8dp</dimen>
+    <dimen name="activityPadding">16dp</dimen>
+    <dimen name="placeholderImage">60dp</dimen>
+    <dimen name="placeholderTextHeight">8dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="shimmer_textview_font_size">30dp</dimen>
 </resources>
