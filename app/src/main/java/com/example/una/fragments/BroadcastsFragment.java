@@ -93,6 +93,7 @@ public class BroadcastsFragment extends Fragment {
     }
 
     private void loadMoreData(QuerySnapshot documentSnapshots) {
+        adapter.clear();
         for(QueryDocumentSnapshot broadcastDoc : documentSnapshots) {
             broadcasts.add(new Broadcast(broadcastDoc.getData(), broadcastDoc.getId()));
         }

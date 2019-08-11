@@ -56,6 +56,7 @@ import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class CharityDetailsActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final String TAG = "CharityDetailsActivity";
     // charity details information
     @BindView(R.id.tvCharityName) TextView tvCharityName;
     @BindView(R.id.tvTagline) TextView tvTagline;
@@ -150,10 +151,14 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
         ft.commit();
 
         for (Address address : addresses) {
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng)
-                    .title(address.getFeatureName()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            try {
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(latLng)
+                        .title(address.getFeatureName()));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
         }
     }
 
