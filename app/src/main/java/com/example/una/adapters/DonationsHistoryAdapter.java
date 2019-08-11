@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.una.FirestoreClient;
 import com.example.una.R;
 import com.example.una.TimeFormatHelper;
@@ -20,10 +22,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.una.utils.ChallengeViewsUtil.formatCurrency;
 
 public class DonationsHistoryAdapter extends RecyclerView.Adapter<DonationsHistoryAdapter.ViewHolder> {
 
@@ -36,7 +44,7 @@ public class DonationsHistoryAdapter extends RecyclerView.Adapter<DonationsHisto
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.ivCharityImage) ImageView ivCharityImage;
-        @BindView(R.id.tvCharityName) TextView tvCharityName;
+        @BindView(R.id.tvDonation) TextView tvDonation;
         @BindView(R.id.tvDonationAmount) TextView tvDonationAmount;
         @BindView(R.id.tvTimestamp) TextView tvTimestamp;
         public ViewHolder(View itemView) {
@@ -60,7 +68,6 @@ public class DonationsHistoryAdapter extends RecyclerView.Adapter<DonationsHisto
         LayoutInflater inflater = LayoutInflater.from(context);
         View donationItemView = inflater.inflate(R.layout.item_donation_history, parent, false);
         final ViewHolder viewHolder = new ViewHolder(donationItemView);
-        // TODO -- implement onclicklisteners here
         return viewHolder;
     }
 
@@ -71,22 +78,30 @@ public class DonationsHistoryAdapter extends RecyclerView.Adapter<DonationsHisto
         // get the data according to position
         Donation donation = mDonations.get(position);
         // populate the views according to this data
-        viewHolder.tvDonationAmount.setText("$" + donation.getDonationAmount().toString());
+        viewHolder.tvDonationAmount.setText(formatCurrency((double) donation.getDonationAmount()));
+
         String donationCreationTime = TimeFormatHelper.getDateStringFromDate(donation.getTimestamp().toDate());
         viewHolder.tvTimestamp.setText(donationCreationTime);
+
         client.findCharityByEIN(donation.getRecipient(), new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot charityDoc : task.getResult()) {
                         // querying to find which ein fields match in charity_users collection
-                        viewHolder.tvCharityName.setText((String) charityDoc.get("name"));
+                        String donation = "You donated to " + (String) charityDoc.get("name");
+                        viewHolder.tvDonation.setText(donation);
                     }
                 } else {
                     Log.d(TAG, "Error getting challengeDocs: ", task.getException());
                 }
             }
         });
+
+        Glide.with(context)
+                .load("https://picsum.photos" + "/64")
+                .apply(RequestOptions.circleCropTransform())
+                .into(viewHolder.ivCharityImage);
     }
 
     @Override

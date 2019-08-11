@@ -62,7 +62,7 @@
     <string name="navigation_drawer_profile">Profile Settings</string>
     <string name="navigation_drawer_donation_history">Donation History</string>
     <string name="navigation_drawer_header">My Name</string>
-    <string name="navigation_drawer_notifications">Notifications</string>
+    <string name="navigation_drawer_impact">Your Impact</string>
 
 
     <string name="donate">Donate</string>

@@ -1,45 +1,32 @@
 package com.example.una.NavigationDrawerActivities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import com.example.una.FirestoreClient;
 import com.example.una.R;
-import com.example.una.ScrollListener.EndlessRecyclerViewScrollListener;
-import com.example.una.adapters.DonationsHistoryAdapter;
-import com.example.una.models.Donation;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.una.fragments.DonationNotificationsFragment;
+import com.example.una.fragments.YourDonationHistoryFragment;
+import com.google.android.material.tabs.TabLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DonationHistoryActivity extends AppCompatActivity {
-
-    private final static int ITEMS_PER_PAGE_QUERY = 10;
-    private final static String TAG = "DonationHistoryActivity";
-
-    @BindView(R.id.rvDonations)
-    RecyclerView rvDonations;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    private EndlessRecyclerViewScrollListener scrollListener;
-    FirestoreClient client;
-    List<Donation> donations; // passes to my adapter class
-    DonationsHistoryAdapter adapter; // what handles the item in the RecyclerView
-    DocumentSnapshot lastVisible;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.tab_layout) TabLayout tabLayout;
+    @BindView(R.id.vpPager) ViewPager vpPager;
+    FragmentPagerAdapter adapterViewPager;
+    private int[] tabIcons = {
+            R.drawable.ic_person_black_24dp,
+            R.drawable.ic_people_black_24dp
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +35,10 @@ public class DonationHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation_history);
         ButterKnife.bind(this);
-        client = new FirestoreClient();
-        donations = new ArrayList<>(); // currently creating new donation list
-        adapter = new DonationsHistoryAdapter(donations); // stop and go to adapter
+
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(adapterViewPager);
+
         setSupportActionBar(toolbar);
         // enabling action bar app icon and behaving it as toggle button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -62,58 +50,37 @@ public class DonationHistoryActivity extends AppCompatActivity {
             }
         });
 
-        // sets up the rows in the recycler view
-        // taking all item XML's and organize them in a linear fashion
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        // telling recyclerView to use linearLayout
-        rvDonations.setLayoutManager(linearLayoutManager);
-        rvDonations.setAdapter(adapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvDonations.getContext(), linearLayoutManager.getOrientation());
-        rvDonations.addItemDecoration(dividerItemDecoration);
+        tabLayout.setupWithViewPager(vpPager);
+        setUpTabIcons();
+    }
 
-        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if (lastVisible != null) {
-                    client.fetchDonationsAfterFirstTime(client.getCurrentUser().getUid(), lastVisible, ITEMS_PER_PAGE_QUERY, new OnSuccessListener<QuerySnapshot>() {
-                                @Override
-                                public void onSuccess(QuerySnapshot documentSnapshots) {
-                                    loadMoreData(documentSnapshots);
-                                }
-                            });
-                }
+    private void setUpTabIcons() {
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+    }
+
+    public static class MyPagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_ITEMS = 2;
+
+        public MyPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return YourDonationHistoryFragment.newInstance();
+                case 1:
+                    return DonationNotificationsFragment.newInstance();
+                default:
+                    return null;
             }
-        };
-        rvDonations.addOnScrollListener(scrollListener);
-        // FETCH DONATIONS FROM FIREBASE
-        fetchDonations();
-    }
-
-    private void loadMoreData(QuerySnapshot documentSnapshots) {
-        for (QueryDocumentSnapshot donationDoc : documentSnapshots) {
-            donations.add(new Donation(donationDoc.getData()));
-            Log.i("client user uid", client.getCurrentUser().getUid());
         }
-        adapter.notifyDataSetChanged();
-
-        // Get the last visible document
-            Log.i(TAG, String.valueOf(documentSnapshots.size()));
-        if(documentSnapshots.size() > 0) {
-            lastVisible = documentSnapshots.getDocuments()
-                    .get(documentSnapshots.size() - 1);
-        } else {
-            lastVisible = null;
-        }
-    }
-
-    // fetch donations for user here
-    private void fetchDonations() {
-        // Construct query for first 10 donations
-        client.fetchDonationsFirstTime(client.getCurrentUser().getUid(), ITEMS_PER_PAGE_QUERY, new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot documentSnapshots) {
-                        loadMoreData(documentSnapshots);
-                    }
-                });
     }
 }

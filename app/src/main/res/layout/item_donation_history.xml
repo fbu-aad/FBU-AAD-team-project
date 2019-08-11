@@ -3,84 +3,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp">
 
     <ImageView
         android:id="@+id/ivCharityImage"
-        android:layout_width="@dimen/charity_image_item_width"
-        android:layout_height="@dimen/charity_image_item_height"
-        android:layout_marginStart="@dimen/layout_margin_start"
-        android:layout_marginLeft="@dimen/layout_margin_left"
-        android:layout_marginTop="@dimen/layout_margin_top"
-        android:layout_marginBottom="@dimen/layout_margin_bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@color/colorAccent" />
 
     <TextView
-        android:id="@+id/tvCharityName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/layout_margin_start"
-        android:layout_marginLeft="@dimen/layout_margin_left"
-        android:layout_marginTop="@dimen/layout_margin_top"
-        android:layout_marginEnd="@dimen/layout_margin_end"
-        android:layout_marginRight="@dimen/layout_margin_right"
-        android:textSize="@dimen/charity_item_textview_font_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/ivCharityImage"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvYouDonated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/layout_margin_start"
-        android:layout_marginLeft="@dimen/layout_margin_left"
-        android:layout_marginTop="@dimen/layout_margin_top"
-        android:text="@string/donation_item_you_donated"
-        android:textSize="@dimen/charity_item_textview_font_size"
-        app:layout_constraintStart_toEndOf="@+id/ivCharityImage"
-        app:layout_constraintTop_toBottomOf="@+id/tvCharityName" />
-
-    <TextView
         android:id="@+id/tvDonationAmount"
-        android:layout_width="@dimen/no_layout_width_textview"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/layout_margin_start"
-        android:layout_marginLeft="@dimen/layout_margin_left"
-        android:textSize="@dimen/charity_item_textview_font_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/tvYouDonated"
-        app:layout_constraintTop_toTopOf="@+id/tvYouDonated" />
-
-    <TextView
-        android:id="@+id/tvTimeOf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/layout_margin_start"
-        android:layout_marginLeft="@dimen/layout_margin_left"
-        android:layout_marginTop="@dimen/layout_margin_top"
-        android:layout_marginBottom="@dimen/layout_margin_bottom"
-        android:text="@string/donation_item_timestamp"
-        android:textSize="@dimen/charity_item_textview_font_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivCharityImage"
-        app:layout_constraintTop_toBottomOf="@+id/tvYouDonated" />
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text=""
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvDonation"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvTimestamp"
         android:layout_width="@dimen/no_layout_width_textview"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/layout_margin_start"
-        android:layout_marginLeft="@dimen/layout_margin_left"
-        android:layout_marginTop="@dimen/layout_margin_top"
-        android:textSize="@dimen/charity_item_textview_font_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/tvTimeOf"
-        app:layout_constraintTop_toBottomOf="@+id/tvDonationAmount" />
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/una_dark_grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvDonation"
+        app:layout_constraintStart_toEndOf="@+id/ivCharityImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvDonation" />
+
+    <TextView
+        android:id="@+id/tvDonation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:text=""
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/tvDonationAmount"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ivCharityImage"
+        app:layout_constraintTop_toTopOf="@+id/ivCharityImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
