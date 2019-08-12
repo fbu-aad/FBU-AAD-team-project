@@ -332,7 +332,7 @@ public class FirestoreClient {
                                   String userName, String charityName
      */
     public void createNewDonation(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener,
-                                  Broadcast body, Double amount) {
+                                  Broadcast body, double amount) {
         Date timeOfDonation = new Date();
         Map<String, Object> donation = new HashMap<>();
 

@@ -67,7 +67,7 @@ public class QuickDonateFragment extends Fragment {
     DecimalFormat df;
     Context context;
 
-    Double amount;
+    double amount;
     long numChallenges;
     long numDonations;
 
@@ -191,7 +191,7 @@ public class QuickDonateFragment extends Fragment {
         });
     }
 
-    private void createNewDonation(Broadcast broadcast, Double amount) {
+    private void createNewDonation(Broadcast broadcast, double amount) {
         client.createNewDonation(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
