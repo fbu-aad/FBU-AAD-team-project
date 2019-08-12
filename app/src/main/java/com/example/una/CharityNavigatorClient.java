@@ -12,11 +12,15 @@ public class CharityNavigatorClient {
     private Context context;
     // the base URL for the API
     public final static String API_BASE_URL = "https://api.data.charitynavigator.org/v2";
+    public final static String API_FIREBASE_URL = "https://firestore.googleapis.com/v1/projects/una-fbu/databases/(default)";
     // the parameter name for the API key
     public final static String API_KEY_PARAM = "app_key";
     // the parameter name for the API application ID
     public final static String API_ID_PARAM = "app_id";
     public final static String TAG = "CharityNavigatorClient";
+
+
+
     AsyncHttpClient client;
 
     public CharityNavigatorClient(Context context) {

@@ -30,8 +30,10 @@ import com.example.una.PrivacySetting;
 import com.example.una.R;
 import com.example.una.models.Broadcast;
 import com.example.una.models.Charity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.api.LogDescriptor;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -81,7 +83,6 @@ public class CreateChallengeStoryFragment extends Fragment {
 
     HashMap<String, Object> challenge = new HashMap<>();
     private FirestoreClient fsClient;
-    private CharityNavigatorClient cnClient;
     private final String TAG = "CreateChallenge";
     private String userName;
     private String associatedCharityEin;
@@ -196,13 +197,12 @@ public class CreateChallengeStoryFragment extends Fragment {
                     pd.show();
 
                     // get associated charity name
-                    RequestParams params = new RequestParams();
-                    cnClient = new CharityNavigatorClient(getContext());
-                    cnClient.getCharityInfo(params, associatedCharityEin, new JsonHttpResponseHandler() {
+                    fsClient.getCharityUserFromEin(associatedCharityEin, new OnCompleteListener<Charity>() {
                         @Override
-                        public void onSuccess(int statusCode, Header[] header, JSONObject response) {
-                            try {
-                                Charity charity = new Charity(response, getContext());
+                        public void onComplete(@NonNull Task<Charity> task) {
+                            if (task.isSuccessful()) {
+                                Charity charity = task.getResult();
+
                                 associatedCharityName = charity.getName();
                                 challenge.put("associated_charity_name", associatedCharityName);
 
@@ -218,34 +218,14 @@ public class CreateChallengeStoryFragment extends Fragment {
                                         Log.i(TAG, "Failed to create challenge!");
                                         pd.dismiss();
                                     }}, challenge);
-                            } catch (JSONException e) {
-                                Log.d(TAG, e.toString());
+                            } else {
+                                Log.d(TAG, "charity does not exist");
+                                Toast.makeText(getContext(), "Charity does not exist",
+                                        Toast.LENGTH_SHORT).show();
                                 pd.dismiss();
                             }
+
                         }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            super.onFailure(statusCode, headers, throwable, errorResponse);
-                            Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
-                            pd.dismiss();
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                            super.onFailure(statusCode, headers, throwable, errorResponse);
-                            Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
-                            pd.dismiss();
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                            super.onFailure(statusCode, headers, responseString, throwable);
-                            Log.d(TAG, String.format("failed getting the charity for ein %s", associatedCharityEin));
-                            pd.dismiss();
-                        }
-
-
                     });
                 }
             }
