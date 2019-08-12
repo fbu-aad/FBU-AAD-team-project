@@ -77,9 +77,9 @@
                 android:visibility="gone"
                 app:borderWidth="0dp"
                 app:fabSize="mini"
-                app:layout_constraintBottom_toBottomOf="@+id/btnFollow"
-                app:layout_constraintEnd_toStartOf="@+id/btnFollow"
-                app:layout_constraintTop_toTopOf="@+id/btnFollow" />
+                app:layout_constraintBottom_toBottomOf="@+id/fabFavorite"
+                app:layout_constraintEnd_toStartOf="@+id/fabFavorite"
+                app:layout_constraintTop_toTopOf="@+id/fabFavorite" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabCall"
@@ -176,19 +176,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvCharityName" />
-
-            <ToggleButton
-                android:id="@+id/btnFollow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/extra_small_padding"
-                android:layout_marginEnd="@dimen/standard_padding"
-                android:layout_marginRight="@dimen/standard_padding"
-                android:textOff="Follow"
-                android:textOn="Following"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTagline" />
 
             <TextView
                 android:id="@+id/tvCategory"
@@ -292,6 +279,21 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/tvCategoryLabel"
                 app:layout_constraintTop_toBottomOf="@+id/tvCharityDescription" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabFavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_padding"
+                android:layout_marginEnd="@dimen/standard_padding"
+                android:layout_marginRight="@dimen/standard_padding"
+                android:clickable="true"
+                android:visibility="gone"
+                app:borderWidth="0dp"
+                app:fabSize="mini"
+                android:src="@drawable/star_off"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTagline" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
@@ -314,7 +316,7 @@
             android:layout_height="@dimen/raise_bar_height"
             android:layout_marginTop="@dimen/small_padding"
             android:layout_marginBottom="@dimen/tiny_padding"
-            android:visibility="visible"
+            android:visibility="gone"
             android:background="@drawable/raise_bar"
             app:layout_constraintBottom_toTopOf="@id/tvDonationTitle"
             app:layout_constraintEnd_toEndOf="parent"
