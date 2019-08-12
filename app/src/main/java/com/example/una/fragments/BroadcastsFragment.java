@@ -15,6 +15,7 @@ import com.example.una.FirestoreClient;
 import com.example.una.R;
 import com.example.una.ScrollListener.EndlessRecyclerViewScrollListener;
 import com.example.una.models.Broadcast;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -32,6 +33,7 @@ public class BroadcastsFragment extends Fragment {
 
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     @BindView(R.id.rvNotifications) RecyclerView rvNotifications;
+    @BindView(R.id.shimmerViewBroadcastsContainer) ShimmerFrameLayout shimmerViewBroadcastsContainer;
     DocumentSnapshot lastVisibleBroadcast;
     FirestoreClient client;
     ArrayList<Broadcast> broadcasts;
@@ -39,14 +41,13 @@ public class BroadcastsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_notifications, container, false);
+        View view = inflater.inflate(R.layout.fragment_broadcasts, container, false);
         ButterKnife.bind(this, view);
         broadcasts = new ArrayList<>();
         adapter = new BroadcastsAdapter(broadcasts);
         rvNotifications.setAdapter(adapter);
         client = new FirestoreClient();
         fetchBroadcasts();
-
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -64,6 +65,7 @@ public class BroadcastsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rvNotifications.setVisibility(View.GONE);
         rvNotifications.setLayoutManager(layoutManager);
 
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
@@ -89,6 +91,8 @@ public class BroadcastsFragment extends Fragment {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 loadMoreData(queryDocumentSnapshots);
+                rvNotifications.setVisibility(View.VISIBLE);
+                shimmerViewBroadcastsContainer.setVisibility(View.GONE);
             }
         });
     }
