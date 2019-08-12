@@ -64,14 +64,6 @@ public class CharityBroadcastsFragment extends Fragment {
         client = new FirestoreClient();
 
         getBroadcasts();
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        rvBroadcasts.setLayoutManager(layoutManager);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -80,6 +72,14 @@ public class CharityBroadcastsFragment extends Fragment {
                 swipeContainer.setRefreshing(false);
             }
         });
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rvBroadcasts.setLayoutManager(layoutManager);
     }
 
     @OnClick(R.id.fabCreate)
@@ -101,19 +101,13 @@ public class CharityBroadcastsFragment extends Fragment {
                     Log.i(TAG, "completed getting broadcasts");
                     QuerySnapshot result = task.getResult();
                     for (QueryDocumentSnapshot broadcastsDoc : result) {
-                        broadcasts.add(new Broadcast(broadcastsDoc.getData()));
+                        broadcasts.add(new Broadcast(broadcastsDoc.getData(), broadcastsDoc.getId()));
                     }
-                    adapter.notifyItemInserted(broadcasts.size() - 1);
+                    adapter.notifyDataSetChanged();
                 } else {
                     Log.d(TAG, "Error getting broadcasts: ", task.getException());
                 }
             }
         });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        getBroadcasts();
     }
 }

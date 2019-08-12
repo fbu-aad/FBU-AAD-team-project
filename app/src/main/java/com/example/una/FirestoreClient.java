@@ -306,8 +306,10 @@ public class FirestoreClient {
         if (name.isEmpty()) {
             name = user.getEmail();
         }
-        broadcasts.document(broadcastId).update("comments", FieldValue.arrayUnion(name + ": " + comment))
-                .addOnSuccessListener(onSuccessListener);
+        if (broadcastId != null) {
+            broadcasts.document(broadcastId).update("comments", FieldValue.arrayUnion(name + ": " + comment))
+                    .addOnSuccessListener(onSuccessListener);
+        }
     }
 
     public void getBroadcast(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,
@@ -332,7 +334,7 @@ public class FirestoreClient {
                                   String userName, String charityName
      */
     public void createNewDonation(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener,
-                                  Broadcast body, Double amount) {
+                                  Broadcast body, double amount) {
         Date timeOfDonation = new Date();
         Map<String, Object> donation = new HashMap<>();
 

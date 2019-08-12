@@ -104,11 +104,4 @@ public class BroadcastsFragment extends Fragment {
             lastVisibleBroadcast = null;
         }
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.clear();
-        fetchBroadcasts();
-    }
 }

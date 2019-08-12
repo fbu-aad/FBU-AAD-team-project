@@ -78,7 +78,8 @@ public class DonationsHistoryAdapter extends RecyclerView.Adapter<DonationsHisto
         // get the data according to position
         Donation donation = mDonations.get(position);
         // populate the views according to this data
-        viewHolder.tvDonationAmount.setText(formatCurrency((double) donation.getDonationAmount()));
+
+        viewHolder.tvDonationAmount.setText(formatCurrency(donation.getDonationAmount().doubleValue()));
 
         String donationCreationTime = TimeFormatHelper.getDateStringFromDate(donation.getTimestamp().toDate());
         viewHolder.tvTimestamp.setText(donationCreationTime);

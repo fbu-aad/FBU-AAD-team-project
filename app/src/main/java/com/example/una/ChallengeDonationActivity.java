@@ -178,9 +178,9 @@ public class ChallengeDonationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // get amount
-                double amount = 0;
+                double amount = 0.0;
                 if (rgSuggestedDonations.getCheckedRadioButtonId() != -1) {
-                    amount = rgSuggestedDonations.getCheckedRadioButtonId();
+                    amount = (double) rgSuggestedDonations.getCheckedRadioButtonId();
                 } else if (!etCustomAmount.getText().toString().isEmpty()) {
                     amount = getCustomDonationAmount(etCustomAmount);
                 } else {
@@ -243,12 +243,12 @@ public class ChallengeDonationActivity extends AppCompatActivity {
 
     public double getCustomDonationAmount(EditText etCustomAmount) {
         Editable text = etCustomAmount.getText();
-        double amount = 0;
+        double amount = 0.0;
         if (text == null || text.toString().equals("")) {
             noInputToast();
         } else {
             amount = Double.parseDouble(text.toString().replaceAll("[$,]", ""));
-            if (amount == 0) {
+            if (amount == 0.0) {
                 noInputToast();
             }
         }

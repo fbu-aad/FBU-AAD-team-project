@@ -100,7 +100,7 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
     BottomSheetBehavior bottomSheetBehavior;
     DecimalFormat df;
     Context context;
-    Double amount;
+    double amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
