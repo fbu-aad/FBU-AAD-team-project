@@ -17,6 +17,7 @@ public class CharityNavigatorClient {
     // the parameter name for the API application ID
     public final static String API_ID_PARAM = "app_id";
     public final static String TAG = "CharityNavigatorClient";
+
     AsyncHttpClient client;
 
     public CharityNavigatorClient(Context context) {
