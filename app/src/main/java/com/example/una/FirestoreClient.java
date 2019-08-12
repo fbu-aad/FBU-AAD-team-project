@@ -152,7 +152,7 @@ public class FirestoreClient {
     public void setDefaultFavoriteCharity(Context context) {
         HashMap<String, Object> favoriteCharity = new HashMap<>();
         favoriteCharity.put("fav_charity_ein", context.getResources().getString(R.string.red_cross_ein));
-        favoriteCharity.put("fav_charity_name", "American Red Cross");
+        favoriteCharity.put("fav_charity_name", context.getResources().getString(R.string.default_charity_name));
         users.document(user.getUid()).update(favoriteCharity);
     }
 
