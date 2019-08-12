@@ -306,8 +306,10 @@ public class FirestoreClient {
         if (name.isEmpty()) {
             name = user.getEmail();
         }
-        broadcasts.document(broadcastId).update("comments", FieldValue.arrayUnion(name + ": " + comment))
-                .addOnSuccessListener(onSuccessListener);
+        if (broadcastId != null) {
+            broadcasts.document(broadcastId).update("comments", FieldValue.arrayUnion(name + ": " + comment))
+                    .addOnSuccessListener(onSuccessListener);
+        }
     }
 
     public void getBroadcast(OnSuccessListener onSuccessListener, OnFailureListener onFailureListener,
