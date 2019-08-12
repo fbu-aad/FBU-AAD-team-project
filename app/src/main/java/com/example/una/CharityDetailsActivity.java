@@ -150,15 +150,17 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
                     fabFavorite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_off));
                     isFavorite = false;
 
-                    Toast.makeText(context, "Your favorite charity is our default featured charity, "
-                                    + getResources().getString(R.string.default_charity_name),
+                    String toast = "Your favorite charity is our default featured charity, "
+                            + getResources().getString(R.string.default_charity_name);
+                    Toast.makeText(context, toast,
                             Toast.LENGTH_SHORT).show();
                     client.setDefaultFavoriteCharity(getApplicationContext());
                 } else {
                     fabFavorite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_on));
                     isFavorite = true;
 
-                    Toast.makeText(context, "Your favorite charity is now " + charity.getName(),
+                    String toast = "Your favorite charity is now " + charity.getName();
+                    Toast.makeText(context, toast,
                             Toast.LENGTH_SHORT).show();
                     client.setFavoriteCharity(ein, charity.getName());
                 }
