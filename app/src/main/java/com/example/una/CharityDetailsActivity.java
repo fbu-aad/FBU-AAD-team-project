@@ -79,7 +79,6 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
     CharityNavigatorClient cnClient;
     private GoogleMap mMap;
     private ArrayList<Address> addresses = new ArrayList<>();
-    private static final String TAG = "CharityDetails";
     private boolean isFavorite = false;
 
     // bottom sheet information
