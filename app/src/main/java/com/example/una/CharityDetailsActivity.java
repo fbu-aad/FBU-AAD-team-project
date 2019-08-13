@@ -166,14 +166,19 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
     }
 
     private void getDefaultCharityInfo() {
-        String charityJsonString = this.getResources().getString(R.string.default_charity_json_string);
-        try {
-            JSONObject jsonObj = new JSONObject(charityJsonString);
-            Charity charity = new Charity(jsonObj, this);
-            setViews(charity);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        RequestParams params = new RequestParams();
+        cnClient = new CharityNavigatorClient(CharityDetailsActivity.this);
+        cnClient.getDefaultCharityInfo(params, "12345", new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] header, JSONObject response) {
+                try {
+                    Charity charity = new Charity(response, getApplicationContext());
+                    setViews(charity);
+                } catch (JSONException e) {
+                    Log.e("CharityDetailsActivity", "Failed to parse response", e);
+                }
+            }
+        });
     }
 
     // gets current charity's info based on eid value

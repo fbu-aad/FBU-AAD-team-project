@@ -69,4 +69,11 @@ public class CharityNavigatorClient {
         String url = getApiUrl("/Organizations/" + ein);
         client.get(url, params, handler);
     }
+
+    public void getDefaultCharityInfo(RequestParams params, String ein, JsonHttpResponseHandler handler) {
+        buildParams(params);
+        String url = getApiUrl("/Organizations/" + ein);
+        url += ".json";
+        client.get(url, params, handler);
+    }
 }
