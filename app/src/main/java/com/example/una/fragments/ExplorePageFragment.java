@@ -205,15 +205,15 @@ public class ExplorePageFragment extends Fragment {
     private void getDefaultFeaturedCharities() {
         counterForEachOnSuccess.addAndGet(1);
         ArrayList<Charity> charityList = new ArrayList<>();
-        charityList.add(new Charity("060726487", "Save the Children"));
-        charityList.add(new Charity("954681287", "The Trevor Project"));
-        charityList.add(new Charity("237069110", "Oxfam America"));
-        charityList.add(new Charity("135660870", "International Rescue Committee"));
-        charityList.add(new Charity("116107128", "Environmental Defense Fund"));
-        charityList.add(new Charity("061008595", "Americares"));
-        charityList.add(new Charity("481108359", "Heart to Heart International"));
-        charityList.add(new Charity("911148123", "Mercy Corps"));
-        charityList.add(new Charity("203414952", "All Hands and Hearts Smart Response"));
+        charityList.add(new Charity("060726487", "Save the Children", 384));
+        charityList.add(new Charity("954681287", "The Trevor Project", 389));
+        charityList.add(new Charity("237069110", "Oxfam America", 413));
+        charityList.add(new Charity("135660870", "International Rescue Committee", 411));
+        charityList.add(new Charity("116107128", "Environmental Defense Fund", 440));
+        charityList.add(new Charity("061008595", "Americares", 580));
+        charityList.add(new Charity("481108359", "Heart to Heart International", 505));
+        charityList.add(new Charity("911148123", "Mercy Corps", 550));
+        charityList.add(new Charity("203414952", "All Hands and Hearts Smart Response", 496));
         featured.addAll(charityList);
         adapter.notifyDataSetChanged();
         checkIfAsyncCallsCompleted();
@@ -339,13 +339,13 @@ public class ExplorePageFragment extends Fragment {
     public void addDefaultRecommendedCharities() {
         counterForEachOnSuccess.addAndGet(1);
         ArrayList<Charity> list = new ArrayList<>();
-        list.add(new Charity("530196605", "American Red Cross"));
-        list.add(new Charity("562496146", "Alex's Lemonade Stand"));
-        list.add(new Charity("203069841", "Against Malaria Foundation"));
-        list.add(new Charity("133433452", "Doctors Without Borders"));
-        list.add(new Charity("530242652", "The Nature Conservancy"));
-        list.add(new Charity("237098123","SOME (So Others Might Eat)"));
-        list.add(new Charity("136213516","American Civil Liberties Union Foundation"));
+        list.add(new Charity("530196605", "American Red Cross", 28));
+        list.add(new Charity("562496146", "Alex's Lemonade Stand", 306));
+        list.add(new Charity("203069841", "Against Malaria Foundation", 267));
+        list.add(new Charity("133433452", "Doctors Without Borders", 282));
+        list.add(new Charity("530242652", "The Nature Conservancy", 287));
+        list.add(new Charity("237098123","SOME (So Others Might Eat)", 292));
+        list.add(new Charity("136213516","American Civil Liberties Union Foundation", 299));
         recommended.addAll(list);
         adapter.notifyDataSetChanged();
         checkIfAsyncCallsCompleted();
