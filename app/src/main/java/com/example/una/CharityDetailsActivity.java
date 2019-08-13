@@ -40,6 +40,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -117,7 +119,8 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
         ((SupportMapFragment) mapFragment).getMapAsync(this);
         ft.commit();
 
-        getCharityInfo(ein);
+//        getCharityInfo(ein);
+        getDefaultCharityInfo();
 
         fabEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +165,17 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
         }
     }
 
+    private void getDefaultCharityInfo() {
+        String charityJsonString = this.getResources().getString(R.string.default_charity_json_string);
+        try {
+            JSONObject jsonObj = new JSONObject(charityJsonString);
+            Charity charity = new Charity(jsonObj, this);
+            setViews(charity);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     // gets current charity's info based on eid value
     private void getCharityInfo(String ein) {
         RequestParams params = new RequestParams();
@@ -171,101 +185,105 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
             public void onSuccess(int statusCode, Header[] header, JSONObject response) {
                 try {
                     Charity charity = new Charity(response, getApplicationContext());
-                    if (charity.hasDonationAddress()) {
-                        addresses.add(charity.getDonationAddress());
-                    }
-
-                    if (charity.hasMailingAddress()) {
-                        addresses.add(charity.getMailingAddress());
-                    }
-
-                    setMap();
-
-                    tvCharityName.setText(charity.getName());
-                    tvCharityName.setVisibility(View.VISIBLE);
-
-                    if (charity.hasDescription()) {
-                        tvTagline.setText(charity.getDescription());
-                        tvTagline.setVisibility(View.VISIBLE);
-                    } else {
-                        tvTagline.setVisibility(View.GONE);
-                    }
-                    if (charity.hasLink()) {
-                        tvCharityLink.setText(charity.getLink());
-                        tvCharityLink.setVisibility(View.VISIBLE);
-                    } else {
-                        tvCharityLink.setVisibility(View.GONE);
-                    }
-                    if (charity.hasCategory()) {
-                        tvCategory.setText(charity.getCategory());
-                        tvCategory.setVisibility(View.VISIBLE);
-                        ivCategory.setVisibility(View.VISIBLE);
-                        tvCategoryLabel.setVisibility(View.VISIBLE);
-
-                        String categoryImage = charity.getCategoryImageURL();
-                        Glide.with(getApplicationContext())
-                                .load(categoryImage)
-                                .into(ivCategory);
-                    } else {
-                        tvCategory.setVisibility(View.GONE);
-                        ivCategory.setVisibility(View.GONE);
-                        tvCategoryLabel.setVisibility(View.GONE);
-                    }
-                    if (charity.hasCause()) {
-                        tvCause.setText(charity.getCause());
-                        tvCause.setVisibility(View.VISIBLE);
-                        ivCause.setVisibility(View.VISIBLE);
-                        tvCauseLabel.setVisibility(View.VISIBLE);
-
-                        String causeImage = charity.getCauseImageURL();
-                        Glide.with(getApplicationContext())
-                                .load(causeImage)
-                                .into(ivCause);
-                    } else {
-                        tvCause.setVisibility(View.GONE);
-                        ivCause.setVisibility(View.GONE);
-                        tvCauseLabel.setVisibility(View.GONE);
-                    }
-                    if (charity.hasMission()) {
-                        tvMission.setText(charity.getMission());
-                        tvMission.setVisibility(View.VISIBLE);
-                        tvAboutUs.setVisibility(View.VISIBLE);
-                    } else {
-                        tvMission.setVisibility(View.GONE);
-                        tvAboutUs.setVisibility(View.GONE);
-                    }
-                    tvMoreInfo.setVisibility(View.VISIBLE);
-                    fabEmail.setVisibility(View.VISIBLE);
-                    fabCall.setVisibility(View.VISIBLE);
-                    btnFollow.setVisibility(View.VISIBLE);
-
-                    tvCNLink.setVisibility(View.VISIBLE);
-
-                    // link to Charity Navigator URL
-                    tvCNLink.setClickable(true);
-                    tvCNLink.setMovementMethod(LinkMovementMethod.getInstance());
-                    String cnLink = "<a href='" + charity.getCharityNavigatorURL()
-                            + "'> Charity Navigator's nonprofit profile</a>";
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        tvCNLink.setText(Html.fromHtml(cnLink, Html.FROM_HTML_MODE_LEGACY));
-                    } else {
-                        tvCNLink.setText(Html.fromHtml(cnLink));
-                    }
-
-                    pbLoadingCharity.setVisibility(View.GONE);
-
-                    donateBtn.setEnabled(true);
-                    donateBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (amount > 0.0) {
-                                createNewDonation(setDonateBroadcastParams(charity), amount);
-                                resetBottomSheet();
-                            }
-                        }
-                    });
+                    setViews(charity);
                 } catch (JSONException e) {
                     Log.e("CharityDetailsActivity", "Failed to parse response", e);
+                }
+            }
+        });
+    }
+
+    private void setViews(Charity charity) {
+        if (charity.hasDonationAddress()) {
+            addresses.add(charity.getDonationAddress());
+        }
+
+        if (charity.hasMailingAddress()) {
+            addresses.add(charity.getMailingAddress());
+        }
+
+        setMap();
+
+        tvCharityName.setText(charity.getName());
+        tvCharityName.setVisibility(View.VISIBLE);
+
+        if (charity.hasDescription()) {
+            tvTagline.setText(charity.getDescription());
+            tvTagline.setVisibility(View.VISIBLE);
+        } else {
+            tvTagline.setVisibility(View.GONE);
+        }
+        if (charity.hasLink()) {
+            tvCharityLink.setText(charity.getLink());
+            tvCharityLink.setVisibility(View.VISIBLE);
+        } else {
+            tvCharityLink.setVisibility(View.GONE);
+        }
+        if (charity.hasCategory()) {
+            tvCategory.setText(charity.getCategory());
+            tvCategory.setVisibility(View.VISIBLE);
+            ivCategory.setVisibility(View.VISIBLE);
+            tvCategoryLabel.setVisibility(View.VISIBLE);
+
+            String categoryImage = charity.getCategoryImageURL();
+            Glide.with(getApplicationContext())
+                    .load(categoryImage)
+                    .into(ivCategory);
+        } else {
+            tvCategory.setVisibility(View.GONE);
+            ivCategory.setVisibility(View.GONE);
+            tvCategoryLabel.setVisibility(View.GONE);
+        }
+        if (charity.hasCause()) {
+            tvCause.setText(charity.getCause());
+            tvCause.setVisibility(View.VISIBLE);
+            ivCause.setVisibility(View.VISIBLE);
+            tvCauseLabel.setVisibility(View.VISIBLE);
+
+            String causeImage = charity.getCauseImageURL();
+            Glide.with(getApplicationContext())
+                    .load(causeImage)
+                    .into(ivCause);
+        } else {
+            tvCause.setVisibility(View.GONE);
+            ivCause.setVisibility(View.GONE);
+            tvCauseLabel.setVisibility(View.GONE);
+        }
+        if (charity.hasMission()) {
+            tvMission.setText(charity.getMission());
+            tvMission.setVisibility(View.VISIBLE);
+            tvAboutUs.setVisibility(View.VISIBLE);
+        } else {
+            tvMission.setVisibility(View.GONE);
+            tvAboutUs.setVisibility(View.GONE);
+        }
+        tvMoreInfo.setVisibility(View.VISIBLE);
+        fabEmail.setVisibility(View.VISIBLE);
+        fabCall.setVisibility(View.VISIBLE);
+        btnFollow.setVisibility(View.VISIBLE);
+
+        tvCNLink.setVisibility(View.VISIBLE);
+
+        // link to Charity Navigator URL
+        tvCNLink.setClickable(true);
+        tvCNLink.setMovementMethod(LinkMovementMethod.getInstance());
+        String cnLink = "<a href='" + charity.getCharityNavigatorURL()
+                + "'> Charity Navigator's nonprofit profile</a>";
+        if (Build.VERSION.SDK_INT >= 24) {
+            tvCNLink.setText(Html.fromHtml(cnLink, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            tvCNLink.setText(Html.fromHtml(cnLink));
+        }
+
+        pbLoadingCharity.setVisibility(View.GONE);
+
+        donateBtn.setEnabled(true);
+        donateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (amount > 0.0) {
+                    createNewDonation(setDonateBroadcastParams(charity), amount);
+                    resetBottomSheet();
                 }
             }
         });
