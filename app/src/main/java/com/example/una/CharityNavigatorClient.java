@@ -11,7 +11,8 @@ public class CharityNavigatorClient {
 
     private Context context;
     // the base URL for the API
-    public final static String API_BASE_URL = "https://api.data.charitynavigator.org/v2";
+//    public final static String API_BASE_URL = "https://api.data.charitynavigator.org/v2";
+    public final static String API_BASE_URL = "https://una-fbu-aad.firebaseio.com/";
     // the parameter name for the API key
     public final static String API_KEY_PARAM = "app_key";
     // the parameter name for the API application ID
@@ -32,24 +33,28 @@ public class CharityNavigatorClient {
     public void getCategories(RequestParams params, JsonHttpResponseHandler handler) {
         buildParams(params);
         String url = getApiUrl("/Categories");
+        url += ".json";
         client.get(url, params, handler);
     }
 
     public void getOrganizations(RequestParams params, JsonHttpResponseHandler handler) {
         buildParams(params);
         String url = getApiUrl("/Organizations");
+        url += ".json";
         client.get(url, params, handler);
     }
 
     public void getFeatured(RequestParams params, JsonHttpResponseHandler handler) {
         buildParams(params);
         String url = getApiUrl("/Lists/" + context.getString(R.string.featured_list_id));
+        url += ".json";
         client.get(url, params, handler);
     }
 
     public void getRecommended(RequestParams params, JsonHttpResponseHandler handler) {
         buildParams(params);
         String url = getApiUrl("/Lists/" + context.getString(R.string.recommended_list_id));
+        url += ".json";
         client.get(url, params, handler);
     }
 
