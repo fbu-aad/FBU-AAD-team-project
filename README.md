@@ -1,6 +1,6 @@
 # README
 
-Una is a charitable giving platform that allows both users and charities to create accounts and connect. Our main goal was to get people to understand their impact more deeply. When something as simple as a cup of coffee can have a big impact, whether it be two malaria nets or a few meals, we wanted to encourage people to donate as frequently as possible.
+Una is a charitable giving platform that allows both users and charities to create accounts and connect. Our main goal is to get people to understand their impact more deeply. When something as simple as a cup of coffee can have a big impact, whether it be two malaria nets or a few meals, we wanted to encourage people to donate as frequently as possible.
 
 [POP Animation of Inital App Flow Design](https://marvelapp.com/77a8daj/screen/59150323)
 
@@ -14,7 +14,7 @@ User Stories:
 * Main home screen shows the user's "favorite" charity features amounts displayed in terms of commonly used items
 * Ability to create challenges, which are mission driven fundraisers. Both charities and donors can create challenges. Users can join and donate to these challenges. 
 * An explore page that allows donors to look through featured charities and charities recommended to them as well as lists of charities under certain categories
-* A search function that allows users to look up a specific topic
+* A search function that allows users to look up a specific charity
 * Charities can create broadcasts (they might tell their users about volunteer opportunities, new projects they are working on, or what they are able to do as a result of the donations they receive)
 * Users can view charity broadcasts as well as see updates when their friends donate, participate in a challenge, or create  a challenge
 * Users can like and comment on broadcasts
@@ -22,7 +22,7 @@ User Stories:
 
 
 Future Features:
-* more ways for the user to view their personal impact like a map that displays connections between them and all of the charities they've donated to, statistics about their donation history
+* more ways for the user to view their personal impact like a map that displays connections between them and all of the charities they've donated to, statistics about their donation history, and more concrete view of their impact
 * ability to add friends and see them on the map as well
 * ability to see a profile page and update their profile picture
 * subscription to automated regular donations
