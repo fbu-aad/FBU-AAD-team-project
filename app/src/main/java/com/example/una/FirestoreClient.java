@@ -142,6 +142,20 @@ public class FirestoreClient {
         challenges.document(challengeId).update("users_donated", FieldValue.arrayUnion(user.getUid()));
     }
 
+    public void setFavoriteCharity(String ein, String charityName) {
+        HashMap<String, Object> favoriteCharity = new HashMap<>();
+        favoriteCharity.put("fav_charity_ein", (String) ein);
+        favoriteCharity.put("fav_charity_name", charityName);
+        users.document(user.getUid()).update(favoriteCharity);
+    }
+
+    public void setDefaultFavoriteCharity(Context context) {
+        HashMap<String, Object> favoriteCharity = new HashMap<>();
+        favoriteCharity.put("fav_charity_ein", context.getResources().getString(R.string.red_cross_ein));
+        favoriteCharity.put("fav_charity_name", context.getResources().getString(R.string.default_charity_name));
+        users.document(user.getUid()).update(favoriteCharity);
+    }
+
     public void getChallenges(OnCompleteListener onCompleteListener) {
         challenges.orderBy("start_date", Query.Direction.DESCENDING).get().addOnCompleteListener(onCompleteListener);
     }

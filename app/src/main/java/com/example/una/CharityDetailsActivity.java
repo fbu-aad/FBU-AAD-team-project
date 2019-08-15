@@ -1,7 +1,6 @@
 package com.example.una;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,11 +16,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -40,6 +38,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -74,13 +73,13 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
     @BindView(R.id.tvCategoryLabel) TextView tvCategoryLabel;
     @BindView(R.id.tvCauseLabel) TextView tvCauseLabel;
     @BindView(R.id.fabCall) FloatingActionButton fabCall;
-    @BindView(R.id.btnFollow) ToggleButton btnFollow;
+    @BindView(R.id.fabFavorite) FloatingActionButton fabFavorite;
 
     String ein;
     CharityNavigatorClient cnClient;
-    FirestoreClient firestoreClient;
     private GoogleMap mMap;
     private ArrayList<Address> addresses = new ArrayList<>();
+    private boolean isFavorite = false;
 
     // bottom sheet information
     @BindView(R.id.rgSuggestedDonations) RadioGroup rgSuggestedDonations;
@@ -117,7 +116,55 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
         ((SupportMapFragment) mapFragment).getMapAsync(this);
         ft.commit();
 
+        client = new FirestoreClient();
+        context = this;
+        // set favorite fab depending on whether this charity is the user's favorite
+        client.getUserDocument(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.contains("fav_charity_ein")) {
+                    String charityEin = documentSnapshot.get("fav_charity_ein").toString();
+                    if (charityEin.equals(ein)) {
+                        fabFavorite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_on));
+                        isFavorite = true;
+                    } else {
+                        isFavorite = false;
+                    }
+                }
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "can't get user favorite charity", e);
+            }
+        });
+
         getCharityInfo(ein);
+
+        // favorite fab on click listener
+        fabFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFavorite) {
+                    fabFavorite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_off));
+                    isFavorite = false;
+
+                    String toast = "Your favorite charity is our default featured charity, "
+                            + getResources().getString(R.string.default_charity_name);
+                    Toast.makeText(context, toast,
+                            Toast.LENGTH_SHORT).show();
+                    client.setDefaultFavoriteCharity(getApplicationContext());
+                } else {
+                    fabFavorite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_on));
+                    isFavorite = true;
+
+                    String toast = "Your favorite charity is now " + charity.getName();
+                    Toast.makeText(context, toast,
+                            Toast.LENGTH_SHORT).show();
+                    client.setFavoriteCharity(ein, charity.getName());
+                }
+            }
+        });
 
         fabEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,8 +175,6 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
 
         // set the behavior and data in the bottom sheet fragment
         df = new DecimalFormat("###,###,###,##0.00");
-        context = this;
-        client = new FirestoreClient();
         amount = 0.00;
         donateBtn.setEnabled(false);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -170,7 +215,7 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
             @Override
             public void onSuccess(int statusCode, Header[] header, JSONObject response) {
                 try {
-                    Charity charity = new Charity(response, getApplicationContext());
+                    charity = new Charity(response, getApplicationContext());
                     if (charity.hasDonationAddress()) {
                         addresses.add(charity.getDonationAddress());
                     }
@@ -237,7 +282,7 @@ public class CharityDetailsActivity extends FragmentActivity implements OnMapRea
                     tvMoreInfo.setVisibility(View.VISIBLE);
                     fabEmail.setVisibility(View.VISIBLE);
                     fabCall.setVisibility(View.VISIBLE);
-                    btnFollow.setVisibility(View.VISIBLE);
+                    fabFavorite.setVisibility(View.VISIBLE);
 
                     tvCNLink.setVisibility(View.VISIBLE);
 
