@@ -211,10 +211,6 @@ public class QuickDonateFragment extends Fragment {
                         Toast.LENGTH_SHORT).show();
             }
         }, broadcast, amount);
-
-        numDonations++;
-        totalAmountDonated += amount;
-        tvTimesDonated.setText(numDonations + "");
     }
 
     private void resetBottomSheet() {
