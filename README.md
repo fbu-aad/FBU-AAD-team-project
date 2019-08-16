@@ -29,3 +29,19 @@ Future Features:
 * authorize bank account access
 * local events page to display volunteer opportunities
 * push notifications to remind users to donate
+
+**Detailed Feature Demos:**
+
+Charity user:
+* [Charity logs in](https://github.com/fbu-aad/FBU-AAD-team-project/blob/master/demos/Charity%20Login.gif)
+* [Charity browses through challenges](https://github.com/fbu-aad/FBU-AAD-team-project/blob/master/app/src/main/java/com/example/una/demoGifs/charityViewChallengesPage.gif)
+* [Charity creates a challenge](https://github.com/fbu-aad/FBU-AAD-team-project/blob/master/app/src/main/java/com/example/una/demoGifs/ChallengeCreationDemo.gif)
+* [Charity makes a post](https://github.com/fbu-aad/FBU-AAD-team-project/blob/master/demos/Charity%20Broadcast.gif)
+
+Donor:
+* [Donor logs in](https://github.com/fbu-aad/FBU-AAD-team-project/blob/master/app/src/main/java/com/example/una/demoGifs/LoginAndRegisterDemoUserSide.gif)
+* [Donor uses the quick donate page to make a donation](https://github.com/fbu-aad/FBU-AAD-team-project/blob/master/app/src/main/java/com/example/una/demoGifs/quickDonateDemonstration.gif)
+* [Donor joins and participates in a challenge](https://github.com/fbu-aad/FBU-AAD-team-project/blob/master/app/src/main/java/com/example/una/demoGifs/ChallengeDonationDemo.gif)
+* [User discovers new charities through the explore page](https://github.com/fbu-aad/FBU-AAD-team-project/blob/master/app/src/main/java/com/example/una/demoGifs/ExplorePageDemonstration.gif)
+* [User searches for charities](https://github.com/fbu-aad/FBU-AAD-team-project/blob/master/app/src/main/java/com/example/una/demoGifs/UnaExploreSearchDemo9.gif)
+* [User interacts with a broadcast](https://github.com/fbu-aad/FBU-AAD-team-project/blob/master/app/src/main/java/com/example/una/demoGifs/broadcastsUserSideDemonstration.gif)
