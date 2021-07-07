@@ -28,6 +28,7 @@ public class Charity {
     String causeImageURL;
     Address donationAddress;
     Address mailingAddress;
+    int pictureInt;
     boolean isFeatured;
     private static Context context;
 
@@ -36,7 +37,7 @@ public class Charity {
     // deserialize the JSON
     public Charity(JSONObject jsonObject, Context context) throws JSONException {
         this.context = context;
-
+        this.pictureInt = (int) Math.floor(Math.random() * 1000);
         // extract the values from JSON
 
         ein = jsonObject.getString("ein");
@@ -124,6 +125,12 @@ public class Charity {
         this.name = name;
     }
 
+    public Charity(String ein, String name, int pictureInt) {
+        this.ein = ein;
+        this.name = name;
+        this.pictureInt = pictureInt;
+    }
+
     public String getEin() { return ein; }
 
     public String getName() { return name; }
@@ -168,5 +175,9 @@ public class Charity {
 
     public String getCauseImageURL() {
         return causeImageURL;
+    }
+
+    public int getPictureInt() {
+        return pictureInt;
     }
 }

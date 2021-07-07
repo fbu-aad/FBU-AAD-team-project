@@ -15,4 +15,10 @@ public class Category {
         categoryName = jsonObject.getString("categoryName");
         categoryImage = jsonObject.getString("image");
     }
+
+    public Category(String id, String name, String imageUrl) {
+        this.categoryID = id;
+        this.categoryName = name;
+        this.categoryImage = imageUrl;
+    }
 }

@@ -49,7 +49,7 @@ public class CharityAdapter extends RecyclerView.Adapter<CharityAdapter.ViewHold
         viewHolder.tvCharityName.setText(charity.getName());
 
         Glide.with(context)
-                .load("https://picsum.photos" + "/200")
+                .load("https://picsum.photos" + "/id/" + charity.getPictureInt() + "/200")
                 .into(viewHolder.ivProfileImage);
     }
 

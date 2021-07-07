@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -182,20 +183,40 @@ public class ExplorePageFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 logError("Failed to get data from featured endpoint", throwable);
+                getDefaultFeaturedCharities();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 logError("Failed to get data from featured endpoint", throwable);
+                getDefaultFeaturedCharities();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 logError("Failed to get data from featured endpoint", throwable);
+                getDefaultFeaturedCharities();
             }
         });
+    }
+
+    private void getDefaultFeaturedCharities() {
+        counterForEachOnSuccess.addAndGet(1);
+        ArrayList<Charity> charityList = new ArrayList<>();
+        charityList.add(new Charity("060726487", "Save the Children", 384));
+        charityList.add(new Charity("954681287", "The Trevor Project", 389));
+        charityList.add(new Charity("237069110", "Oxfam America", 413));
+        charityList.add(new Charity("135660870", "International Rescue Committee", 411));
+        charityList.add(new Charity("116107128", "Environmental Defense Fund", 440));
+        charityList.add(new Charity("061008595", "Americares", 580));
+        charityList.add(new Charity("481108359", "Heart to Heart International", 505));
+        charityList.add(new Charity("911148123", "Mercy Corps", 550));
+        charityList.add(new Charity("203414952", "All Hands and Hearts Smart Response", 496));
+        featured.addAll(charityList);
+        adapter.notifyDataSetChanged();
+        checkIfAsyncCallsCompleted();
     }
 
 
@@ -223,6 +244,30 @@ public class ExplorePageFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 logError("Failed to get data from categories endpoint", throwable);
+                categories.add(new Category("1", "Human Services",
+                        "https://i0.wp.com/cantondaycarecenter.org/wp-content/uploads/2011/08/day-care-logo.jpg?ssl=1"));
+                categories.add(new Category("2", "Education",
+                        "https://i.pinimg.com/736x/3d/df/3d/3ddf3d64784a7057b7bc227b4405678a.jpg"));
+                categories.add(new Category("3", "International",
+                        "https://us.123rf.com/450wm/niroworld/niroworld1601/niroworld160100093/51210565-stock-illustration-flags-of-the-world-on-a-globe-for-international-business-school-travel-services-and-global-managemen.jpg?ver=6"));
+                categories.add(new Category("4", "Human and Civil Rights",
+                        "https://www.humanrightsclub.net/wp-content/uploads/2017/04/186.jpg"));
+                categories.add(new Category("5", "Religion",
+                        "https://media.istockphoto.com/vectors/vector-people-of-different-religions-vector-id857919750?k=6&m=857919750&s=612x612&w=0&h=ZEG7RN4T38WsEE2Vf-C8Qk_PqH0wyYL4__d8IHkT0qk="));
+                categories.add(new Category("6", "Animals",
+                        "https://dumielauxepices.net/sites/default/files/polar-bear-clipart-paw-722790-2993270.jpg"));
+                categories.add(new Category("7", "Arts, Culture, Humanities",
+                        "https://media.istockphoto.com/vectors/entertainment-and-culture-icon-set-vector-id466103921?k=6&m=466103921&s=612x612&w=0&h=DJwi5D3IT8Lxt9E3Pk3FbCKFGooUMzCjyJLpLGbLlTo="));
+                categories.add(new Category("8", "Environment", "http://www.clker.com/cliparts/u/0/f/W/t/W/environment-md.png"));
+                categories.add(new Category("9", "Health",
+                        "https://www.nicepng.com/png/detail/210-2102896_healthcare-png-photos-transparent-clipart-of-health.png"));
+                categories.add(new Category("10", "Community Development",
+                        "https://cdn2.iconfinder.com/data/icons/web-hosting-19/50/84-512.png"));
+                categories.add(new Category("11", "Research and Public Policy",
+                        "https://library.kissclipart.com/20180829/vlq/kissclipart-market-research-clipart-market-research-clip-art-28cce1a54347d6ed.png"));
+
+                adapter.notifyDataSetChanged();
+                verticalRecyclerView.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -271,20 +316,39 @@ public class ExplorePageFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 logError("Failed to get data from featured endpoint", throwable);
+                addDefaultRecommendedCharities();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 logError("Failed to get data from featured endpoint", throwable);
+                addDefaultRecommendedCharities();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 logError("Failed to get data from featured endpoint", throwable);
+                addDefaultRecommendedCharities();
             }
         });
+    }
+
+    // add default charities if charity navigator doesnt work
+    public void addDefaultRecommendedCharities() {
+        counterForEachOnSuccess.addAndGet(1);
+        ArrayList<Charity> list = new ArrayList<>();
+        list.add(new Charity("530196605", "American Red Cross", 28));
+        list.add(new Charity("562496146", "Alex's Lemonade Stand", 306));
+        list.add(new Charity("203069841", "Against Malaria Foundation", 267));
+        list.add(new Charity("133433452", "Doctors Without Borders", 282));
+        list.add(new Charity("530242652", "The Nature Conservancy", 287));
+        list.add(new Charity("237098123","SOME (So Others Might Eat)", 292));
+        list.add(new Charity("136213516","American Civil Liberties Union Foundation", 299));
+        recommended.addAll(list);
+        adapter.notifyDataSetChanged();
+        checkIfAsyncCallsCompleted();
     }
 
     // Hide progress
